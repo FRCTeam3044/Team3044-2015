@@ -26,7 +26,7 @@ public class Arm {
 	
 	public void armPeriodic(){
 		Components.armMotor.set(3);
-		controller.getRawButton(Components.ARM_OUT);
+		
 		///This is another test change
 		
 	}
