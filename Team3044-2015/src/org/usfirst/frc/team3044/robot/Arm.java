@@ -6,7 +6,7 @@ import org.usfirst.frc.team3044.utils.Components;
 import edu.wpi.first.wpilibj.Jaguar;
 
 public class Arm {
-	DriverController controller = DriverController.getInstance();
+	//DriverController controller = DriverController.getInstance();
 	
 	public void robotInit(){
 		
