@@ -48,41 +48,7 @@ public class DriverController {
 		return trigger;
 	}
 
-	public boolean isxButton() {
-		return xButton;
+	public boolean getRawButton(int num){
+		return false;
 	}
-
-	public boolean isyButton() {
-		return yButton;
-	}
-
-	public boolean isbButton() {
-		return bButton;
-	}
-
-	public boolean isaButton() {
-		return aButton;
-	}
-
-	public boolean isdPadUp() {
-		return dPadUp;
-	}
-
-	public boolean isdPadDown() {
-		return dPadDown;
-	}
-
-	public boolean isDPadLeft() {
-		return DPadLeft;
-	}
-
-	public boolean isdPadRight() {
-		return dPadRight;
-	}
-	
-
-	
-	
-	
-
 }
