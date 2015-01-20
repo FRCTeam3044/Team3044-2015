@@ -24,10 +24,10 @@ public class Components {
 	public static CANJaguar backRightDrive;
 	public static CANJaguar backLeftDrive;
 	
-	public static CANJaguar forkliftLeft1;
+	public static CANJaguar forkliftLeft1;//USING FOR UP AND DOWN
 	public static CANJaguar forkliftLeft2;
-	public static CANJaguar forkliftRight1;
-	public static CANJaguar forkliftRight3;
+	public static CANJaguar forkliftRight1;//USING FOR UP AND DOWN
+	public static CANJaguar forkliftRight2;//CHANGED FROM 3 TO 2
 	
 	public static CANJaguar armMotor;
 	
