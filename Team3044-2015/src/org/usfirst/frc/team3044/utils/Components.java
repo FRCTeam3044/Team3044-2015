@@ -34,7 +34,7 @@ public class Components {
 	public static DigitalInput forkliftUp = new DigitalInput(0);
 	public static DigitalInput forkliftDown = new DigitalInput(1);
 	
-	public static Solenoid forkliftLift = new Solenoid(0);
+	public static Solenoid forkliftClamp = new Solenoid(0); //CHANGED FROM Lift TO CLAMP
 	public static Solenoid armSolenoid = new Solenoid(1);
 	
 	public static DigitalInput ArmExtended = new DigitalInput(2);
@@ -44,9 +44,8 @@ public class Components {
 	public final static int ARM_IN = 3;
 	
 	public final static int FORK_OUT = 1;
-	public final static int FORK_IN = 3;
+	public final static int FORK_IN = 3; 
 	
-
 	public static PowerDistributionPanel powerDistribution = new PowerDistributionPanel();
 	public static AnalogInput LightSensorFrontLeft = new AnalogInput(0);
 	public static AnalogInput LightSensorFrontMid = new AnalogInput(1);
