@@ -14,10 +14,10 @@ public class Components {
 	 ex. Sensors, motor controllers, etc,
 	 */
 	
-	public static CANTalon frontRightDriveRot;
-	public static CANTalon frontLeftDriveRot;
-	public static CANTalon backRightDriveRot;
-	public static CANTalon backLeftDriveRot;
+	public static CANJaguar frontRightDriveRot;
+	public static CANJaguar frontLeftDriveRot;
+	public static CANJaguar backRightDriveRot;
+	public static CANJaguar backLeftDriveRot;
 	
 	public static CANJaguar frontRightDrive;
 	public static CANJaguar frontLeftDrive;
