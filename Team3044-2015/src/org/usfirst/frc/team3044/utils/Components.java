@@ -14,17 +14,17 @@ public class Components {
 	 ex. Sensors, motor controllers, etc,
 	 */
 	
-	public static CANTalon frontRightDriveRot;
-	public static CANTalon frontLeftDriveRot;
-	public static CANTalon backRightDriveRot;
-	public static CANTalon backLeftDriveRot;
+	public static CANJaguar frontRightDriveRot;
+	public static CANJaguar frontLeftDriveRot;
+	public static CANJaguar backRightDriveRot;
+	public static CANJaguar backLeftDriveRot;
 	
 	public static CANJaguar frontRightDrive;
 	public static CANJaguar frontLeftDrive;
 	public static CANJaguar backRightDrive;
 	public static CANJaguar backLeftDrive;
 	
-	public static CANJaguar forkliftLeft1;//USING FOR UP AND DOWN
+	public static CANJaguar forkliftLeft1;
 	public static CANJaguar forkliftLeft2;
 	public static CANJaguar forkliftRight1;//USING FOR UP AND DOWN
 	public static CANJaguar forkliftRight2;//CHANGED FROM 3 TO 2
@@ -40,8 +40,8 @@ public class Components {
 	public static DigitalInput ArmExtended = new DigitalInput(2);
 	public static DigitalInput ArmRetracted = new DigitalInput(3);
 	
-	public final static int ARM_OUT = 1;
-	public final static int ARM_IN = 3;
+	public final static int ARM_OUT_BUTTON = 1;
+	public final static int ARM_IN_BUTTON = 3;
 	
 	public final static int FORK_OUT = 1;
 	public final static int FORK_IN = 3; 
