@@ -27,7 +27,7 @@ public class SecondaryController {
 	
 
 	public double getLeftX() {
-		return leftX;
+		return secondaryJoy.getRawAxis(1);
 	}
 
 	public double getLeftY() {

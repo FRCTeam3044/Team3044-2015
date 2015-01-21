@@ -40,11 +40,11 @@ public class Components {
 	public static DigitalInput ArmExtended = new DigitalInput(2);
 	public static DigitalInput ArmRetracted = new DigitalInput(3);
 	
-	public final static int ARM_OUT = 1;
-	public final static int ARM_IN = 3;
+	public final static int ARM_OUT_BUTTON = 1;
+	public final static int ARM_IN_BUTTON = 3;
 	
-	public final static int FORK_OUT = 1;
-	public final static int FORK_IN = 3;
+	public final static int FORK_OUT_BUTTON = 1;
+	public final static int FORK_IN_BUTTON = 3;
 	
 
 	public static PowerDistributionPanel powerDistribution = new PowerDistributionPanel();
