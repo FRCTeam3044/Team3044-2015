@@ -1,6 +1,5 @@
 package org.usfirst.frc.team3044.robot;
 
-
 import org.usfirst.frc.team3044.utils.Utilities;
 
 import org.usfirst.frc.team3044.DriverStation.DriverController;
@@ -13,78 +12,79 @@ public class Arm {
 SecondaryController ArmJoy = SecondaryController.getInstance();
 boolean ArmButtonIn1 = true;
 boolean ArmButtonOut1 = true;
-final int IN= 1;
-final int MovingOut=2;
-final int Middle= 3;
-final int Out=4;
+boolean PneumaticsButton1 = true;
+final int IN= 1; 
+final int MovingOut =2;
+final int Middle = 3;
+final int Out =4;
 final int MovingIn=5;
 int ArmState = IN;
+
 	public void robotInit(){
 		
 	}
 	
 	public void teleopInit(){
+	}	
+	public void autoInit(){
+	}
+	public void disabled(){
+		
+	
+	}
+	public void armPeriodic(){
+		
 		ArmButtonIn1 = ArmJoy.getRawButton(1);
 		ArmButtonOut1 = ArmJoy.getRawButton(Components.ARM_OUT);
+		PneumaticsButton1 = ArmJoy.getRawButton(2);
 		int ArmState = Components.ARM_IN;
 		
 	switch(ArmState){
-    	case IN:
+    	
+	case IN:
     		if (ArmButtonOut1 = true){
     			if(!Components.ArmExtended.get()){
     				Components.armMotor.set(1);
-    				ArmState = Components.ArmMovingOut;
+    				ArmState = MovingOut;
        			}
     		}
-    	case Components.ARM_OUT:
+    	case Out:
     		if (ArmButtonIn1 = true){
     			if(!Components.ArmRetracted.get()){
     				Components.armMotor.set(-1);
-    				ArmState = Components.ArmMovingIN;
+    				ArmState = MovingIn;
        			}
     		}
-    	case Components.ArmMovingOut:
+    	case MovingOut:
     		if (ArmButtonOut1 = false){
     			if(!Components.ArmExtended.get()){
     				Components.armMotor.set(0);
-    				ArmState = Components.ArmMiddle;
+    				ArmState = Middle;
     			}
     		}
-    	case Components.ArmMovingIN:
+    	case MovingIn:
     		if (ArmButtonIn1 = false){
-    			if(!Outlimit.get()){
-    				ArmJag.set(0);
+    			if(!Components.ArmRetracted.get()){
+    				Components.armMotor.set(0);
     				ArmState = Middle;
     			}
     		}
     	case Middle:
-    		if (button1 = true){
-    			if(!Outlimit.get()){
-    				ArmJag.set(1);
+    		if (ArmButtonOut1 = true){
+    			if(!Components.ArmExtended.get()){
+    				Components.armMotor.set(1);
     				ArmState = MovingOut;
-    		}else if (button2 = true){
-    			if(!Inlimit.get()){
-    				ArmJag.set(-1);
+    		}else if (ArmButtonIn1 = true){
+    			if(!Components.ArmRetracted.get()){
+    				Components.armMotor.set(-1);
     				ArmState = MovingIn;
-    				}
+    				
+    			
+    			}
     			}
     		}
-		
-		
-		
-		
-		
+	}
 	}
 	
-	public void autoInit(){
-		
-	}
-	
-	public void disabled(){
-		
-	}
-	
-	public void armPeriodic(){
-	}
 
 }
