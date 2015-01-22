@@ -2,11 +2,9 @@
 	import org.usfirst.frc.team3044.DriverStation.SecondaryController;
 	import org.usfirst.frc.team3044.utils.Components;
 	//USING JAGUAR LEFT1 AND RIGHT1 FOR UP AND DOWN
-	//CHECK HOW TO IMPLIMENT THE SECONDARY CONTROLLER JOYSTICKS
-	//ALREADY REPLACED MOTORS AND LIMIT SWITCHES (DIGITAL INPUTS)
-	//Jaguar ForkJag = new Jaguar(0); //NEED JAGUAR FORKLIFT COMPONENT
 	//DigitalInput upperlimit = new DigitalInput(1); //CHECK ACTUAL POSITION
 	//DigitalInput lowerlimit = new DigitalInput(2); //CHECK ACTUAL POSITION
+	//WHEN ALL ELSE IS DONE, CHECK ELECTRONIC POSITIONS
 	public class Forklift {
 	SecondaryController Joy = SecondaryController.getInstance();
 	final int TOP = 1;
@@ -135,14 +133,16 @@
 		case OUT:
 			if(Joy.getRawButton(Components.FORK_OUT_BUTTON)){//CHANGE
 				Components.forkliftClamp.set(true);
+				//Components.forkliftClamp2.set(true);		//CHANGE!!!!!!!!!!
 			}
 			break;
 		case IN:
 			if(Joy.getRawButton(Components.FORK_IN_BUTTON)){//CHANGE
 				Components.forkliftClamp.set(false);
+				//Components.forkliftClamp2.set(false);		//CHANGE!!!!!!!!!!
 			break;
 			}
-	}
+    	}
 	}
 
 }
