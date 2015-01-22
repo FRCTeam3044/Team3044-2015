@@ -99,7 +99,7 @@ public class Drive {
 		return MotorSpeed;
 	}
 
-	public drivePeriodic(){
+	public void drivePeriodic(){
 		
 		WheelD = WheelDegree(JoyRight.getRightX(),JoyRight.getRightY());
 		MSpeed = MotorSpeed(JoyRight.getRightX(),JoyRight.getRightY(),.1);
@@ -109,7 +109,7 @@ public class Drive {
 		MT315RF = MotorTolerance(D315,TRFE,MTol);
 		MT315LB = MotorTolerance(D315,TLBE,MTol);
 		
-		Trigger = JoyRight.getTrigger();
+		Trigger = JoyRight.getTriggerLeft();
 		
 		TLFE = TLeftFrontEn.get();
 		TRFE = TRightFrontEn.get();
@@ -166,7 +166,7 @@ public class Drive {
     	}
     	
     	//Rotating
-    	if (JoyRight.getTrigger()>.1 || JoyRight.getTrigger()<-.1){//Needs to be changed when intergrated
+    	if (JoyRight.getTriggerLeft()>.1 || JoyRight.getTriggerLeft()<-.1){//Needs to be changed when intergrated
     		
     		LeftFrontTurn.set(Trigger);
         	RightFrontTurn.set(Trigger);
@@ -212,23 +212,23 @@ public class Drive {
     	}
     }
 	public void teleopinit(){
-
-		LeftFront = comp.frontLeftDrive;
-		//Jaguar RightFront = Components.frontRightDrive;
-		//Jaguar RightBack = Components.backRightDrive;
-		//Jaguar LeftBack = Components.backLeftDrive;
 		
-		LeftFrontTurn = comp.frontLeftDriveRot;
+		LeftFront = Components.frontLeftDrive;
+		//Jaguar RightFront = Componentsonents.frontRightDrive;
+		//Jaguar RightBack = Componentsonents.backRightDrive;
+		//Jaguar LeftBack = Componentsonents.backLeftDrive;
 		
-		Encoder LeftFrontEn = comp.driveEncoderFL;
-		Encoder RightFrontEn = comp.driveEncoderFR;
-		Encoder RightBackEn = comp.driveEncoderBR;
-		Encoder LeftBackEn = comp.driveEncoderBL;
+		LeftFrontTurn = Components.frontLeftDriveRot;
 		
-		Encoder TLeftFrontEn = comp.rotEncoderFL;
-		Encoder TRightFrontEn = comp.rotEncoderFR;
-		Encoder TRightBackEn = comp.rotEncoderBR;
-		Encoder TLeftBackEn = comp.driveEncoderBL;
+		Encoder LeftFrontEn = Components.driveEncoderFL;
+		Encoder RightFrontEn = Components.driveEncoderFR;
+		Encoder RightBackEn = Components.driveEncoderBR;
+		Encoder LeftBackEn = Components.driveEncoderBL;
+		
+		Encoder TLeftFrontEn = Components.rotEncoderFL;
+		Encoder TRightFrontEn = Components.rotEncoderFR;
+		Encoder TRightBackEn = Components.rotEncoderBR;
+		Encoder TLeftBackEn = Components.driveEncoderBL;
 		LeftFront.set(0);
     	//RightFront.set(0);
     	//RightBack.set(0);
