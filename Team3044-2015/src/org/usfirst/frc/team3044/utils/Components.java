@@ -13,9 +13,9 @@ public class Components {
 		
 	}
 	
-	private Components instance;
+	private static Components instance;
 	
-	public Components getInstance(){
+	public static Components getInstance(){
 		if(instance == null){
 			instance = new Components();
 		}
