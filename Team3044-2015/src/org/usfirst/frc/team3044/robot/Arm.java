@@ -7,7 +7,6 @@ import org.usfirst.frc.team3044.DriverStation.SecondaryController;
 import org.usfirst.frc.team3044.utils.Components;
 
 import edu.wpi.first.wpilibj.Jaguar;
-//Hi David!
 
 public class Arm {
 SecondaryController ArmJoy = SecondaryController.getInstance();

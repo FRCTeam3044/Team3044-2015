@@ -7,14 +7,18 @@ public class SecondaryController {
 	
 	private Joystick secondaryJoy;
 	
-	double leftX, leftY, rightX, rightY, trigger;
-	boolean xButton, yButton, bButton, aButton;
-	boolean dPadUp, dPadDown, DPadLeft, dPadRight; // Check to make sure d pad isnt analog
+	public int BUTTON_X = 2;
+	public int BUTTON_Y = 3;
+	public int BUTTON_B = 1;
+	public int BUTTON_A = 0;
+	
+	public int BUTTON_RT = 5;
+	public int BUTTON_LT = 4;
 	
 	
 	//Do we want to do this for filtering inputs?
 	private SecondaryController(){
-		secondaryJoy = new Joystick(0);
+		secondaryJoy = new Joystick(1);
 	}
 	
 	public static SecondaryController getInstance(){
@@ -27,24 +31,29 @@ public class SecondaryController {
 	
 
 	public double getLeftX() {
-		return leftX;
+		return secondaryJoy.getRawAxis(0);
 	}
 
 	public double getLeftY() {
-		return leftY;
+		return secondaryJoy.getRawAxis(1);
 	}
 
 	public double getRightX() {
-		return rightX;
+		return secondaryJoy.getRawAxis(4);
 	}
 
 	public double getRightY() {
-		return rightY;
+		return secondaryJoy.getRawAxis(5);
 	}
 
-	public double getTrigger() {
-		return trigger;
+	public double getTriggerRight() {
+		return secondaryJoy.getRawAxis(3);
 	}
+	
+	public double getTriggerLeft(){
+		return secondaryJoy.getRawAxis(2);
+	}
+
 
 	public boolean getRawButton(int num){
 		return false;
