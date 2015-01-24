@@ -31,8 +31,8 @@ Components components = Components.getInstance();
 	}
 	public void armPeriodic(){
 		
-		ArmButtonIn1 = ArmJoy.getRawButton(1);
-		ArmButtonOut1 = ArmJoy.getRawButton(Components.ARM_OUT);
+		ArmButtonIn1 = ArmJoy.getRawButton(components.ARM_IN_BUTTON);
+		ArmButtonOut1 = ArmJoy.getRawButton(components.ARM_OUT_BUTTON);
 		PneumaticsButton1 = ArmJoy.getRawButton(2);
 		int ArmState = IN;
 		
