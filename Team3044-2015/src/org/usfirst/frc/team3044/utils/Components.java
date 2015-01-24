@@ -54,6 +54,7 @@ public class Components {
 	
 	public final int ARM_OUT_BUTTON = 1;
 	public final int ARM_IN_BUTTON = 3;
+	public final int PNEUMATIC_BUTTON = 2;
 	
 	public final int FORK_OUT_BUTTON = 1;
 	public final int FORK_IN_BUTTON = 3;
