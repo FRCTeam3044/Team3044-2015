@@ -7,6 +7,7 @@ import org.usfirst.frc.team3044.DriverStation.SecondaryController;
 import org.usfirst.frc.team3044.utils.Components;
 
 import edu.wpi.first.wpilibj.Jaguar;
+import edu.wpi.first.wpilibj.Solenoid;
 
 public class Arm {
 SecondaryController ArmJoy = SecondaryController.getInstance();
@@ -20,6 +21,7 @@ final int Out =4;
 final int MovingIn=5;
 int ArmState = IN;
 Components components = Components.getInstance();
+Solenoid pneumaticHook = components.armSolenoid;
 
 	public void robotInit(){
 	}
@@ -44,14 +46,26 @@ Components components = Components.getInstance();
     				components.armMotor.set(1);
     				ArmState = MovingOut;
        			}
-    		}
+    	if (PneumaticsButton1 = true){
+        			pneumaticHook.set(true);
+	   			}
+		if (PneumaticsButton1 = false){
+			pneumaticHook.set(false);
+			}
+    	}
     	case Out:
     		if (ArmButtonIn1 = true){
     			if(!components.ArmRetracted.get()){
     				components.armMotor.set(-1);
     				ArmState = MovingIn;
-       			}
-    		}
+    					}
+    		if (PneumaticsButton1 = true){
+    			pneumaticHook.set(true);
+    	   			}
+    		if (PneumaticsButton1 = false){
+    			pneumaticHook.set(false);
+    			}
+    	}
     	case MovingOut:
     		if (ArmButtonOut1 = false){
     			if(!components.ArmExtended.get()){
@@ -75,13 +89,15 @@ Components components = Components.getInstance();
     			if(!components.ArmRetracted.get()){
     				components.armMotor.set(-1);
     				ArmState = MovingIn;
-    				
-    			
-    			}
+    				}
+    		if (PneumaticsButton1 = true){
+        			pneumaticHook.set(true);
+        	   			}
+        	if (PneumaticsButton1 = false){
+        			pneumaticHook.set(false);
+        			}
     			}
     		}
+		}
 	}
-	}
-	
-
 }
