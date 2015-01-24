@@ -96,7 +96,16 @@ public class Arm {
 			}
 		}
 		switch (PneumaticState){
-		
+		case Off:
+			if (PneumaticsButton1=true){
+				pneumaticHook.set(true);
+				PneumaticState=On;
+			}
+		case On:
+			if (PneumaticsButton1=false){
+				pneumaticHook.set(false);
+				PneumaticState=Off;
+			}
 		}
 			
 	}
