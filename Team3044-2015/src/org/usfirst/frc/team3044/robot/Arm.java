@@ -10,94 +10,94 @@ import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.Solenoid;
 
 public class Arm {
-SecondaryController ArmJoy = SecondaryController.getInstance();
-boolean ArmButtonIn1 = true;
-boolean ArmButtonOut1 = true;
-boolean PneumaticsButton1 = true;
-final int IN= 1; 
-final int MovingOut =2;
-final int Middle = 3;
-final int Out =4;
-final int MovingIn=5;
-int ArmState = IN;
-Components components = Components.getInstance();
-Solenoid pneumaticHook = components.armSolenoid;
+	SecondaryController ArmJoy = SecondaryController.getInstance();
+	boolean ArmButtonIn1 = true;
+	boolean ArmButtonOut1 = true;
+	boolean PneumaticsButton1 = true;
+	final int IN = 1;
+	final int MovingOut = 2;
+	final int Middle = 3;
+	final int Out = 4;
+	final int MovingIn = 5;
+	final int Off=0;
+	final int On=1;
+	int ArmState = IN;
+	int PneumaticState = Off;
+	Components components = Components.getInstance();
+	Solenoid pneumaticHook = components.armSolenoid;
 
-	public void robotInit(){
+	public void robotInit() {
 	}
-	public void teleopInit(){
-	}	
-	public void autoInit(){
+
+	public void teleopInit() {
 	}
-	public void disabled(){
+
+	public void autoInit() {
 	}
-	public void armPeriodic(){
-		
+
+	public void disabled() {
+	}
+
+	public void armPeriodic() {
+
 		ArmButtonIn1 = ArmJoy.getRawButton(components.ARM_IN_BUTTON);
 		ArmButtonOut1 = ArmJoy.getRawButton(components.ARM_OUT_BUTTON);
 		PneumaticsButton1 = ArmJoy.getRawButton(2);
 		int ArmState = IN;
-		
-	switch(ArmState){
-    	
-	case IN:
-    		if (ArmButtonOut1 = true){
-    			if(!components.ArmExtended.get()){
-    				components.armMotor.set(1);
-    				ArmState = MovingOut;
-       			}
-    	if (PneumaticsButton1 = true){
-        			pneumaticHook.set(true);
-	   			}
-		if (PneumaticsButton1 = false){
-			pneumaticHook.set(false);
+
+		switch (ArmState) {
+
+		case IN:
+			if (ArmButtonOut1 = true) {
+				if (!components.ArmExtended.get()) {
+					components.armMotor.set(1);
+					ArmState = MovingOut;
+				}
 			}
-    	}
-    	case Out:
-    		if (ArmButtonIn1 = true){
-    			if(!components.ArmRetracted.get()){
-    				components.armMotor.set(-1);
-    				ArmState = MovingIn;
-    					}
-    		if (PneumaticsButton1 = true){
-    			pneumaticHook.set(true);
-    	   			}
-    		if (PneumaticsButton1 = false){
-    			pneumaticHook.set(false);
-    			}
-    	}
-    	case MovingOut:
-    		if (ArmButtonOut1 = false){
-    			if(!components.ArmExtended.get()){
-    				components.armMotor.set(0);
-    				ArmState = Middle;
-    			}
-    		}
-    	case MovingIn:
-    		if (ArmButtonIn1 = false){
-    			if(!components.ArmRetracted.get()){
-    				components.armMotor.set(0);
-    				ArmState = Middle;
-    			}
-    		}
-    	case Middle:
-    		if (ArmButtonOut1 = true){
-    			if(!components.ArmExtended.get()){
-    				components.armMotor.set(1);
-    				ArmState = MovingOut;
-    		}else if (ArmButtonIn1 = true){
-    			if(!components.ArmRetracted.get()){
-    				components.armMotor.set(-1);
-    				ArmState = MovingIn;
-    				}
-    		if (PneumaticsButton1 = true){
-        			pneumaticHook.set(true);
-        	   			}
-        	if (PneumaticsButton1 = false){
-        			pneumaticHook.set(false);
-        			}
-    			}
-    		}
+		case Out:
+			if (ArmButtonIn1 = true) {
+				if (!components.ArmRetracted.get()) {
+					components.armMotor.set(-1);
+					ArmState = MovingIn;
+				}
+				if (PneumaticsButton1 = true) {
+					pneumaticHook.set(true);
+				}
+				if (PneumaticsButton1 = false) {
+					pneumaticHook.set(false);
+				}
+			}
+		case MovingOut:
+			if (ArmButtonOut1 = false) {
+				if (!components.ArmExtended.get()) {
+					components.armMotor.set(0);
+					ArmState = Middle;
+				}
+			}
+		case MovingIn:
+			if (ArmButtonIn1 = false) {
+				if (!components.ArmRetracted.get()) {
+					components.armMotor.set(0);
+					ArmState = Middle;
+				}
+			}
+		case Middle:
+			if (ArmButtonOut1 = true) {
+				if (!components.ArmExtended.get()) {
+					components.armMotor.set(1);
+					ArmState = MovingOut;
+				} else if (ArmButtonIn1 = true) {
+					if (!components.ArmRetracted.get()) {
+						components.armMotor.set(-1);
+						ArmState = MovingIn;
+					}
+
+				}
+			}
 		}
+		switch (PneumaticState){
+		
+		}
+			
 	}
 }
