@@ -35,10 +35,10 @@ int ArmState = IN;
 	public void armPeriodic(){
 		
 		ArmButtonIn1 = ArmJoy.getRawButton(1);
-		ArmButtonOut1 = ArmJoy.getRawButton(Components.ARM_OUT);
+		ArmButtonOut1 = ArmJoy.getRawButton(Components.ARM_OUT_BUTTON);
 		PneumaticsButton1 = ArmJoy.getRawButton(2);
-		int ArmState = Components.ARM_IN;
-		
+		int ArmState = Components.ARM_IN_BUTTON;
+		0
 	switch(ArmState){
     	
 	case IN:
