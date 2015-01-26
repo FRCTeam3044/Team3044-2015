@@ -33,16 +33,22 @@ public class Robot extends IterativeRobot {
     public void autonomousPeriodic() {
     	arm.armPeriodic();
     	drive.drivePeriodic();
-    	//forklift.teleopPeriodic();
+    	
+    	forklift.forkliftPeriodic();
     }
 
 
     public void teleopInit(){
     	arm.teleopInit();
+    	drive.teleopinit();
+    	forklift.teleopInit();
     }
     
     public void teleopPeriodic() {
-        arm.armPeriodic();
+    	arm.armPeriodic();
+    	drive.drivePeriodic();
+    	
+    	forklift.forkliftPeriodic();
     }
     
 
