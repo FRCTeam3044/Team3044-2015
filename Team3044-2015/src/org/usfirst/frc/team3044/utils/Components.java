@@ -9,60 +9,74 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Solenoid;
 
 public class Components {
+	private Components(){
+		
+	}
+	
+	private static Components instance;
+	
+	public static Components getInstance(){
+		if(instance == null){
+			instance = new Components();
+		}
+		return instance;
+	}
 	
 	 /* This class is intended to store all of the objects for components of the robot
 	 ex. Sensors, motor controllers, etc,
 	 */
 	
-	public static CANTalon frontRightDriveRot;
-	public static CANTalon frontLeftDriveRot;
-	public static CANTalon backRightDriveRot;
-	public static CANTalon backLeftDriveRot;
+	public CANJaguar frontRightDriveRot;
+	public CANJaguar frontLeftDriveRot;
+	public CANJaguar backRightDriveRot;
+	public CANJaguar backLeftDriveRot;
 	
-	public static CANJaguar frontRightDrive;
-	public static CANJaguar frontLeftDrive;
-	public static CANJaguar backRightDrive;
-	public static CANJaguar backLeftDrive;
+	public CANJaguar frontRightDrive;
+	public CANJaguar frontLeftDrive;
+	public CANJaguar backRightDrive;
+	public CANJaguar backLeftDrive;
 	
-	public static CANJaguar forkliftLeft1;
-	public static CANJaguar forkliftLeft2;
-	public static CANJaguar forkliftRight1;//USING FOR UP AND DOWN
-	public static CANJaguar forkliftRight2;//CHANGED FROM 3 TO 2
+	public CANJaguar forkliftLeft1;
+	public CANJaguar forkliftLeft2;
+	public CANJaguar forkliftRight1;
+	public CANJaguar forkliftRight3;
 	
-	public static CANJaguar armMotor;
+	public CANJaguar armMotor;
 	
-	public static DigitalInput forkliftUp = new DigitalInput(0);
-	public static DigitalInput forkliftDown = new DigitalInput(1);
+	public DigitalInput forkliftUp = new DigitalInput(0);
+	public DigitalInput forkliftDown = new DigitalInput(1);
 	
-	public static Solenoid forkliftClamp = new Solenoid(0); //CHANGED FROM Lift TO CLAMP
-	public static Solenoid armSolenoid = new Solenoid(1);
+	public Solenoid forkliftLift = new Solenoid(0);
+	public Solenoid armSolenoid = new Solenoid(1);
 	
-	public static DigitalInput ArmExtended = new DigitalInput(2);
-	public static DigitalInput ArmRetracted = new DigitalInput(3);
+	public DigitalInput ArmExtended = new DigitalInput(2);
+	public DigitalInput ArmRetracted = new DigitalInput(3);
 	
-	public final static int ARM_OUT_BUTTON = 1;
-	public final static int ARM_IN_BUTTON = 3;
+	public final int ARM_OUT_BUTTON = 1;
+	public final int ARM_IN_BUTTON = 3;
+	public final int PNEUMATIC_BUTTON = 2;
 	
-	public final static int FORK_OUT_BUTTON = 1;
-	public final static int FORK_IN_BUTTON = 3; 
+	public final int FORK_OUT_BUTTON = 1;
+	public final int FORK_IN_BUTTON = 3;
 	
-	public static PowerDistributionPanel powerDistribution = new PowerDistributionPanel();
-	public static AnalogInput LightSensorFrontLeft = new AnalogInput(0);
-	public static AnalogInput LightSensorFrontMid = new AnalogInput(1);
-	public static AnalogInput LightSensorFrontRight = new AnalogInput(2);
-	public static AnalogInput LightSensorBackLeft = new AnalogInput(3);
-	public static AnalogInput LightSensorBackMid = new AnalogInput(4);
-	public static AnalogInput LightSensorBackRight = new AnalogInput(5);
+
+	public PowerDistributionPanel powerDistribution = new PowerDistributionPanel();
+	public AnalogInput LightSensorFrontLeft = new AnalogInput(0);
+	public AnalogInput LightSensorFrontMid = new AnalogInput(1);
+	public AnalogInput LightSensorFrontRight = new AnalogInput(2);
+	public AnalogInput LightSensorBackLeft = new AnalogInput(3);
+	public AnalogInput LightSensorBackMid = new AnalogInput(4);
+	public AnalogInput LightSensorBackRight = new AnalogInput(5);
 	
-	public static Encoder driveEncoderFR = new Encoder(1, 6);
-	public static Encoder driveEncoderBR = new Encoder(1, 7);
-	public static Encoder driveEncoderFL = new Encoder(1, 8);
-	public static Encoder driveEncoderBL = new Encoder(1, 9);
+	public Encoder driveEncoderFR = new Encoder(1, 6);
+	public Encoder driveEncoderBR = new Encoder(1, 7);
+	public Encoder driveEncoderFL = new Encoder(1, 8);
+	public Encoder driveEncoderBL = new Encoder(1, 9);
 	
-	public static Encoder rotEncoderFR = new Encoder(1, 10);
-	public static Encoder rotEncoderBR = new Encoder(1, 11);
-	public static Encoder rotEncoderFL = new Encoder(1, 12);
-	public static Encoder rotEncoderBL = new Encoder(1, 13);
+	public Encoder rotEncoderFR = new Encoder(1, 10);
+	public Encoder rotEncoderBR = new Encoder(1, 11);
+	public Encoder rotEncoderFL = new Encoder(1, 12);
+	public Encoder rotEncoderBL = new Encoder(1, 13);
 	
 	public static void init(){
 		

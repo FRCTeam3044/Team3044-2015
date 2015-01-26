@@ -54,6 +54,7 @@ public class SecondaryController {
 		return secondaryJoy.getRawAxis(2);
 	}
 
+
 	public boolean getRawButton(int num){
 		return false;
 	}
