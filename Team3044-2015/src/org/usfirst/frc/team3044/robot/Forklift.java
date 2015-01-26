@@ -7,6 +7,7 @@
 	//WHEN ALL ELSE IS DONE, CHECK ELECTRONIC POSITIONS
 	public class Forklift {
 	SecondaryController Joy = SecondaryController.getInstance();
+	Components components = Components.getInstance();
 	final int TOP = 1;
 	final int MOVINGUP = 2; 
 	final int BOTTOM = 3;
@@ -36,110 +37,110 @@
 		//SPACE
 		case TOP:
 		if(Joy.getLeftY() < 0){
-			if(!Components.forkliftDown.get()){
+			if(!components.forkliftDown.get()){
 				ForkliftState = MOVINGDOWN;
-				Components.forkliftLeft1.set(-1);
-				Components.forkliftLeft2.set(-1);
-				Components.forkliftRight1.set(-1);
-				Components.forkliftRight2.set(-1);
+				components.forkliftLeft1.set(-1);
+				components.forkliftLeft2.set(-1);
+				components.forkliftRight1.set(-1);
+				components.forkliftRight2.set(-1);
 			}	
 		}
 		break;
 		//SPACE
 		case MOVINGDOWN:
-		if(Components.forkliftDown.get()){
+		if(components.forkliftDown.get()){
 			ForkliftState = BOTTOM;
-			Components.forkliftLeft1.set(0);
-			Components.forkliftLeft2.set(0);
-			Components.forkliftRight1.set(0);
-			Components.forkliftRight2.set(0);
+			components.forkliftLeft1.set(0);
+			components.forkliftLeft2.set(0);
+			components.forkliftRight1.set(0);
+			components.forkliftRight2.set(0);
 		}
 		if(Joy.getLeftY() == 0){
 			ForkliftState = STOPPEDMID;
-			Components.forkliftLeft1.set(0);
-			Components.forkliftLeft2.set(0);
-			Components.forkliftRight1.set(0);
-			Components.forkliftRight2.set(0);
+			components.forkliftLeft1.set(0);
+			components.forkliftLeft2.set(0);
+			components.forkliftRight1.set(0);
+			components.forkliftRight2.set(0);
 		}
 		if(Joy.getLeftY() > 0){
-			if(!Components.forkliftUp.get()){
+			if(!components.forkliftUp.get()){
 				ForkliftState = MOVINGUP;
-				Components.forkliftLeft1.set(1);
-				Components.forkliftLeft2.set(1);
-				Components.forkliftRight1.set(1);
-				Components.forkliftRight2.set(1);
+				components.forkliftLeft1.set(1);
+				components.forkliftLeft2.set(1);
+				components.forkliftRight1.set(1);
+				components.forkliftRight2.set(1);
 			}
 		}
 		break;
 		//SPACE
 		case BOTTOM:
     	if(Joy.getLeftY() > 0){
-    		if(!Components.forkliftUp.get()){
+    		if(!components.forkliftUp.get()){
         	ForkliftState = MOVINGUP;
-			Components.forkliftLeft1.set(1);
-			Components.forkliftLeft2.set(1);
-			Components.forkliftRight1.set(1);
-			Components.forkliftRight2.set(1);
+			components.forkliftLeft1.set(1);
+			components.forkliftLeft2.set(1);
+			components.forkliftRight1.set(1);
+			components.forkliftRight2.set(1);
     		}
     	}
     	break;
     	//SPACE
 		case MOVINGUP:
-		if(Components.forkliftUp.get()){
+		if(components.forkliftUp.get()){
 			ForkliftState = TOP;
-			Components.forkliftLeft1.set(0);
-			Components.forkliftLeft2.set(0);
-			Components.forkliftRight1.set(0);
-			Components.forkliftRight2.set(0);
+			components.forkliftLeft1.set(0);
+			components.forkliftLeft2.set(0);
+			components.forkliftRight1.set(0);
+			components.forkliftRight2.set(0);
 		}
 		if(Joy.getLeftY() < 0){
-			if(!Components.forkliftDown.get()){
+			if(!components.forkliftDown.get()){
 			ForkliftState = MOVINGDOWN;
-			Components.forkliftLeft1.set(-1);
-			Components.forkliftLeft2.set(-1);
-			Components.forkliftRight1.set(-1);
-			Components.forkliftRight2.set(-1);
+			components.forkliftLeft1.set(-1);
+			components.forkliftLeft2.set(-1);
+			components.forkliftRight1.set(-1);
+			components.forkliftRight2.set(-1);
 			}
 		}
 		if(Joy.getLeftY() == 0){
 			ForkliftState = STOPPEDMID;
-			Components.forkliftLeft1.set(0);
-			Components.forkliftLeft2.set(0);
-			Components.forkliftRight1.set(0);
-			Components.forkliftRight2.set(0);
+			components.forkliftLeft1.set(0);
+			components.forkliftLeft2.set(0);
+			components.forkliftRight1.set(0);
+			components.forkliftRight2.set(0);
 		}
 		break;
 		//SPACE
 		case STOPPEDMID:
 			if(Joy.getLeftY() > 0){
-				if(!Components.forkliftUp.get()){
+				if(!components.forkliftUp.get()){
 				ForkliftState = MOVINGUP;
-				Components.forkliftLeft1.set(1);
-				Components.forkliftLeft2.set(1);
-				Components.forkliftRight1.set(1);
-				Components.forkliftRight2.set(1);
+				components.forkliftLeft1.set(1);
+				components.forkliftLeft2.set(1);
+				components.forkliftRight1.set(1);
+				components.forkliftRight2.set(1);
 				}
 			}
 			if(Joy.getLeftY() < 0){
-				if(!Components.forkliftDown.get()){
+				if(!components.forkliftDown.get()){
 				ForkliftState = MOVINGDOWN;
-				Components.forkliftLeft1.set(-1);
-				Components.forkliftLeft2.set(-1);
-				Components.forkliftRight1.set(-1);
-				Components.forkliftRight2.set(-1);
+				components.forkliftLeft1.set(-1);
+				components.forkliftLeft2.set(-1);
+				components.forkliftRight1.set(-1);
+				components.forkliftRight2.set(-1);
 				}
 			}
 			break;
 		case OUT:
-			if(Joy.getRawButton(Components.FORK_OUT_BUTTON)){//CHANGE
-				Components.forkliftClamp.set(true);
-				//Components.forkliftClamp2.set(true);		//CHANGE!!!!!!!!!!
+			if(Joy.getRawButton(components.FORK_OUT_BUTTON)){//CHANGE
+				components.forkliftClamp.set(true);
+				//components.forkliftClamp2.set(true);		//CHANGE!!!!!!!!!!
 			}
 			break;
 		case IN:
-			if(Joy.getRawButton(Components.FORK_IN_BUTTON)){//CHANGE
-				Components.forkliftClamp.set(false);
-				//Components.forkliftClamp2.set(false);		//CHANGE!!!!!!!!!!
+			if(Joy.getRawButton(components.FORK_IN_BUTTON)){//CHANGE
+				components.forkliftClamp.set(false);
+				//components.forkliftClamp2.set(false);		//CHANGE!!!!!!!!!!
 			break;
 			}
     	}
