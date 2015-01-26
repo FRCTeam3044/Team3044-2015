@@ -39,7 +39,7 @@ public class Components {
 	public CANJaguar forkliftLeft1;
 	public CANJaguar forkliftLeft2;
 	public CANJaguar forkliftRight1;
-	public CANJaguar forkliftRight3;
+	public CANJaguar forkliftRight2;
 	
 	public CANJaguar armMotor;
 	
@@ -48,6 +48,7 @@ public class Components {
 	
 	public Solenoid forkliftLift = new Solenoid(0);
 	public Solenoid armSolenoid = new Solenoid(1);
+	public Solenoid forkliftClamp = new Solenoid(3);
 	
 	public DigitalInput ArmExtended = new DigitalInput(2);
 	public DigitalInput ArmRetracted = new DigitalInput(3);
@@ -78,7 +79,24 @@ public class Components {
 	public Encoder rotEncoderFL = new Encoder(1, 12);
 	public Encoder rotEncoderBL = new Encoder(1, 13);
 	
-	public static void init(){
+	
+	
+	public void init(){
+		frontRightDriveRot = new CANJaguar(0);
+		frontLeftDriveRot = new CANJaguar(0);
+		backRightDriveRot = new CANJaguar(0);
+		backLeftDriveRot = new CANJaguar(0);
+		
+		frontRightDrive = new CANJaguar(0);
+		frontLeftDrive = new CANJaguar(0);
+		backRightDrive = new CANJaguar(0);
+		backLeftDrive = new CANJaguar(0);
+		
+		forkliftLeft1 = new CANJaguar(0);
+		forkliftLeft2 = new CANJaguar(0);
+		forkliftRight1 = new CANJaguar(0);
+		forkliftRight2 = new CANJaguar(0);
+		armMotor = new CANJaguar(0);
 		
 		
 	}
