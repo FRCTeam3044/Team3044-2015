@@ -11,7 +11,7 @@ public class Robot extends IterativeRobot {
 	Arm arm = new Arm();
 	Drive drive = new Drive();
 	Forklift forklift = new Forklift();
-	Components components = new Components();
+	Components components = Components.getInstance();
 	Utilities utils = new Utilities();
 	
 	
