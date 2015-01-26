@@ -17,19 +17,24 @@
 	final int IN = 7;
 	int ForkliftState = 3;
 	public void robotInit(){	
-	
+		
 	}
 	
 	public void teleopInit(){
-
+		//SET MOTORS TO 0
+		//SET TO INITIAL STATE
 	}
 	
 	public void autoInit(){
-		
+		//SET MOTORS TO 0
+		//SET TO INITIAL STATE
 	}
 	
 	public void disabled(){
-		
+		components.forkliftLeft1.set(0);
+		components.forkliftLeft2.set(0);
+		components.forkliftRight1.set(0);
+		components.forkliftRight2.set(0);
 	}
 	
 	public void forkliftPeriodic(){
