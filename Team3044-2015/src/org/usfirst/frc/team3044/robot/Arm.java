@@ -36,13 +36,16 @@ public class Arm {
 	}
 
 	public void disabled() {
+		components.armMotor.set(0);
+		pneumaticHook.set(false);
+		
 	}
 
 	public void armPeriodic() {
 
 		ArmButtonIn1 = ArmJoy.getRawButton(components.ARM_IN_BUTTON);
 		ArmButtonOut1 = ArmJoy.getRawButton(components.ARM_OUT_BUTTON);
-		PneumaticsButton1 = ArmJoy.getRawButton(2);
+		PneumaticsButton1 = ArmJoy.getRawButton(components.PNEUMATIC_BUTTON);
 		int ArmState = IN;
 
 		switch (ArmState) {
@@ -54,19 +57,23 @@ public class Arm {
 					ArmState = MovingOut;
 				}
 			}
+			if (PneumaticsButton1 = true) {
+				PneumaticState =  On;
+			}
+		break;
 		case Out:
 			if (ArmButtonIn1 = true) {
 				if (!components.ArmRetracted.get()) {
 					components.armMotor.set(-1);
 					ArmState = MovingIn;
 				}
-				if (PneumaticsButton1 = true) {
-					pneumaticHook.set(true);
-				}
-				if (PneumaticsButton1 = false) {
-					pneumaticHook.set(false);
-				}
 			}
+			if (PneumaticsButton1 = true) {
+				PneumaticState =  On;
+			}
+		break;
+		
+		
 		case MovingOut:
 			if (ArmButtonOut1 = false) {
 				if (!components.ArmExtended.get()) {
@@ -74,6 +81,9 @@ public class Arm {
 					ArmState = Middle;
 				}
 			}
+		break;
+		
+		
 		case MovingIn:
 			if (ArmButtonIn1 = false) {
 				if (!components.ArmRetracted.get()) {
@@ -81,6 +91,9 @@ public class Arm {
 					ArmState = Middle;
 				}
 			}
+		break;
+		
+		
 		case Middle:
 			if (ArmButtonOut1 = true) {
 				if (!components.ArmExtended.get()) {
@@ -94,6 +107,10 @@ public class Arm {
 
 				}
 			}
+			if (PneumaticsButton1 = true) {
+				PneumaticState =  On;
+			}
+			break;
 		}
 		switch (PneumaticState){
 		case Off:
@@ -101,11 +118,14 @@ public class Arm {
 				pneumaticHook.set(true);
 				PneumaticState=On;
 			}
+			break;
+			
 		case On:
 			if (PneumaticsButton1=false){
 				pneumaticHook.set(false);
 				PneumaticState=Off;
 			}
+			break;
 		}
 			
 	}
