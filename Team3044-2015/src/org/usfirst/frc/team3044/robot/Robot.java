@@ -26,7 +26,7 @@ public class Robot extends IterativeRobot {
     public void autonomousInit(){
     	arm.autoInit();
     	drive.teleopinit();;
-    	//components.init();
+    	//components.init(); - test
     	forklift.autoInit();
     }
     
