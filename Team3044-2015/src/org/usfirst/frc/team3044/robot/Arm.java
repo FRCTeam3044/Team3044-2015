@@ -27,6 +27,10 @@ public class Arm {
 	Solenoid pneumaticHook = components.armSolenoid;
 
 	public void robotInit() {
+		ArmState = IN;
+		PneumaticState = Off;
+		components.armMotor.set(0);
+		pneumaticHook.set(false);
 	}
 
 	public void teleopInit() {
@@ -129,4 +133,4 @@ public class Arm {
 		}
 			
 	}
-}
+    }
