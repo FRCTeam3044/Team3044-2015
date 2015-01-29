@@ -55,15 +55,13 @@ public class Arm {
 		switch (ArmState) {
 
 		case IN:
-			if (ArmButtonOut1 = true) {
+			if (ArmButtonOut1 == true) {
 				if (!components.ArmExtended.get()) {
 					components.armMotor.set(1);
 					ArmState = MovingOut;
 				}
 			}
-			if (PneumaticsButton1 = true) {
-				PneumaticState =  On;
-			}
+			
 		break;
 		case Out:
 			if (ArmButtonIn1 = true) {
@@ -71,9 +69,6 @@ public class Arm {
 					components.armMotor.set(-1);
 					ArmState = MovingIn;
 				}
-			}
-			if (PneumaticsButton1 = true) {
-				PneumaticState =  On;
 			}
 		break;
 		
@@ -111,11 +106,10 @@ public class Arm {
 
 				}
 			}
-			if (PneumaticsButton1 = true) {
-				PneumaticState =  On;
-			}
+			
 			break;
 		}
+		
 		switch (PneumaticState){
 		case Off:
 			if (PneumaticsButton1=true){
