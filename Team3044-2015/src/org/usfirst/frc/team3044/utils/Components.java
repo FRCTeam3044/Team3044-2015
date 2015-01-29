@@ -46,7 +46,7 @@ public class Components {
 	public DigitalInput forkliftUp = new DigitalInput(0);
 	public DigitalInput forkliftDown = new DigitalInput(1);
 	
-	//Happy Sweet 16 Ryan!
+	//Happy Sweet 16 Ryan! -joey
 	public Solenoid forkliftClamp2 = new Solenoid(0);
 	public Solenoid armSolenoid = new Solenoid(1);
 	public Solenoid forkliftClamp = new Solenoid(3);
