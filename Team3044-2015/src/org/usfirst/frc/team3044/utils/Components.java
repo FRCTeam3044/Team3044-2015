@@ -46,7 +46,8 @@ public class Components {
 	public DigitalInput forkliftUp = new DigitalInput(0);
 	public DigitalInput forkliftDown = new DigitalInput(1);
 	
-	public Solenoid forkliftLift = new Solenoid(0);
+	//Happy Sweet 16 Ryan!
+	public Solenoid forkliftClamp2 = new Solenoid(0);
 	public Solenoid armSolenoid = new Solenoid(1);
 	public Solenoid forkliftClamp = new Solenoid(3);
 	
@@ -68,6 +69,8 @@ public class Components {
 	public AnalogInput LightSensorBackLeft = new AnalogInput(3);
 	public AnalogInput LightSensorBackMid = new AnalogInput(4);
 	public AnalogInput LightSensorBackRight = new AnalogInput(5);
+	
+	
 	
 	public Encoder driveEncoderFR = new Encoder(1, 6);
 	public Encoder driveEncoderBR = new Encoder(1, 7);
