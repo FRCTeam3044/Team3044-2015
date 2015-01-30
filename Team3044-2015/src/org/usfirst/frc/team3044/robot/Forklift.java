@@ -21,19 +21,38 @@ public class Forklift {
 	int ClampState = 7;
 
 	public void robotInit() {
-
+		ForkliftState = BOTTOM;
+		ClampState = IN;
 	}
 
 	public void teleopInit() {
-
+		components.forkliftLeft1.set(0);
+		components.forkliftLeft2.set(0);
+		components.forkliftRight1.set(0);
+		components.forkliftRight2.set(0);
+		
+		components.forkliftClamp.set(false);
+		components.forkliftClamp2.set(false);
 	}
 
 	public void autoInit() {
-
+		components.forkliftLeft1.set(0);
+		components.forkliftLeft2.set(0);
+		components.forkliftRight1.set(0);
+		components.forkliftRight2.set(0);
+		
+		components.forkliftClamp.set(false);
+		components.forkliftClamp2.set(false);
 	}
 
 	public void disabled() {
-
+		components.forkliftLeft1.set(0);
+		components.forkliftLeft2.set(0);
+		components.forkliftRight1.set(0);
+		components.forkliftRight2.set(0);
+		
+		components.forkliftClamp.set(false);
+		components.forkliftClamp2.set(false);
 	}
 
 	public void forkliftPeriodic() {
@@ -136,6 +155,7 @@ public class Forklift {
 			}
 			break;
 		}
+
 		switch (ClampState) {
 		case OUT:
 			if (Joy.getRawButton(components.FORK_OUT_BUTTON)) {
@@ -147,9 +167,8 @@ public class Forklift {
 			if (Joy.getRawButton(components.FORK_IN_BUTTON)) {
 				components.forkliftClamp.set(false);
 				components.forkliftClamp2.set(false);
-				break;
 			}
-
+			break;
 		}
 	}
 }
