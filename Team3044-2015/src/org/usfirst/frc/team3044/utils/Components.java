@@ -24,7 +24,7 @@ public class Components {
 	
 	 /* This class is intended to store all of the objects for components of the robot
 	 ex. Sensors, motor controllers, etc,
-	 */
+	 */  
 	
 	public CANJaguar frontRightDriveRot;
 	public CANJaguar frontLeftDriveRot;
@@ -42,17 +42,24 @@ public class Components {
 	public CANJaguar forkliftRight2;
 	
 	public CANJaguar armMotor;
+	public CANJaguar sliderMotor;
 	
 	public DigitalInput forkliftUp = new DigitalInput(0);
 	public DigitalInput forkliftDown = new DigitalInput(1);
 	
-	//Happy Sweet 16 Ryan! -joey
+	//Happy Sweet 16 Ryan! -joey 
 	public Solenoid forkliftClamp2 = new Solenoid(0);
 	public Solenoid armSolenoid = new Solenoid(1);
 	public Solenoid forkliftClamp = new Solenoid(3);
 	
 	public DigitalInput ArmExtended = new DigitalInput(2);
 	public DigitalInput ArmRetracted = new DigitalInput(3);
+	
+	public DigitalInput ArmSliderOut;
+	public DigitalInput ArmSliderIn;
+	
+	public Encoder encoderSlider;
+	public Encoder encoderArm;
 	
 	public final int ARM_OUT_BUTTON = 1;
 	public final int ARM_IN_BUTTON = 3;
