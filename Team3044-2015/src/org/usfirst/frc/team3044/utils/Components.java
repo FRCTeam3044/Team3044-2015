@@ -55,6 +55,12 @@ public class Components {
 	public DigitalInput ArmExtended = new DigitalInput(2);
 	public DigitalInput ArmRetracted = new DigitalInput(3);
 	
+	public DigitalInput ArmSliderOut;
+	public DigitalInput ArmSliderIn;
+	
+	public Encoder encoderSlider;
+	public Encoder encoderArm;
+	
 	public final int ARM_OUT_BUTTON = 1;
 	public final int ARM_IN_BUTTON = 3;
 	public final int PNEUMATIC_BUTTON = 2;
