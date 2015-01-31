@@ -17,11 +17,11 @@ public class Arm {
 	boolean SliderButtonOut1 = true;
 	boolean SliderButtonIn1 = true;
 
-	final int IN = 1;
-	final int MovingOut = 2;
-	final int Middle = 3;
-	final int MovingIn = 5;
-	final int Out = 4;
+	final int ArmIN = 1;
+	final int ArmMovingOut = 2;
+	final int ArmMiddle = 3;
+	final int ArmMovingIn = 5;
+	final int ArmOut = 4;
 
 	final int SliderIn = 6;
 	final int SliderMovingOut = 7;
@@ -29,10 +29,14 @@ public class Arm {
 	final int SliderMovingIn = 9;
 	final int SliderOut = 10;
 
+	Encoder SliderEncoder = components.encoderArm;
+	double SlideEncoder;
+	
 	final int Off = 0;
 	final int On = 1;
+	
 
-	int PullState = IN;
+	int PullState = ArmIN;
 	int SliderState = SliderIn;
 	int PneumaticState = Off;
 
@@ -40,28 +44,28 @@ public class Arm {
 	Solenoid pneumaticHook = components.armSolenoid;
 
 	public void robotInit() {
-		PullState = IN;
+		PullState = ArmIN;
 		PneumaticState = Off;
 		components.armMotor.set(0);
 		pneumaticHook.set(false);
 	}
 
 	public void teleopInit() {
-		PullState = IN;
+		PullState = ArmIN;
 		PneumaticState = Off;
 		components.armMotor.set(0);
 		pneumaticHook.set(false);
 	}
 
 	public void autoInit() {
-		PullState = IN;
+		PullState = ArmIN;
 		PneumaticState = Off;
 		components.armMotor.set(0);
 		pneumaticHook.set(false);
 	}
 
 	public void disabled() {
-		PullState = IN;
+		PullState = ArmIN;
 		PneumaticState = Off;
 		components.armMotor.set(0);
 		pneumaticHook.set(false);
@@ -75,58 +79,58 @@ public class Arm {
 		SliderButtonIn1 = ArmJoy.getRawButton(components.ARM_IN_BUTTON);// Please
 																		// Create
 																		// Slider
-																		// Buttons
+			
 		SliderButtonOut1 = ArmJoy.getRawButton(components.ARM_OUT_BUTTON);
 		PneumaticsButton1 = ArmJoy.getRawButton(components.PNEUMATIC_BUTTON);
-		int PullState = IN;
+		int PullState = ArmIN;
 
 		switch (PullState) {
 
-		case IN:
+		case ArmIN:
 			if (ArmButtonOut1 == true) {
 				if (!components.ArmExtended.get()) {
 					components.armMotor.set(1);
-					PullState = MovingOut;
+					PullState = ArmMovingOut;
 				}
 			}
 
 			break;
-		case Out:
+		case ArmOut:
 			if (ArmButtonIn1 == true) {
 				if (!components.ArmRetracted.get()) {
 					components.armMotor.set(-1);
-					PullState = MovingIn;
+					PullState = ArmMovingIn;
 				}
 			}
 			break;
 
-		case MovingOut:
+		case ArmMovingOut:
 			if (ArmButtonOut1 == false) {
 				if (!components.ArmExtended.get()) {
 					components.armMotor.set(0);
-					PullState = Middle;
+					PullState = ArmMiddle;
 				}
 			}
 			break;
 
-		case MovingIn:
+		case ArmMovingIn:
 			if (ArmButtonIn1 == false) {
 				if (!components.ArmRetracted.get()) {
 					components.armMotor.set(0);
-					PullState = Middle;
+					PullState = ArmMiddle;
 				}
 			}
 			break;
 
-		case Middle:
+		case ArmMiddle:
 			if (ArmButtonOut1 == true) {
 				if (!components.ArmExtended.get()) {
 					components.armMotor.set(1);
-					PullState = MovingOut;
+					PullState = ArmMovingOut;
 				} else if (ArmButtonIn1 = true) {
 					if (!components.ArmRetracted.get()) {
 						components.armMotor.set(-1);
-						PullState = MovingIn;
+						PullState = ArmMovingIn;
 					}
 
 				}
@@ -182,7 +186,25 @@ public class Arm {
 				}
 			}
 			break;
-
+		
+		case SliderMovingIn:
+			if (SliderButtonIn1 = false) {
+				if (!components.ArmSliderIn.get()) {
+					components.sliderMotor.set(0);
+					SliderState = SliderMiddle;
+				}
+			}
+			break;
+			
+			
+		case SliderOut:
+			if (SliderButtonIn1 = true) {
+				if (!components.ArmSliderIn.get()) {
+					components.sliderMotor.set(-1);
+					SliderState = SliderMovingIn;
+				}
+			}
+			break;
 		}
 
 	}
