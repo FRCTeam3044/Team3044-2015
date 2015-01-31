@@ -89,6 +89,10 @@ public class Components {
 	public Encoder rotEncoderFL = new Encoder(1, 12);
 	public Encoder rotEncoderBL = new Encoder(1, 13);
 	
+	public DigitalInput proximityFR;
+	public DigitalInput proximityBR;
+	public DigitalInput proximityAbsFL;
+	public DigitalInput proximityAbsBL;	
 	
 	
 	public void init(){
