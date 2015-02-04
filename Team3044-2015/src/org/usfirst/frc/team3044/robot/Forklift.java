@@ -2,10 +2,6 @@ package org.usfirst.frc.team3044.robot;
 
 import org.usfirst.frc.team3044.DriverStation.SecondaryController;
 import org.usfirst.frc.team3044.utils.Components;
-//USING JAGUAR LEFT1 AND RIGHT1 FOR UP AND DOWN
-//DigitalInput upperlimit = new DigitalInput(1); //CHECK ACTUAL POSITION
-//DigitalInput lowerlimit = new DigitalInput(2); //CHECK ACTUAL POSITION
-//WHEN ALL ELSE IS DONE, CHECK ELECTRONIC POSITIONS
 
 public class Forklift {
 	SecondaryController Joy = SecondaryController.getInstance();
@@ -22,7 +18,7 @@ public class Forklift {
 
 	public void robotInit() {
 		ForkliftState = BOTTOM;
-		ClampState = IN;
+		ClampState = OUT;
 	}
 
 	public void teleopInit() {
@@ -30,9 +26,9 @@ public class Forklift {
 		components.forkliftLeft2.set(0);
 		components.forkliftRight1.set(0);
 		components.forkliftRight2.set(0);
-		
-		components.forkliftClamp.set(false);
-		components.forkliftClamp2.set(false);
+
+		components.forkliftClamp.set(true);
+		components.forkliftClamp2.set(true);
 	}
 
 	public void autoInit() {
@@ -40,9 +36,9 @@ public class Forklift {
 		components.forkliftLeft2.set(0);
 		components.forkliftRight1.set(0);
 		components.forkliftRight2.set(0);
-		
-		components.forkliftClamp.set(false);
-		components.forkliftClamp2.set(false);
+
+		components.forkliftClamp.set(true);
+		components.forkliftClamp2.set(true);
 	}
 
 	public void disabled() {
@@ -50,9 +46,9 @@ public class Forklift {
 		components.forkliftLeft2.set(0);
 		components.forkliftRight1.set(0);
 		components.forkliftRight2.set(0);
-		
-		components.forkliftClamp.set(false);
-		components.forkliftClamp2.set(false);
+
+		components.forkliftClamp.set(true);
+		components.forkliftClamp2.set(true);
 	}
 
 	public void forkliftPeriodic() {
@@ -155,7 +151,7 @@ public class Forklift {
 			}
 			break;
 		}
-
+		// SPACE
 		switch (ClampState) {
 		case OUT:
 			if (Joy.getRawButton(components.FORK_OUT_BUTTON)) {
