@@ -70,7 +70,7 @@ public class Components {
 	public final int WINCH_UP_BUTTON = -1;
 	public final int WINCH_DOWN_BUTTON = -1;
 	public final int BOTH_IN_UP_BUTTON = -1;
-	
+	public final int BOTH_OUT_DOWN_BUTTON = -1;
 	
 	public final int FORK_OUT_BUTTON = 1;
 	public final int FORK_IN_BUTTON = 3;
