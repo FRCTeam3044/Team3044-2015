@@ -17,6 +17,12 @@ public class Arm {
 	boolean PneumaticsButton1 = true;
 	boolean SliderButtonOut1 = true;
 	boolean SliderButtonIn1 = true;
+	
+	final int TransportMode=1;
+	final int PreparingforPickUp=2;
+	final int BothPreparedforPickUp=3;
+	final int BothDragging = 4;
+	final int StoppedAfterBothDrag = 5;
 
 	final int TransportScrew = 1;
 	final int ScrewMovingToPickUp = 2;
@@ -50,32 +56,32 @@ public class Arm {
 
 	public void robotInit() {
 		
-		components.armMotor.set(0);
 		
 	}
 
 	public void teleopInit() {
 		
-		components.armMotor.set(0);
-		
+	
 	}
 
 	public void autoInit() {
 		
-		components.armMotor.set(0);
 		
 	}
 
 	public void disabled() {
 		
-		components.armMotor.set(0);
 		
 
 	}
 
 	public void armPeriodic() {
-		screwButtonIn1 = ArmJoy.getRawButton(components.ARM_IN_BUTTON);
-		screwButtonOut1 = ArmJoy.getRawButton(components.ARM_OUT_BUTTON);
+		screwButtonIn1 = ArmJoy.getRawButton(components.SCREW_IN_BUTTON);
+		screwButtonOut1 = ArmJoy.getRawButton(components.SCREW_OUT_BUTTON);
+		WinchButtonIn1 = ArmJoy.getRawButton(components.SCREW_IN_BUTTON);
+		WinchButtonOut1 = ArmJoy.getRawButton(components.SCREW_OUT_BUTTON);
+		BothButtonIn1 = ArmJoy.getRawButton(components.BOTH_IN_UP_BUTTON);
+		BothButtonOut1 = ArmJoy.getRawButton(components.SCREW_OUT_BUTTON);
 		boolean ScrewButton1 = true;
 		// SliderButtonIn1 = ArmJoy.getRawButton(components.ARM_IN_BUTTON);
 		
@@ -86,7 +92,7 @@ public class Arm {
 			if (screwButtonOut1 == true) {
 				if (!components.ArmExtended.get()) {	//change name to screwExtended
 					if (!(screwEncoder.getDistance() == posX)) { // set screw// distances			
-						components.armMotor.set(1);
+						components.screwMotor.set(1);
 						ScrewState = ScrewMovingToPickUp;
 					}
 
@@ -97,7 +103,7 @@ public class Arm {
 		case ScrewMovingToPickUp:
 				if (!components.ArmExtended.get()) {
 					if (screwEncoder.getDistance() == posX) {
-						components.armMotor.set(0);
+						components.screwMotor.set(0);
 						ScrewState = ScrewStoppedforPickUp;
 					}
 				}break;
@@ -107,7 +113,7 @@ public class Arm {
 			if (screwButtonIn1 == true) {
 				if (!components.ArmExtended.get()) {
 					if (!(screwEncoder.getDistance() == posY)) {
-						components.armMotor.set(-1);
+						components.screwMotor.set(-1);
 						ScrewState = ScrewDraging;
 					}
 
