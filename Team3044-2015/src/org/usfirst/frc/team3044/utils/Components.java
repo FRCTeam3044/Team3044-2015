@@ -41,8 +41,8 @@ public class Components {
 	public CANJaguar forkliftRight1;
 	public CANJaguar forkliftRight2;
 	
-	public CANJaguar armMotor;
-	public CANJaguar sliderMotor;
+	public CANJaguar winchMotor;
+	public CANJaguar screwMotor;
 	
 	public DigitalInput forkliftUp = new DigitalInput(0);
 	public DigitalInput forkliftDown = new DigitalInput(1);
@@ -55,18 +55,26 @@ public class Components {
 	public DigitalInput ArmExtended = new DigitalInput(2);
 	public DigitalInput ArmRetracted = new DigitalInput(3);
 	
-	public DigitalInput ArmSliderOut = new DigitalInput(1);
-	public DigitalInput ArmSliderIn = new DigitalInput(2);
+	public DigitalInput armScrewOut = new DigitalInput(1);
+	public DigitalInput armScrewIn = new DigitalInput(2);
 	
-	public Encoder encoderSlider = new Encoder(0,0);
-	public Encoder encoderArm = new Encoder(0,0);
+	public DigitalInput forkliftTote = new DigitalInput(-1);
+
+	public Encoder encoderScrew = new Encoder(0,0);
+	public Encoder encoderWinch = new Encoder(0,0);
+
 	
-	public final int ARM_OUT_BUTTON = 1;
-	public final int ARM_IN_BUTTON = 3;
+	public final int SCREW_OUT_BUTTON = 1;
+	public final int SCREW_IN_BUTTON = 3;
 	public final int PNEUMATIC_BUTTON = 2;
+	public final int WINCH_UP_BUTTON = -1;
+	public final int WINCH_DOWN_BUTTON = -1;
+	public final int BOTH_IN_UP_BUTTON = -1;
+	
 	
 	public final int FORK_OUT_BUTTON = 1;
 	public final int FORK_IN_BUTTON = 3;
+	public final int FORK_TOTE_BUTTON = -1;
 	
 
 	public PowerDistributionPanel powerDistribution = new PowerDistributionPanel();
