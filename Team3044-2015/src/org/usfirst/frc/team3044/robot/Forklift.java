@@ -67,6 +67,16 @@ public class Forklift {
 			break;
 		// SPACE
 		case MOVINGDOWN:
+			if (Joy.getRawButton(components.FORK_TOTE_BUTTON)) {
+				if (components.forkliftTote.get()) {
+					ForkliftState = STOPPEDMID;
+					components.forkliftLeft1.set(0);
+					components.forkliftLeft2.set(0);
+					components.forkliftRight1.set(0);
+					components.forkliftRight2.set(0);
+				}
+			}
+
 			if (components.forkliftDown.get()) {
 				ForkliftState = BOTTOM;
 				components.forkliftLeft1.set(0);
@@ -74,6 +84,7 @@ public class Forklift {
 				components.forkliftRight1.set(0);
 				components.forkliftRight2.set(0);
 			}
+
 			if (Joy.getLeftY() == 0) {
 				ForkliftState = STOPPEDMID;
 				components.forkliftLeft1.set(0);
@@ -81,6 +92,7 @@ public class Forklift {
 				components.forkliftRight1.set(0);
 				components.forkliftRight2.set(0);
 			}
+
 			if (Joy.getLeftY() > 0) {
 				if (!components.forkliftUp.get()) {
 					ForkliftState = MOVINGUP;
@@ -105,6 +117,16 @@ public class Forklift {
 			break;
 		// SPACE
 		case MOVINGUP:
+			if (Joy.getRawButton(components.FORK_TOTE_BUTTON)) {
+				if (components.forkliftTote.get()) {
+					ForkliftState = STOPPEDMID;
+					components.forkliftLeft1.set(0);
+					components.forkliftLeft2.set(0);
+					components.forkliftRight1.set(0);
+					components.forkliftRight2.set(0);
+				}
+			}
+
 			if (components.forkliftUp.get()) {
 				ForkliftState = TOP;
 				components.forkliftLeft1.set(0);
@@ -112,6 +134,7 @@ public class Forklift {
 				components.forkliftRight1.set(0);
 				components.forkliftRight2.set(0);
 			}
+
 			if (Joy.getLeftY() < 0) {
 				if (!components.forkliftDown.get()) {
 					ForkliftState = MOVINGDOWN;
@@ -121,6 +144,7 @@ public class Forklift {
 					components.forkliftRight2.set(-1);
 				}
 			}
+
 			if (Joy.getLeftY() == 0) {
 				ForkliftState = STOPPEDMID;
 				components.forkliftLeft1.set(0);
@@ -140,6 +164,7 @@ public class Forklift {
 					components.forkliftRight2.set(1);
 				}
 			}
+			
 			if (Joy.getLeftY() < 0) {
 				if (!components.forkliftDown.get()) {
 					ForkliftState = MOVINGDOWN;
