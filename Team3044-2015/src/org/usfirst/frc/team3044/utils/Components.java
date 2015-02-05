@@ -70,7 +70,7 @@ public class Components {
 	public final int WINCH_UP_BUTTON = -1;
 	public final int WINCH_DOWN_BUTTON = -1;
 	public final int BOTH_IN_UP_BUTTON = -1;
-	
+	public final int BOTH_OUT_DOWN_BUTTON = -1;
 	
 	public final int FORK_OUT_BUTTON = 1;
 	public final int FORK_IN_BUTTON = 3;
@@ -101,6 +101,8 @@ public class Components {
 	public DigitalInput proximityBR = new DigitalInput(0);
 	public DigitalInput proximityAbsFL = new DigitalInput(0);
 	public DigitalInput proximityAbsBL = new DigitalInput(0);	
+	
+	AnalogInput winchPot = new AnalogInput(-1);
 	
 	
 	public void init(){
