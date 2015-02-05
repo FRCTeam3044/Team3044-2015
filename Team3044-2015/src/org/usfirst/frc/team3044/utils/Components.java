@@ -70,7 +70,7 @@ public class Components {
 	public final int WINCH_UP_BUTTON = -1;
 	public final int WINCH_DOWN_BUTTON = -1;
 	public final int BOTH_IN_UP_BUTTON = -1;
-	
+	public final int BOTH_OUT_DOWN_BUTTON = -1;
 	
 	public final int FORK_OUT_BUTTON = 1;
 	public final int FORK_IN_BUTTON = 3;
@@ -102,6 +102,8 @@ public class Components {
 	public DigitalInput proximityAbsFL = new DigitalInput(0);
 	public DigitalInput proximityAbsBL = new DigitalInput(0);	
 	
+	AnalogInput winchPot = new AnalogInput(-1);
+	
 	
 	public void init(){
 		frontRightDriveRot = new CANTalon(0);
@@ -118,7 +120,8 @@ public class Components {
 		forkliftLeft2 = new CANJaguar(0);
 		forkliftRight1 = new CANJaguar(0);
 		forkliftRight2 = new CANJaguar(0);
-		armMotor = new CANJaguar(0);
+		screwMotor = new CANJaguar(0);
+		winchMotor = new CANJaguar(0);
 		
 		
 	}
