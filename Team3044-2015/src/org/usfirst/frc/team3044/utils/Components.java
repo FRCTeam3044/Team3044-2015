@@ -26,10 +26,10 @@ public class Components {
 	 ex. Sensors, motor controllers, etc,
 	 */  
 	
-	public CANJaguar frontRightDriveRot;
-	public CANJaguar frontLeftDriveRot;
-	public CANJaguar backRightDriveRot;
-	public CANJaguar backLeftDriveRot;
+	public CANTalon frontRightDriveRot;
+	public CANTalon frontLeftDriveRot;
+	public CANTalon backRightDriveRot;
+	public CANTalon backLeftDriveRot;
 	
 	public CANJaguar frontRightDrive;
 	public CANJaguar frontLeftDrive;
@@ -41,13 +41,13 @@ public class Components {
 	public CANJaguar forkliftRight1;
 	public CANJaguar forkliftRight2;
 	
-	public CANJaguar armMotor;
-	public CANJaguar sliderMotor;
+	public CANJaguar winchMotor;
+	public CANJaguar screwMotor;
 	
 	public DigitalInput forkliftUp = new DigitalInput(0);
 	public DigitalInput forkliftDown = new DigitalInput(1);
 	
-	//Happy Sweet 16 Ryan! -joey 
+	
 	public Solenoid forkliftClamp2 = new Solenoid(0);
 	public Solenoid armSolenoid = new Solenoid(1);
 	public Solenoid forkliftClamp = new Solenoid(3);
@@ -55,18 +55,26 @@ public class Components {
 	public DigitalInput ArmExtended = new DigitalInput(2);
 	public DigitalInput ArmRetracted = new DigitalInput(3);
 	
-	public DigitalInput ArmSliderOut;
-	public DigitalInput ArmSliderIn;
+	public DigitalInput armScrewOut = new DigitalInput(1);
+	public DigitalInput armScrewIn = new DigitalInput(2);
 	
-	public Encoder encoderSlider;
-	public Encoder encoderArm;
+	public DigitalInput forkliftTote = new DigitalInput(-1);
+
+	public Encoder encoderScrew = new Encoder(0,0);
+	public Encoder encoderWinch = new Encoder(0,0);
+
 	
-	public final int ARM_OUT_BUTTON = 1;
-	public final int ARM_IN_BUTTON = 3;
+	public final int SCREW_OUT_BUTTON = 1;
+	public final int SCREW_IN_BUTTON = 3;
 	public final int PNEUMATIC_BUTTON = 2;
+	public final int WINCH_UP_BUTTON = -1;
+	public final int WINCH_DOWN_BUTTON = -1;
+	public final int BOTH_IN_UP_BUTTON = -1;
+	
 	
 	public final int FORK_OUT_BUTTON = 1;
 	public final int FORK_IN_BUTTON = 3;
+	public final int FORK_TOTE_BUTTON = -1;
 	
 
 	public PowerDistributionPanel powerDistribution = new PowerDistributionPanel();
@@ -89,13 +97,17 @@ public class Components {
 	public Encoder rotEncoderFL = new Encoder(1, 12);
 	public Encoder rotEncoderBL = new Encoder(1, 13);
 	
+	public DigitalInput proximityFR = new DigitalInput(0);
+	public DigitalInput proximityBR = new DigitalInput(0);
+	public DigitalInput proximityAbsFL = new DigitalInput(0);
+	public DigitalInput proximityAbsBL = new DigitalInput(0);	
 	
 	
 	public void init(){
-		frontRightDriveRot = new CANJaguar(0);
-		frontLeftDriveRot = new CANJaguar(0);
-		backRightDriveRot = new CANJaguar(0);
-		backLeftDriveRot = new CANJaguar(0);
+		frontRightDriveRot = new CANTalon(0);
+		frontLeftDriveRot = new CANTalon(0);
+		backRightDriveRot = new CANTalon(0);
+		backLeftDriveRot = new CANTalon(0);
 		
 		frontRightDrive = new CANJaguar(0);
 		frontLeftDrive = new CANJaguar(0);
