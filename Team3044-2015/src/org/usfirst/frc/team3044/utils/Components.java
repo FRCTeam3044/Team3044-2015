@@ -102,6 +102,8 @@ public class Components {
 	public DigitalInput proximityAbsFL = new DigitalInput(0);
 	public DigitalInput proximityAbsBL = new DigitalInput(0);	
 	
+	AnalogInput winchPot = new AnalogInput(-1);
+	
 	
 	public void init(){
 		frontRightDriveRot = new CANTalon(0);
