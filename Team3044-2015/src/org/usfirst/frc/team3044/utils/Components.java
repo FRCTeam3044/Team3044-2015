@@ -118,7 +118,8 @@ public class Components {
 		forkliftLeft2 = new CANJaguar(0);
 		forkliftRight1 = new CANJaguar(0);
 		forkliftRight2 = new CANJaguar(0);
-		armMotor = new CANJaguar(0);
+		screwMotor = new CANJaguar(0);
+		winchMotor = new CANJaguar(0);
 		
 		
 	}
