@@ -3,6 +3,7 @@ package org.usfirst.frc.team3044.utils;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.CANJaguar;
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
@@ -22,6 +23,9 @@ public class Components {
 		return instance;
 	}
 	
+	public final int PCM_ID = 22;
+	
+	
 	 /* This class is intended to store all of the objects for components of the robot
 	 ex. Sensors, motor controllers, etc,
 	 */  
@@ -31,10 +35,10 @@ public class Components {
 	public CANTalon backRightDriveRot;
 	public CANTalon backLeftDriveRot;
 	
-	public CANJaguar frontRightDrive;
-	public CANJaguar frontLeftDrive;
-	public CANJaguar backRightDrive;
-	public CANJaguar backLeftDrive;
+	public CANTalon frontRightDrive;
+	public CANTalon frontLeftDrive;
+	public CANTalon backRightDrive;
+	public CANTalon backLeftDrive;
 	
 	public CANJaguar forkliftLeft1;
 	public CANJaguar forkliftLeft2;
@@ -47,21 +51,20 @@ public class Components {
 	public DigitalInput forkliftUp = new DigitalInput(0);
 	public DigitalInput forkliftDown = new DigitalInput(1);
 	
-	
-	public Solenoid forkliftClamp2 = new Solenoid(0);
-	public Solenoid armSolenoid = new Solenoid(1);
-	public Solenoid forkliftClamp = new Solenoid(3);
+	public Solenoid forkliftClamp2 = new Solenoid(PCM_ID, 0);
+	public Solenoid armSolenoid = new Solenoid(PCM_ID,1);
+	public Solenoid forkliftClamp = new Solenoid(PCM_ID,3);
 	
 	public DigitalInput ArmExtended = new DigitalInput(2);
 	public DigitalInput ArmRetracted = new DigitalInput(3);
 	
-	public DigitalInput armScrewOut = new DigitalInput(1);
-	public DigitalInput armScrewIn = new DigitalInput(2);
+	public DigitalInput armScrewOut = new DigitalInput(5);
+	public DigitalInput armScrewIn = new DigitalInput(4);
 	
-	public DigitalInput forkliftTote = new DigitalInput(-1);
+	public DigitalInput forkliftTote = new DigitalInput(24);
 
-	public Encoder encoderScrew = new Encoder(0,0);
-	public Encoder encoderWinch = new Encoder(0,0);
+	public Encoder encoderScrew = new Encoder(22,23);
+	public AnalogInput encoderWinch = new AnalogInput(7);
 
 	
 	public final int SCREW_OUT_BUTTON = 1;
@@ -78,6 +81,7 @@ public class Components {
 	
 
 	public PowerDistributionPanel powerDistribution = new PowerDistributionPanel();
+	
 	public AnalogInput LightSensorFrontLeft = new AnalogInput(0);
 	public AnalogInput LightSensorFrontMid = new AnalogInput(1);
 	public AnalogInput LightSensorFrontRight = new AnalogInput(2);
@@ -87,15 +91,15 @@ public class Components {
 	
 	
 	
-	public Encoder driveEncoderFR = new Encoder(1, 6);
-	public Encoder driveEncoderBR = new Encoder(1, 7);
-	public Encoder driveEncoderFL = new Encoder(1, 8);
-	public Encoder driveEncoderBL = new Encoder(1, 9);
+	public DigitalInput driveRotationFRMag = new DigitalInput(7);
+	public DigitalInput driveRotationBRMag = new DigitalInput(9);
+	public DigitalInput driveRotationFLMag = new DigitalInput(6);
+	public DigitalInput driveRotationBLMag = new DigitalInput(8);
 	
-	public Encoder rotEncoderFR = new Encoder(1, 10);
-	public Encoder rotEncoderBR = new Encoder(1, 11);
-	public Encoder rotEncoderFL = new Encoder(1, 12);
-	public Encoder rotEncoderBL = new Encoder(1, 13);
+	public Encoder rotEncoderFR = new Encoder(-1);
+	public Encoder rotEncoderBR = new Encoder(-1);
+	public Encoder rotEncoderFL = new Encoder(-1);
+	public Encoder rotEncoderBL = new Encoder(-1);
 	
 	public DigitalInput proximityFR = new DigitalInput(0);
 	public DigitalInput proximityBR = new DigitalInput(0);
@@ -106,22 +110,22 @@ public class Components {
 	
 	
 	public void init(){
-		frontRightDriveRot = new CANTalon(0);
-		frontLeftDriveRot = new CANTalon(0);
-		backRightDriveRot = new CANTalon(0);
-		backLeftDriveRot = new CANTalon(0);
+		frontRightDriveRot = new CANTalon(12);
+		frontLeftDriveRot = new CANTalon(11);
+		backRightDriveRot = new CANTalon(14);
+		backLeftDriveRot = new CANTalon(13);
 		
-		frontRightDrive = new CANJaguar(0);
-		frontLeftDrive = new CANJaguar(0);
-		backRightDrive = new CANJaguar(0);
-		backLeftDrive = new CANJaguar(0);
-		
-		forkliftLeft1 = new CANJaguar(0);
-		forkliftLeft2 = new CANJaguar(0);
-		forkliftRight1 = new CANJaguar(0);
-		forkliftRight2 = new CANJaguar(0);
-		screwMotor = new CANJaguar(0);
-		winchMotor = new CANJaguar(0);
+		frontRightDrive = new CANTalon(8);
+		frontLeftDrive = new CANTalon(7);
+		backRightDrive = new CANTalon(10);
+		backLeftDrive = new CANTalon(9);
+		backLeftDriveRot.setFeedbackDevice(FeedbackDevice.QuadEncoder);
+		forkliftLeft1 = new CANJaguar(15);
+		forkliftLeft2 = new CANJaguar(16);
+		forkliftRight1 = new CANJaguar(17);
+		forkliftRight2 = new CANJaguar(18);
+		screwMotor = new CANJaguar(20);
+		winchMotor = new CANJaguar(21);
 		
 		
 	}
