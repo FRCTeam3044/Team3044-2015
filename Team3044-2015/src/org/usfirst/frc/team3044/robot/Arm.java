@@ -15,8 +15,12 @@ public class Arm {
 	boolean screwButtonIn1 = true;
 	boolean screwButtonOut1 = true;
 	boolean PneumaticsButton1 = true;
-	boolean SliderButtonOut1 = true;
-	boolean SliderButtonIn1 = true;
+	boolean WinchButtonOut1 = true;
+	boolean WinchButtonIn1 = true;
+	boolean BothButtonIn1 = true;
+	boolean BothButtonOut1 = true;
+	
+	
 	
 	final int TransportMode=1;
 	final int PreparingforPickUp=2;
@@ -53,7 +57,7 @@ public class Arm {
 
 	Components components = Components.getInstance();
 	Encoder screwEncoder = components.encoderArm;
-
+	
 	public void robotInit() {
 		
 		
@@ -81,16 +85,16 @@ public class Arm {
 		WinchButtonIn1 = ArmJoy.getRawButton(components.SCREW_IN_BUTTON);
 		WinchButtonOut1 = ArmJoy.getRawButton(components.SCREW_OUT_BUTTON);
 		BothButtonIn1 = ArmJoy.getRawButton(components.BOTH_IN_UP_BUTTON);
-		BothButtonOut1 = ArmJoy.getRawButton(components.SCREW_OUT_BUTTON);
+		BothButtonOut1 = ArmJoy.getRawButton(components.BOTH_OUT_DOWN_BUTTON);
 		boolean ScrewButton1 = true;
 		// SliderButtonIn1 = ArmJoy.getRawButton(components.ARM_IN_BUTTON);
-		
+		int BothState = TransportMode;
 		int ScrewState = TransportScrew;
 
-		switch (ScrewState) {
-		case TransportScrew:
-			if (screwButtonOut1 == true) {
-				if (!components.ArmExtended.get()) {	//change name to screwExtended
+		switch (BothState) {
+		case TransportMode:
+			if (BothButtonOut1 == true) {
+				if (!components.armScrewOut.get()) {	//change name to screwExtended
 					if (!(screwEncoder.getDistance() == posX)) { // set screw// distances			
 						components.screwMotor.set(1);
 						ScrewState = ScrewMovingToPickUp;
