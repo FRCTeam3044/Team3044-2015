@@ -19,6 +19,7 @@ public class Forklift {
 	public void robotInit() {
 		ForkliftState = BOTTOM;
 		ClampState = OUT;
+		//Test
 	}
 
 	public void teleopInit() {
