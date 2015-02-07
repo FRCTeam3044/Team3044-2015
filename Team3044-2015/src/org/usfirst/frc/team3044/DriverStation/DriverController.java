@@ -9,13 +9,15 @@ public class DriverController {
 	
 	private Joystick driverJoy;
 	
-	//These are all temporary until i get the actuall button mappings
-	//Then we could use joystick.getX() in functions?
-	double leftX, leftY, rightX, rightY, trigger;
-	boolean xButton, yButton, bButton, aButton;
-	boolean dPadUp, dPadDown, DPadLeft, dPadRight; // Check to make sure d pad isnt analog
+	public int BUTTON_X = 2;
+	public int BUTTON_Y = 3;
+	public int BUTTON_B = 1;
+	public int BUTTON_A = 0;
 	
-	//Do we want to do this for filtering inputs?
+	public int BUTTON_RT = 5;
+	public int BUTTON_LT = 4;
+	
+	
 	private DriverController(){
 		driverJoy = new Joystick(0);
 	}
@@ -29,60 +31,30 @@ public class DriverController {
 	}
 
 	public double getLeftX() {
-		return leftX;
+		return driverJoy.getRawAxis(0);
 	}
 
 	public double getLeftY() {
-		return leftY;
+		return driverJoy.getRawAxis(1);
 	}
 
 	public double getRightX() {
-		return rightX;
+		return driverJoy.getRawAxis(4);
 	}
 
 	public double getRightY() {
-		return rightY;
+		return driverJoy.getRawAxis(5);
 	}
 
-	public double getTrigger() {
-		return trigger;
-	}
-
-	public boolean isxButton() {
-		return xButton;
-	}
-
-	public boolean isyButton() {
-		return yButton;
-	}
-
-	public boolean isbButton() {
-		return bButton;
-	}
-
-	public boolean isaButton() {
-		return aButton;
-	}
-
-	public boolean isdPadUp() {
-		return dPadUp;
-	}
-
-	public boolean isdPadDown() {
-		return dPadDown;
-	}
-
-	public boolean isDPadLeft() {
-		return DPadLeft;
-	}
-
-	public boolean isdPadRight() {
-		return dPadRight;
+	public double getTriggerRight() {
+		return driverJoy.getRawAxis(3);
 	}
 	
+	public double getTriggerLeft(){
+		return driverJoy.getRawAxis(2);
+	}
 
-	
-	
-	
-
+	public boolean getRawButton(int num){
+		return false;
+	}
 }
