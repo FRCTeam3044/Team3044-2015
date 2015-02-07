@@ -96,10 +96,10 @@ public class Components {
 	public DigitalInput driveRotationFLMag = new DigitalInput(6);
 	public DigitalInput driveRotationBLMag = new DigitalInput(8);
 	
-	public Encoder rotEncoderFR = new Encoder(-1);
-	public Encoder rotEncoderBR = new Encoder(-1);
-	public Encoder rotEncoderFL = new Encoder(-1);
-	public Encoder rotEncoderBL = new Encoder(-1);
+	public TalonEncoder rotEncoderFR;
+	public TalonEncoder rotEncoderBR;
+	public TalonEncoder rotEncoderFL;
+	public TalonEncoder rotEncoderBL;
 	
 	public DigitalInput proximityFR = new DigitalInput(0);
 	public DigitalInput proximityBR = new DigitalInput(0);
@@ -127,6 +127,10 @@ public class Components {
 		screwMotor = new CANJaguar(20);
 		winchMotor = new CANJaguar(21);
 		
+		rotEncoderFR = new TalonEncoder(frontRightDriveRot);
+		rotEncoderFL = new TalonEncoder(frontLeftDriveRot);
+		rotEncoderBR = new TalonEncoder(backRightDriveRot);
+		rotEncoderBL = new TalonEncoder(backLeftDriveRot);		
 		
 	}
 
