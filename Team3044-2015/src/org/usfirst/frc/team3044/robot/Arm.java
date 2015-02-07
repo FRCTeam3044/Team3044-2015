@@ -166,7 +166,7 @@ public class Arm {
 				if (!(screwEncoder.getDistance() == posZ)) {
 					components.screwMotor.set(1);
 
-				}
+				}//
 			}
 
 		}
