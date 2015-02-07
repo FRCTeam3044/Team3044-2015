@@ -110,6 +110,7 @@ public class Components {
 	
 	
 	public void init(){
+		//Set CANTalonIDs
 		frontRightDriveRot = new CANTalon(12);
 		frontLeftDriveRot = new CANTalon(11);
 		backRightDriveRot = new CANTalon(14);
