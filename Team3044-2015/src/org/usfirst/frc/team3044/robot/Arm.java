@@ -19,12 +19,10 @@ public class Arm {
 	boolean WinchButtonIn1 = true;
 	boolean BothButtonIn1 = true;
 	boolean BothButtonOut1 = true;
-	
-	
-	
-	final int TransportMode=1;
-	final int PreparingforPickUp=2;
-	final int BothPreparedforPickUp=3;
+
+	final int TransportMode = 1;
+	final int PreparingforPickUp = 2;
+	final int BothPreparedforPickUp = 3;
 	final int BothDragging = 4;
 	final int StoppedAfterBothDrag = 5;
 
@@ -33,6 +31,9 @@ public class Arm {
 	final int ScrewStoppedforPickUp = 3;
 	final int ScrewDraging = 4;
 	final int ScrewStoppedDrag = 5;
+	
+	
+	final int 
 
 	// final int ArmIN = 1;
 	// final int ArmMovingOut = 2;
@@ -48,7 +49,8 @@ public class Arm {
 
 	final int Off = 0;
 	final int On = 1;
-	
+
+	int BothState = TransportMode;
 	int ScrewState = TransportScrew;
 
 	// int PullState = ArmIN;
@@ -56,26 +58,22 @@ public class Arm {
 	int PneumaticState = Off;
 
 	Components components = Components.getInstance();
-	Encoder screwEncoder = components.encoderArm;
-	
+	Encoder screwEncoder = components.encoderScrew;
+	Encoder winchEncoder = components.encoderWinch;
+
 	public void robotInit() {
-		
-		
+
 	}
 
 	public void teleopInit() {
-		
-	
+
 	}
 
 	public void autoInit() {
-		
-		
+
 	}
 
 	public void disabled() {
-		
-		
 
 	}
 
@@ -94,25 +92,30 @@ public class Arm {
 		switch (BothState) {
 		case TransportMode:
 			if (BothButtonOut1 == true) {
-				if (!components.armScrewOut.get()) {	//change name to screwExtended
-					if (!(screwEncoder.getDistance() == posX)) { // set screw// distances			
-						components.screwMotor.set(1);
-						ScrewState = ScrewMovingToPickUp;
+				if (!components.armScrewOut.get()) {
+					if (!components.ArmExtended.get()) { //add winch limit switch
+						if (!(screwEncoder.getDistance() == posX)) {
+							components.screwMotor.set(1);
+						}
+						if (!(winchEncoder.getDistance() == posX)){
+							components.winchMotor.set(-1);
+						}
+
 					}
 
 				}
-
 			}
 			break;
 		case ScrewMovingToPickUp:
-				if (!components.ArmExtended.get()) {
-					if (screwEncoder.getDistance() == posX) {
-						components.screwMotor.set(0);
-						ScrewState = ScrewStoppedforPickUp;
-					}
-				}break;
-		
-		
+			if (!components.ArmExtended.get()) {
+				if (screwEncoder.getDistance() == posX) {
+					components.screwMotor.set(0);
+					ScrewState = ScrewStoppedforPickUp;
+				}
+				if (winchEncoder.getDistance() == posX)
+			}
+			break;
+
 		case ScrewStoppedforPickUp:
 			if (screwButtonIn1 == true) {
 				if (!components.ArmExtended.get()) {
@@ -125,27 +128,26 @@ public class Arm {
 
 			}
 			break;
-			
+
 		case ScrewDraging:
-			if(!components.ArmExtended.get()){
+			if (!components.ArmExtended.get()) {
 				if (screwEncoder.getDistance() == posY) {
-					components.armMotor.set(0);
+					components.screwMotor.set(0);
 					ScrewState = ScrewStoppedDrag;
-				
+
+				}
+
+			}
+			break;
+		case ScrewStoppedDrag:
+			if (screwButtonOut1 == true) {
+				if (!(screwEncoder.getDistance() == posZ)) {
+					components.screwMotor.set(1);
+
+				}
 			}
 
 		}
-			break;
-		case ScrewStoppedDrag:
-			if (screwButtonOut1 == true){
-				if (!(screwEncoder.getDistance() == posZ)) {
-					components.armMotor.set(1);
-					
-				
-			}
-	}
-
-}
 	}
 }
 /*
@@ -218,5 +220,11 @@ public class Arm {
  * }
  * 
  * }
+ * 
+ * 
+ *  // change name to
+															// screwExtended//
+															// set screw//
+															// distances
  */
 
