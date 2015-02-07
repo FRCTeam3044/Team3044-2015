@@ -9,6 +9,7 @@ import org.usfirst.frc.team3044.utils.Components;
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.AnalogInput;
 
 public class Arm {
 	SecondaryController ArmJoy = SecondaryController.getInstance();
@@ -31,9 +32,6 @@ public class Arm {
 	final int ScrewStoppedforPickUp = 3;
 	final int ScrewDraging = 4;
 	final int ScrewStoppedDrag = 5;
-	
-	
-	final int 
 
 	// final int ArmIN = 1;
 	// final int ArmMovingOut = 2;
@@ -59,7 +57,7 @@ public class Arm {
 
 	Components components = Components.getInstance();
 	Encoder screwEncoder = components.encoderScrew;
-	Encoder winchEncoder = components.encoderWinch;
+	AnalogInput WinchPot = components.encoderWinch;
 
 	public void robotInit() {
 
@@ -84,21 +82,31 @@ public class Arm {
 		WinchButtonOut1 = ArmJoy.getRawButton(components.SCREW_OUT_BUTTON);
 		BothButtonIn1 = ArmJoy.getRawButton(components.BOTH_IN_UP_BUTTON);
 		BothButtonOut1 = ArmJoy.getRawButton(components.BOTH_OUT_DOWN_BUTTON);
+		
+		double voltX = 0;
+		double voltY = 1;						// need real voltage value
+		double posX = 1;
+		double posY = 2;
+		double posZ = 3;
+		
 		boolean ScrewButton1 = true;
 		// SliderButtonIn1 = ArmJoy.getRawButton(components.ARM_IN_BUTTON);
 		int BothState = TransportMode;
 		int ScrewState = TransportScrew;
 
 		switch (BothState) {
-		case TransportMode:
+		case TransportMode: // ArmExtended is Winch LimitSwitch
 			if (BothButtonOut1 == true) {
 				if (!components.armScrewOut.get()) {
-					if (!components.ArmExtended.get()) { //add winch limit switch
+					if (!components.ArmExtended.get()) { // add winch limit
+															// switch
 						if (!(screwEncoder.getDistance() == posX)) {
 							components.screwMotor.set(1);
+
 						}
-						if (!(winchEncoder.getDistance() == posX)){
+						if (!(WinchPot.getVoltage() == voltX)) {
 							components.winchMotor.set(-1);
+							BothState = PreparingforPickUp;
 						}
 
 					}
@@ -106,22 +114,31 @@ public class Arm {
 				}
 			}
 			break;
-		case ScrewMovingToPickUp:
+		case PreparingforPickUp:
 			if (!components.ArmExtended.get()) {
-				if (screwEncoder.getDistance() == posX) {
-					components.screwMotor.set(0);
-					ScrewState = ScrewStoppedforPickUp;
+				if (!components.armScrewOut.get()) {
+					if (screwEncoder.getDistance() == posX) {
+						components.screwMotor.set(0);
+						ScrewState = ScrewStoppedforPickUp;
+					}
+					if (WinchPot.getVoltage() >= voltX) {
+						components.winchMotor.set(0);
+						BothState = BothPreparedforPickUp;
+					}
 				}
-				if (winchEncoder.getDistance() == posX)
 			}
+
 			break;
 
-		case ScrewStoppedforPickUp:
-			if (screwButtonIn1 == true) {
+		case BothPreparedforPickUp:
+			if (screwButtonIn1 == true) {   								//ThisButtonIsToMakeTheScrewIn and ThePullthewinch
 				if (!components.ArmExtended.get()) {
 					if (!(screwEncoder.getDistance() == posY)) {
 						components.screwMotor.set(-1);
-						ScrewState = ScrewDraging;
+						
+					}if (!((WinchPot.getVoltage() == voltY))){
+						components.winchMotor.set(1);
+						BothState = BothDragging;
 					}
 
 				}
@@ -129,17 +146,22 @@ public class Arm {
 			}
 			break;
 
-		case ScrewDraging:
+		case BothDragging:
 			if (!components.ArmExtended.get()) {
-				if (screwEncoder.getDistance() == posY) {
+				if (screwEncoder.getDistance() == posY) {				//PosY is the screws position when coming back
 					components.screwMotor.set(0);
-					ScrewState = ScrewStoppedDrag;
-
 				}
-
+				if ((WinchPot.getVoltage()== voltY)) {
+					components.winchMotor.set(0);
+					BothState = StoppedAfterBothDrag;
+					
+				}
 			}
 			break;
-		case ScrewStoppedDrag:
+		case StoppedAfterBothDrag:
+			if (BothButtonOut1 == true) {
+			
+			
 			if (screwButtonOut1 == true) {
 				if (!(screwEncoder.getDistance() == posZ)) {
 					components.screwMotor.set(1);
@@ -149,6 +171,7 @@ public class Arm {
 
 		}
 	}
+}
 }
 /*
  * public void armPeriodic() {
@@ -222,9 +245,6 @@ public class Arm {
  * }
  * 
  * 
- *  // change name to
-															// screwExtended//
-															// set screw//
-															// distances
+ * // change name to // screwExtended// // set screw// // distances
  */
 
