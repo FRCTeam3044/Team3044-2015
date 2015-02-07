@@ -174,6 +174,30 @@ public class Forklift {
 					components.forkliftRight2.set(-1);
 				}
 			}
+			
+			if (Joy.getLeftY() < 0){
+				if (!Joy.getRawButton(components.FORK_TOTE_BUTTON)){
+					if (!components.forkliftTote.get()){
+						ForkliftState = MOVINGDOWN;
+						components.forkliftLeft1.set(-1);
+						components.forkliftLeft2.set(-1);
+						components.forkliftRight1.set(-1);
+						components.forkliftRight2.set(-1);	
+					}
+				}
+			}
+			
+			if (Joy.getLeftY() > 0){
+				if (!Joy.getRawButton(components.FORK_TOTE_BUTTON)){
+					if (!components.forkliftTote.get()){
+						ForkliftState = MOVINGUP;
+						components.forkliftLeft1.set(1);
+						components.forkliftLeft2.set(1);
+						components.forkliftRight1.set(1);
+						components.forkliftRight2.set(1);	
+					}
+				}
+			}
 			break;
 		}
 		// SPACE
