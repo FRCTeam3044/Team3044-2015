@@ -18,43 +18,22 @@ public class Arm {
 	boolean PneumaticsButton1 = true;
 	boolean WinchButtonOut1 = true;
 	boolean WinchButtonIn1 = true;
-	boolean BothButtonIn1 = true;
-	boolean BothButtonOut1 = true;
-
+	boolean ButtonY = true;
+	boolean ButtonX = true;
+	boolean ButtonZ =  true;
 	final int TransportMode = 1;
-	final int PreparingforPickUp = 2;
-	final int BothPreparedforPickUp = 3;
-	final int BothDragging = 4;
-	final int StoppedAfterBothDrag = 5;
-	final int BothMovingBack = 6;
-
-	final int TransportScrew = 1;
-	final int ScrewMovingToPickUp = 2;
-	final int ScrewStoppedforPickUp = 3;
-	final int ScrewDraging = 4;
-	final int ScrewStoppedDrag = 5;
-
-	// final int ArmIN = 1;
-	// final int ArmMovingOut = 2;
-	// final int ArmMiddle = 3;
-	// final int ArmMovingIn = 5;
-	// final int ArmOut = 4;
-
-	// final int SliderIn = 6;
-	// final int SliderMovingOut = 7;
-	// final int SliderMiddle = 8;
-	// final int SliderMovingIn = 9;
-	// final int SliderOut = 10;
-
-	final int Off = 0;
-	final int On = 1;
+	final int PreparingWinchforPickUp = 2;
+	final int PreparingScrewforPickUp = 3;
+	final int PreparingBothforPickUp = 4;
+	final int BothPreparedforPickUp = 5;
+	final int PickUp = 6;
+	final int DragWinch = 7;
+	final int StoppedAfterDragging = 8;
+	final int MovingScrewBack = 9;
+	final int MovingWinchBack =10;	
+	final int BothMovingBack = 11;
 
 	int BothState = TransportMode;
-	int ScrewState = TransportScrew;
-
-	// int PullState = ArmIN;
-	// int SliderState = SliderIn;
-	int PneumaticState = Off;
 
 	Components components = Components.getInstance();
 	Encoder screwEncoder = components.encoderScrew;
@@ -68,31 +47,33 @@ public class Arm {
 	}
 
 	public void teleopInit() {
-		
-		BothState = TransportMode;
-		components.screwMotor.set(0);
-		components.winchMotor.set(0);
+
 	}
 
 	public void autoInit() {
-		BothState = TransportMode;
+		// create a condition to check state where we left off so we can
+		// continue
 		components.screwMotor.set(0);
 		components.winchMotor.set(0);
 	}
 
 	public void disabled() {
-		BothState = TransportMode;
+
 		components.screwMotor.set(0);
 		components.winchMotor.set(0);
 	}
 
 	public void armPeriodic() {
-		screwButtonIn1 = ArmJoy.getRawButton(components.SCREW_IN_BUTTON);
-		screwButtonOut1 = ArmJoy.getRawButton(components.SCREW_OUT_BUTTON);
-		WinchButtonIn1 = ArmJoy.getRawButton(components.SCREW_IN_BUTTON);
-		WinchButtonOut1 = ArmJoy.getRawButton(components.SCREW_OUT_BUTTON);
-		BothButtonIn1 = ArmJoy.getRawButton(components.BOTH_IN_UP_BUTTON);
-		BothButtonOut1 = ArmJoy.getRawButton(components.BOTH_OUT_DOWN_BUTTON);
+		ButtonZ = ArmJoy.getRawButton(components.SCREW_IN_BUTTON);// rename
+																			// for
+																			// both
+		screwButtonOut1 = ArmJoy.getRawButton(components.SCREW_OUT_BUTTON);// Buttonz
+		// WinchButtonIn1 =
+		// ArmJoy.getRawButton(components.SCREW_IN_BUTTON);//check which one not
+		// used
+		// WinchButtonOut1 = ArmJoy.getRawButton(components.SCREW_OUT_BUTTON);
+		ButtonY = ArmJoy.getRawButton(components.BOTH_IN_UP_BUTTON);// ButtonY
+		ButtonX = ArmJoy.getRawButton(components.BOTH_OUT_DOWN_BUTTON);// ButtonX
 
 		double voltX = 0;
 		double voltY = 1; // need real voltage value
@@ -100,81 +81,91 @@ public class Arm {
 		double posY = 2;
 		double posZ = 3;
 
-		boolean ScrewButton1 = true;
 		// SliderButtonIn1 = ArmJoy.getRawButton(components.ARM_IN_BUTTON);
-		int BothState = TransportMode;
-		int ScrewState = TransportScrew;
 
 		switch (BothState) {
 		case TransportMode: // ArmExtended is Winch LimitSwitch
-			if (BothButtonOut1 == true) {
-				if (!components.armScrewOut.get()) {
-					if (!components.ArmExtended.get()) { // add winch limit
-															// switch
-						if (!(screwEncoder.getDistance() == posX)) {
-							components.screwMotor.set(1);
+			if (ButtonX == true) {
 
+				// switch
+				if ((screwEncoder.getDistance() < posX)) {
+					if (!components.armScrewOut.get()) {
+						components.screwMotor.set(1);
+						BothState = PreparingScrewforPickUp;
+					}
+				} // talk to electrical about high or low trigger
+					// RENAME TO winch limit
+				if ((WinchPot.getVoltage() < voltX)) {
+					if (!components.ArmExtended.get()) {
+						components.winchMotor.set(-1);
+						if (BothState == PreparingScrewforPickUp) {
+							BothState = PreparingBothforPickUp;
+						} else {
+							BothState = PreparingWinchforPickUp;
 						}
-						if (!(WinchPot.getVoltage() == voltX)) {
-							components.winchMotor.set(-1);
-							BothState = PreparingforPickUp;
-						}
-
 					}
 
 				}
+			}
+
+			break;
+			
+		case PreparingScrewforPickUp:
+			if ((!components.armScrewOut.get()) || (screwEncoder.getDistance() >= posX)) {				
+					components.screwMotor.set(0);
+					BothState = BothPreparedforPickUp;
+				}			
+			break;
+			
+		case PreparingWinchforPickUp:
+			if ((!components.ArmExtended.get()) || (WinchPot.getVoltage() >= voltX)) {
+				components.winchMotor.set(0);
+				BothState = BothPreparedforPickUp;				
 			}
 			break;
-		case PreparingforPickUp:
-			if (!components.ArmExtended.get()) {
-				if (!components.armScrewOut.get()) {
-					if (screwEncoder.getDistance() == posX) {
-						components.screwMotor.set(0);
-						ScrewState = ScrewStoppedforPickUp;
-					}
-					if (WinchPot.getVoltage() >= voltX) {
-						components.winchMotor.set(0);
-						BothState = BothPreparedforPickUp;
-					}
-				}
+			
+		case PreparingBothforPickUp:
+			if ((!components.armScrewOut.get()) || (screwEncoder.getDistance() >= posX)) {
+				components.screwMotor.set(0);
+				BothState = PreparingWinchforPickUp;
+				
 			}
-
+			if ((!components.ArmExtended.get()) || (WinchPot.getVoltage() >= voltX)) {
+				components.winchMotor.set(0);
+				if(BothState == PreparingBothforPickUp )
+					
+					BothState = PreparingScrewforPickUp;
+				}else{					
+					BothState = BothPreparedforPickUp;
+				}
 			break;
 
 		case BothPreparedforPickUp:
-			if (screwButtonIn1 == true) { // ThisButtonIsToMakeTheScrewIn and
-											// ThePullthewinch
-				if (!components.ArmExtended.get()) {
-					if (!(screwEncoder.getDistance() == posY)) {
+			if (ButtonY == true) {
+				if ((!components.armScrewIn.get()) || ((screwEncoder.getDistance() < posY))){				
 						components.screwMotor.set(-1);
-
+						BothState = PickUp;
 					}
-					if (!((WinchPot.getVoltage() == voltY))) {
-						components.winchMotor.set(1);
-						BothState = BothDragging;
-					}
-
-				}
-
-			}
+				}			
 			break;
 
-		case BothDragging:
-			if (!components.ArmExtended.get()) {
-				if (screwEncoder.getDistance() == posY) { // PosY is the screws
-															// position when
-															// coming back
-					components.screwMotor.set(0);
-				}
-				if ((WinchPot.getVoltage() == voltY)) {
-					components.winchMotor.set(0);
-					BothState = StoppedAfterBothDrag;
-
-				}
+		case PickUp:	
+			if ((!components.armScrewIn.get()) || ((screwEncoder.getDistance() >= posY))){
+				components.screwMotor.set(0);
+				BothState = DragWinch;
 			}
 			break;
-		case StoppedAfterBothDrag:
-			if (BothButtonOut1 == true) {
+		
+		case DragWinch:
+			if ((!components.ArmExtended.get()) || (((WinchPot.getVoltage() < voltY)))){
+				components.winchMotor.set(1);
+				BothState = StoppedAfterDragging;
+			}
+			
+			
+		
+		case StoppedAfterDragging:
+			if (ButtonX == true) {
 				if (!components.armScrewOut.get()) {
 					if (!components.ArmExtended.get()) { // add winch limit
 															// switch
@@ -184,46 +175,66 @@ public class Arm {
 						}
 						if (!(WinchPot.getVoltage() == voltX)) {
 							components.winchMotor.set(-1);
-							BothState = PreparingforPickUp;
+							BothState = PreparingBothforPickUp;
 						}
 
 					}
 
 				}
 			}
-			if (BothButtonIn1 == true) {
-				if (!components.armScrewIn.get()) {
-					if (!(screwEncoder.getDistance() == posZ)) {
+			if (ButtonZ == true) {
+				if ((!components.armScrewIn.get()) || (!(screwEncoder.getDistance() < posZ))) {
 						components.screwMotor.set(-1);
+						BothState = MovingScrewBack;
 					}
-				}
-				if (!(components.ArmRetracted.get())) {
-					if (!(WinchPot.getVoltage() == voltY)) {
+				
+				if ((!(components.ArmRetracted.get())) || ((WinchPot.getVoltage() < voltY))){
 						components.winchMotor.set(1);
-						BothState = BothMovingBack;
-
-					}
-
+				if(BothState == MovingScrewBack){
+					BothState = BothMovingBack;
+				}else{
+				BothState = MovingWinchBack;
 				}
 			}
+		}
+		
 			break;
-		case BothMovingBack:
-			if (!(components.armScrewIn.get())) {
-				if (screwEncoder.getDistance() == posZ) {
-					components.screwMotor.set(0);
-
-				}
-
+			
+		case MovingScrewBack:
+			if((!components.armScrewIn.get()) || (screwEncoder.getDistance() >= posZ)){
+				components.screwMotor.set(0);
+				BothState =  BothMovingBack;
+			}	
+		break;
+		
+		
+		case MovingWinchBack:
+			if((!(components.ArmRetracted.get())) || ((WinchPot.getVoltage() >= voltY))){
+				components.winchMotor.set(0);
+				BothState = BothMovingBack;
 			}
+		
+		
+		case BothMovingBack:
+			if ((!(components.armScrewIn.get())) || screwEncoder.getDistance() < posZ) {
+					components.screwMotor.set(-1);
+					BothState = MovingScrewBack;
+				}		
 			if (!(components.ArmRetracted.get())) {
 				if (WinchPot.getVoltage() == voltY) {
-					components.winchMotor.set(0);
+					components.winchMotor.set(1);					
+					if(BothState == MovingScrewBack){
+						BothState = BothMovingBack;
+					}else{
+					BothState = MovingWinchBack;
+					}
+				}
+				if (BothState == BothMovingBack){
 					BothState = TransportMode;
-
+				}
 				}
 
 			}
 
 		}
 	}
-}
