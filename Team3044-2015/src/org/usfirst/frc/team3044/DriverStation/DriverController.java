@@ -9,13 +9,13 @@ public class DriverController {
 	
 	private Joystick driverJoy;
 	
-	public int BUTTON_X = 2;
-	public int BUTTON_Y = 3;
-	public int BUTTON_B = 1;
-	public int BUTTON_A = 0;
+	public int BUTTON_X = 3;
+	public int BUTTON_Y = 4;
+	public int BUTTON_B = 2;
+	public int BUTTON_A = 1;
 	
-	public int BUTTON_RT = 5;
-	public int BUTTON_LT = 4;
+	public int BUTTON_RT = 6;
+	public int BUTTON_LT = 5;
 	
 	
 	private DriverController(){
@@ -55,7 +55,7 @@ public class DriverController {
 	}
 
 	public boolean getRawButton(int num){
-		return false;
+		return driverJoy.getRawButton(num);
 	}
 }
 //

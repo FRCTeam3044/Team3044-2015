@@ -6,14 +6,14 @@ public class SecondaryController {
 	private static SecondaryController instance = null;
 	
 	private Joystick secondaryJoy;
+
+	public int BUTTON_X = 3;
+	public int BUTTON_Y = 4;
+	public int BUTTON_B = 2;
+	public int BUTTON_A = 1;
 	
-	public int BUTTON_X = 2;
-	public int BUTTON_Y = 3;
-	public int BUTTON_B = 1;
-	public int BUTTON_A = 0;
-	
-	public int BUTTON_RT = 5;
-	public int BUTTON_LT = 4;
+	public int BUTTON_RT = 6;
+	public int BUTTON_LT = 5;
 	
 	
 	//Do we want to do this for filtering inputs?
@@ -56,6 +56,6 @@ public class SecondaryController {
 
 
 	public boolean getRawButton(int num){
-		return false;
+		return secondaryJoy.getRawButton(num);
 	}
 }
