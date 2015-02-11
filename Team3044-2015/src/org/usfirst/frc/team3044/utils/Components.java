@@ -3,6 +3,7 @@ package org.usfirst.frc.team3044.utils;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.CANJaguar;
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
@@ -120,13 +121,23 @@ public class Components {
 		frontLeftDrive = new CANTalon(7);
 		backRightDrive = new CANTalon(10);
 		backLeftDrive = new CANTalon(9);
-		backLeftDriveRot.setFeedbackDevice(FeedbackDevice.QuadEncoder);
+		
+		frontRightDrive.setFeedbackDevice(FeedbackDevice.EncRising);
+		frontRightDrive.changeControlMode(ControlMode.Speed);
+		
 		forkliftLeft1 = new CANJaguar(15);
 		forkliftLeft2 = new CANJaguar(16);
 		forkliftRight1 = new CANJaguar(17);
 		forkliftRight2 = new CANJaguar(18);
+		
 		screwMotor = new CANJaguar(20);
 		winchMotor = new CANJaguar(21);
+		
+		
+		backLeftDriveRot.setFeedbackDevice(FeedbackDevice.QuadEncoder);
+		frontLeftDriveRot.setFeedbackDevice(FeedbackDevice.QuadEncoder);
+		backRightDriveRot.setFeedbackDevice(FeedbackDevice.QuadEncoder);
+		frontRightDriveRot.setFeedbackDevice(FeedbackDevice.QuadEncoder);
 		
 		rotEncoderFR = new TalonEncoder(frontRightDriveRot);
 		rotEncoderFL = new TalonEncoder(frontLeftDriveRot);

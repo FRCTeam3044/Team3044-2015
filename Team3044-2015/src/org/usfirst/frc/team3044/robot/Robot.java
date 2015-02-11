@@ -1,6 +1,7 @@
 
 package org.usfirst.frc.team3044.robot;
 
+import org.usfirst.frc.team3044.DriverStation.DriverController;
 import org.usfirst.frc.team3044.utils.Components;
 import org.usfirst.frc.team3044.utils.Utilities;
 
@@ -13,6 +14,8 @@ public class Robot extends IterativeRobot {
 	Forklift forklift = new Forklift();
 	Components components = Components.getInstance();
 	Utilities utils = new Utilities();
+	
+	DriverController c = DriverController.getInstance();
 	
 	
     public void robotInit() {
