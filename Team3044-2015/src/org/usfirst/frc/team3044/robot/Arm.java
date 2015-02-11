@@ -145,25 +145,32 @@ public class Arm {
 
 		case BothPreparedforPickUp:
 			if (ButtonY == true) {
-				if ((!components.armScrewIn.get()) || ((screwEncoder.getDistance() < posY))){				
-						components.screwMotor.set(-1);
-						BothState = PickUp;
-					}
+				if ((!components.ArmExtended.get()) || (((WinchPot.getVoltage() < voltY)))){
+					components.winchMotor.set(1);
+					BothState = DragWinch;
+				}
 				}			
 			break;
-
+			
+		case DragWinch:
+			if ((!components.ArmExtended.get()) || (((WinchPot.getVoltage() >= voltY)))){
+				components.winchMotor.set(0);
+				if ((!components.armScrewIn.get()) || ((screwEncoder.getDistance() < posY))){
+					components.screwMotor.set(1);
+					BothState = PickUp;
+				}
+			}
+			
+			break;
+			
 		case PickUp:	
 			if ((!components.armScrewIn.get()) || ((screwEncoder.getDistance() >= posY))){
 				components.screwMotor.set(0);
-				BothState = DragWinch;
+				BothState = StoppedAfterDragging;
 			}
 			break;
 		
-		case DragWinch:
-			if ((!components.ArmExtended.get()) || (((WinchPot.getVoltage() < voltY)))){
-				components.winchMotor.set(1);
-				BothState = StoppedAfterDragging;
-			}
+		
 			
 			
 		
