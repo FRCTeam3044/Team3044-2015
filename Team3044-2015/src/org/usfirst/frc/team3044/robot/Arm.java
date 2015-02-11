@@ -21,6 +21,9 @@ public class Arm {
 	boolean ButtonY = true;
 	boolean ButtonX = true;
 	boolean ButtonZ =  true;
+	
+	
+	
 	final int TransportMode = 1;
 	final int PreparingWinchforPickUp = 2;
 	final int PreparingScrewforPickUp = 3;
@@ -164,7 +167,7 @@ public class Arm {
 			
 			
 		
-		case StoppedAfterDragging:
+		case StoppedAfterDragging: ///check this
 			if (ButtonX == true) {
 				if (!components.armScrewOut.get()) {
 					if (!components.ArmExtended.get()) { // add winch limit
@@ -183,7 +186,7 @@ public class Arm {
 				}
 			}
 			if (ButtonZ == true) {
-				if ((!components.armScrewIn.get()) || (!(screwEncoder.getDistance() < posZ))) {
+				if ((!components.armScrewIn.get()) || ((screwEncoder.getDistance() < posZ))) {
 						components.screwMotor.set(-1);
 						BothState = MovingScrewBack;
 					}
