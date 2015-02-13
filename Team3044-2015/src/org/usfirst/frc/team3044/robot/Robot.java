@@ -62,6 +62,7 @@ public class Robot extends IterativeRobot {
     public void disabledInit(){
     	arm.disabled();
     	drive.disabledinit();
+    	forklift.disabled();
     }
     
 }
