@@ -1,253 +1,345 @@
 package org.usfirst.frc.team3044.robot;
+
 import org.usfirst.frc.team3044.DriverStation.DriverController;
 import org.usfirst.frc.team3044.utils.Components;
-import edu.wpi.first.wpilibj.*;
-public class Drive {
+
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+public class Drive{
+	Components components;
+	DriverController DriveJoy = DriverController.getInstance();
 	
-	DriverController c = DriverController.getInstance();
+	/*
+	TalonEncoder LeftFrontEn;
+	TalonEncoder RightFrontEn;
+	TalonEncoder RightBackEn;
+	TalonEncoder LeftBackEn;
+	*/
 	
-	CANJaguar LeftFront = Components.frontLeftDrive;
-	CANJaguar RightFront = Components.frontRightDrive;
-	CANJaguar RightBack = Components.backRightDrive;
-	CANJaguar LeftBack = Components.backLeftDrive;
+	Encoder LeftFrontEn;
+	Encoder RightFrontEn;
+	Encoder RightBackEn;
+	Encoder LeftBackEn;
 	
-	CANTalon LeftFrontTurn = Components.frontLeftDriveRot;
-	CANTalon RightFrontTurn = Components.frontRightDriveRot;
-	CANTalon RightBackTurn = Components.backRightDriveRot;
-	CANTalon LeftBackTurn = Components.backLeftDriveRot;
+	CANTalon LeftFrontTurn; 
+	CANTalon RightFrontTurn;
+	CANTalon RightBackTurn; 
+	CANTalon LeftBackTurn;
 	
-	DriverController JoyRight = DriverController.getInstance();
+	CANTalon LeftFrontDrive;
+	CANTalon RightFrontDrive;
+	CANTalon RightBackDrive;
+	CANTalon LeftBackDrive;
 	
-	Encoder LeftFrontEn = Components.driveEncoderFL;
-	Encoder RightFrontEn = Components.driveEncoderFR;
-	Encoder RightBackEn = Components.driveEncoderBR;
-	Encoder LeftBackEn = Components.driveEncoderBL;
+	AnalogInput TopLightL;
+	AnalogInput MidLightL; 
+	AnalogInput BotLightL; 
+	AnalogInput TopLightR; 
+	AnalogInput MidLightR;
+	AnalogInput BotLightR;
 	
-	Encoder TLeftFrontEn = Components.rotEncoderFL;
-	Encoder TRightFrontEn = Components.rotEncoderFR;
-	Encoder TRightBackEn = Components.rotEncoderBR;
-	Encoder TLeftBackEn = Components.driveEncoderBL;
+public void DriveInit(){
+	components = Components.getInstance();
+	LeftFrontEn = components.rotEncoderFL;
+	RightFrontEn = components.rotEncoderFL;
+	RightBackEn = components.rotEncoderFL;
+	LeftBackEn = components.rotEncoderFL;
+
+	LeftFrontTurn = components.frontLeftDriveRot;
+	RightFrontTurn = components.frontRightDriveRot;
+	RightBackTurn = components.backRightDriveRot;
+	LeftBackTurn = components.backLeftDriveRot;
+
+	LeftFrontDrive = components.frontLeftDrive;
+	RightFrontDrive = components.frontRightDrive;
+	RightBackDrive = components.backLeftDrive;
+	LeftBackDrive = components.backLeftDrive;
 	
-	double WheelD;
-	double MSpeed;
-	double TTol = 2;
-	double MTol = 5;
+	TopLightL = components.LightSensorFrontLeft;
+	MidLightL = components.LightSensorFrontMid;
+	BotLightL = components.LightSensorFrontRight;
+	TopLightR = components.LightSensorBackLeft;
+	MidLightR = components.LightSensorBackMid;
+	BotLightR = components.LightSensorBackRight;
+}	
+
+	double Distance;
+	// Real Robot
+	final double L = 30.875;
+	final double W = 21.5;
+
+	// Test Robot
+	//final double L = 33.75;
+	//final double W = 21.375;
+	final double R = Math.sqrt(Math.pow(L, 2) + Math.pow(L, 2));
+	final double LR = (L / R);
+	final double WR = (W / R);
+	final double Count = 1 / Math.PI;
 	
-	double TLFE;
-	double TRFE;
-	double TRBE;
-	double TLBE;
+	double Strafe;
+	double Forward;
+	double Rotate;
+	double A;
+	double B;
+	double C;
+	double D;
+
+	double Drive;
+
+	double WheelLFA;
+	double WheelRFA;
+	double WheelRBA;
+	double WheelLBA;
+
+	double ActDistanceLF = 0;
+	double ActDistanceRF = 0;
+	double ActDistanceRB = 0;
+	double ActDistanceLB = 0;
+
+	double Target;
+	double TargetD;
+
+	int On = 1;
+	int OnLeft = 0;
+	final double White = 2700;
+	final double  Val = .1;
+	final double Speed = .05;
+	int Something = 0;
 	
-	double Trigger;
-	double D45 = 31.875;
-	double D315 = 223.125;
+	double LFSpeed = 0;
+	double LBSpeed = 0;
+	double RFSpeed = 0;
+	double RBSpeed = 0;
 	
-	double MT45LF;
-	double MT45RB;    
-	double MT315RF;
-	double MT315LB;
-	// Calc Ticks from Joystick position
-	public double WheelDegree (double x, double y){ 
-		double Ticks=0;
-		double Degrees=0;
-		if(Math.abs(x) > .1 && Math.abs(y) > .1){
-		Degrees = Math.acos(Math.abs(y)/Math.sqrt(Math.pow(x,2)+Math.pow(y,2)));
-			if(x < 0 && y > 0){
-				Degrees=360-Degrees;
-			} else if(x < 0 && y < 0){
-				Degrees=180+Degrees;	
-			} else if(x > 0 && y <0 ){
-				Degrees=180-Degrees;
+	int CS;
+	int MS;
+	int RS;
+	int Left;
+	int Right;
+	
+	public double Deadband(double value, double band) {
+		if (Math.abs(value) < band) {
+			value = 0;
+		}
+		return value;
+	}
+	public double Turn(double target, double val) {
+		double MotorTurn = 0;
+		double MS1 = .8;
+		double MS2 = .2;
+		double MS3 = .1;
+		double Tol1 = .1;
+		double Tol2 = .05;
+		double Tol3 = .02;
+		double Diff = Math.abs(target - val);
+
+		if (Diff <= 1) {
+			if (val > target + Tol1) {
+				MotorTurn = MS1;
+			} else if (val < target - Tol1) {
+				MotorTurn = -MS1;
+			} else if (val > target + Tol2) {
+				MotorTurn = MS2;
+			} else if (val < target - Tol2) {
+				MotorTurn = -MS2;
+			} else if (val > target + Tol3) {
+				MotorTurn = MS3;
+			} else if (val < target - Tol3) {
+				MotorTurn = -MS3;
+			} else {
+				MotorTurn = 0;
+			}
+		} else {
+			if (val > target && Diff > Tol1) {
+				MotorTurn = -MS1;
+			} else if (val < target && Diff > Tol1) {
+				MotorTurn = MS1;
+			} else if (val > target && Diff > Tol2) {
+				MotorTurn = -MS2;
+			} else if (val < target && Diff > Tol2) {
+				MotorTurn = MS2;
+			} else if (val > target && Diff > Tol3) {
+				MotorTurn = -MS3;
+			} else if (val < target && Diff > Tol3) {
+				MotorTurn = MS3;
+			} else {
+				MotorTurn = 0;
 			}
 		}
-		Ticks = Degrees*(255/360);
-		return Ticks;
-	}
-	// T or F from difference of is and want from tolerance
-	public boolean TurnTolerance (double target, double value, double tolerance){ 
-		return Math.abs(target - value)<tolerance; 
-	}
-	// Set Turn Speed 
-	public double MotorTolerance (double target, double value, double tolerance){ 
-		double TurnSpeed=0;
-		double Dif = Math.abs(target-value);
-		
-		if (Dif > tolerance && Dif < 127.5){
-			TurnSpeed=1;
-		} else if (Dif > tolerance && Dif > 127.5){
-			TurnSpeed=-1;
-		} else if (Dif < tolerance && Dif > 2){
-			TurnSpeed=.2;
-		} else if (Dif < 2){
-			TurnSpeed=0;
-		} 
-		//if (target<value){
-			//TurnSpeed=-TurnSpeed;
-		//} //Use if going wrong direction
-		return TurnSpeed;
-	}
-	// Set Forward Speed
-	public double MotorSpeed(double X, double Y, double Tolerance){ 
-		double MotorSpeed = 0;
-		double Distance = Math.sqrt(Math.pow(X,2)+Math.pow(Y,2));
-		
-		if (Math.abs(Distance) < Tolerance){
-			MotorSpeed = 0;
-		} else {
-			MotorSpeed = Distance; 
-		}
-		return MotorSpeed;
+		return MotorTurn;
 	}
 
-	public void drivePeriodic(){
-		
-		WheelD = WheelDegree(JoyRight.getRightX(),JoyRight.getRightY());
-		MSpeed = MotorSpeed(JoyRight.getRightX(),JoyRight.getRightY(),.1);
-		
-		MT45LF = MotorTolerance(D45,TLFE,MTol);
-		MT45RB = MotorTolerance(D45,TRBE,MTol);    
-		MT315RF = MotorTolerance(D315,TRFE,MTol);
-		MT315LB = MotorTolerance(D315,TLBE,MTol);
-		
-		Trigger = JoyRight.getTriggerLeft();
-		
-		TLFE = TLeftFrontEn.get();
-		TRFE = TRightFrontEn.get();
-		TRBE = TRightBackEn.get();
-		TLBE = TLeftBackEn.get();
+	public double Speed(double MoveSpeed) {
+		if (MoveSpeed > 1) {
+			MoveSpeed = 1;
+		}
+		return -MoveSpeed;
+	}
+
+	public double Val(double Encoder) {
+		Encoder += 209;
+		Encoder = (Encoder % 418 + 418) % 418;
+		Encoder -= 209;
+		Encoder = Encoder / 209;
+		return -Encoder;
+	}//1662 - Expected: 1672
 	
-		LeftFront.set(MSpeed);
-    	RightFront.set(MSpeed);
-    	RightBack.set(MSpeed);
-    	LeftBack.set(MSpeed);
-    	
-    	//LeftFrontTurn Wheel
-    	if (TurnTolerance (WheelD,TLFE,TTol)){ 	// Call TurnTolerance (Tolerance from target to stop)
-    		LeftFrontTurn.set(0);
-    	} else if (TLFE < WheelD){				// Encoder Smaller than Target  
-    		LeftFrontTurn.set(MotorTolerance(WheelD,TLFE,MTol));
-    	} else if (TLFE > WheelD){				// Encoder Bigger than Target
-    		LeftFrontTurn.set(-MotorTolerance(WheelD,TLFE,MTol));
-    	} else { 								// Back up for Mess up
-    		LeftFrontTurn.set(0);
-    	}
-    	
-    	//RightFrontTurn Wheel
-    	if (TurnTolerance (WheelD,TRFE,TTol)){ 		
-    		RightFrontTurn.set(0);
-    	} else if (TRFE < WheelD){				  
-    		RightFrontTurn.set(MotorTolerance(WheelD,TRFE,MTol));
-    	} else if (TRFE > WheelD){				
-    		RightFrontTurn.set(-MotorTolerance(WheelD,TRFE,MTol));
-    	} else { 								
-    		RightFrontTurn.set(0);
-    	}
-    	
-    	//RightBackTurn Wheel
-    	if (TurnTolerance (WheelD,TRBE,TTol)){ 		
-    		RightBackTurn.set(0);
-    	} else if (TRBE < WheelD){				  
-    		RightBackTurn.set(MotorTolerance(WheelD,TRBE,MTol));
-    	} else if (TRBE > WheelD){				 
-    		RightBackTurn.set(-MotorTolerance(WheelD,TRBE,MTol));
-    	} else { 								
-    		RightBackTurn.set(0);
-    	}
-    	
-    	//LeftBackTurn Wheel
-    	if (TurnTolerance (WheelD,TLBE,TTol)){ 		
-    		LeftBackTurn.set(0);
-    	} else if (TLBE < WheelD){				  
-    		LeftBackTurn.set(MotorTolerance(WheelD,TLBE,MTol));
-    	} else if (TLBE > WheelD){				 
-    		LeftBackTurn.set(-MotorTolerance(WheelD,TLBE,MTol));
-    	} else { 								
-    		LeftBackTurn.set(0);
-    	}
-    	
-    	//Rotating
-    	if (JoyRight.getTriggerLeft()>.1 || JoyRight.getTriggerLeft()<-.1){//Needs to be changed when intergrated
-    		
-    		LeftFrontTurn.set(Trigger);
-        	RightFrontTurn.set(Trigger);
-        	RightBackTurn.set(Trigger);
-        	LeftBackTurn.set(Trigger);
-    		
-    		if (TurnTolerance (D45,TLFE,TTol)){ 		
-        		LeftFrontTurn.set(0);
-        	} else if (TLFE < D45){				 
-        		LeftFrontTurn.set(MT45LF);
-        	} else if (TLFE > D45){				 
-        		LeftFrontTurn.set(-MT45LF);
-        	} else { 								
-        		LeftFrontTurn.set(0);
-        	}
-    		if (TurnTolerance (D315,TRFE,TTol)){ 		
-        		RightFrontTurn.set(0);
-        	} else if (TRFE < D315){				 
-        		RightFrontTurn.set(MT315RF);
-        	} else if (TRFE > D315){				 
-        		RightFrontTurn.set(-MT315RF);
-        	} else { 								
-        		RightFrontTurn.set(0);
-        	}
-    		if (TurnTolerance (D45,TRBE,TTol)){ 		
-        		RightBackTurn.set(0);
-        	} else if (TRBE < D45){				   
-        		RightBackTurn.set(MT45RB);
-        	} else if (TRBE > D45){				 
-        		RightBackTurn.set(-MT45RB);
-        	} else { 								
-        		RightBackTurn.set(0);
-        	}
-    		if (TurnTolerance (D315,TLBE,TTol)){ 		
-        		LeftBackTurn.set(0);
-        	} else if (TLBE < D315){				   
-        		LeftBackTurn.set(MT315LB);
-        	} else if (TLBE > D315){				 
-        		LeftBackTurn.set(-MT315LB);
-        	} else { 								
-        		LeftBackTurn.set(0);
-        	}
-    	}
-    }
-	public void teleopinit(){
-		
-		LeftFront = Components.frontLeftDrive;
-		//Jaguar RightFront = Componentsonents.frontRightDrive;
-		//Jaguar RightBack = Componentsonents.backRightDrive;
-		//Jaguar LeftBack = Componentsonents.backLeftDrive;
-		
-		LeftFrontTurn = Components.frontLeftDriveRot;
-		
-		Encoder LeftFrontEn = Components.driveEncoderFL;
-		Encoder RightFrontEn = Components.driveEncoderFR;
-		Encoder RightBackEn = Components.driveEncoderBR;
-		Encoder LeftBackEn = Components.driveEncoderBL;
-		
-		Encoder TLeftFrontEn = Components.rotEncoderFL;
-		Encoder TRightFrontEn = Components.rotEncoderFR;
-		Encoder TRightBackEn = Components.rotEncoderBR;
-		Encoder TLeftBackEn = Components.driveEncoderBL;
-		LeftFront.set(0);
-    	//RightFront.set(0);
-    	//RightBack.set(0);
-    	//LeftBack.set(0);
-    	LeftFrontTurn.set(0);
-    	//RightFrontTurn.set(0);
-    	//RightBackTurn.set(0);
-    	//LeftBackTurn.set(0);
+	
+	public void robotInit() {
+		LeftFrontEn.reset();
+		RightFrontEn.reset();
+		RightBackEn.reset();
+		LeftBackEn.reset();
+	}
+	public void autonomousInit(){
+		OnLeft = 0;
 	}
 	
-	public void disabledinit(){
-		LeftFront.set(0);
-    	//RightFront.set(0);
-    	//RightBack.set(0);
-    	//LeftBack.set(0);
-    	LeftFrontTurn.set(0);
-    	//RightFrontTurn.set(0);
-    	//RightBackTurn.set(0);
-    	//LeftBackTurn.set(0);
+	public void autonomousPeriodic() {
+		UptoLineL();
+		SmartDashboard.putString("DB/String 0", String.valueOf(CS));
+		SmartDashboard.putString("DB/String 1", String.valueOf(MS));
+		SmartDashboard.putString("DB/String 2", String.valueOf(RS));
+		SmartDashboard.putString("DB/String 3", String.valueOf(L));
+		SmartDashboard.putString("DB/String 4", String.valueOf(Something));
+	}
+	public void UptoLineL() {
+		
+		//ActDistanceLF = Val(LeftFrontEn.getDistance());
+		//ActDistanceRF = Val(RightFrontEn.getDistance());
+		//ActDistanceRB = Val(RightBackEn.getDistance());
+		//ActDistanceLB = Val(LeftBackEn.getDistance());
+		
+		//Left = OnLine(MS, CS, RS);
+		//Right = SmartDashboard.getInt("DB/Slider 0");
+		//On = SmartDashboard.getInt("DB/Slider 1");
+		
+		CS = TopLightL.getValue();
+		MS = MidLightL.getValue();
+		RS = BotLightL.getValue();
+
+		
+		
+		switch (OnLeft){
+			case 0:
+				LeftFrontDrive.set(.1);
+				LeftBackDrive.set(.1);
+				RightFrontDrive.set(.1);
+				RightBackDrive.set(.1);
+				OnLeft = 1;
+			break;
+			case 1:
+				if(MS < White){
+					LeftFrontDrive.set(0);
+					LeftBackDrive.set(0);
+					RightFrontDrive.set(0);
+					RightBackDrive.set(0);
+					OnLeft = 2;
+				}
+			break;
+			case 2:
+				if(RS < White && MS > White){
+					LeftFrontDrive.set(-.1);
+					LeftBackDrive.set(-.1);
+					RightFrontDrive.set(-.1);
+					RightBackDrive.set(-.1);
+					OnLeft=3;
+				} else if(CS < White && MS > White){
+					LeftFrontDrive.set(.1);
+					LeftBackDrive.set(.1);
+					RightFrontDrive.set(.1);
+					RightBackDrive.set(.1);
+					OnLeft=4;
+				}
+			case 3:
+				if(MS < White){
+					LeftFrontDrive.set(0);
+					LeftBackDrive.set(0);
+					RightFrontDrive.set(0);
+					RightBackDrive.set(0);
+					OnLeft = 2;
+				}
+			break;
+			case 4:
+				if(MidLightL.getValue() < White){
+					LeftFrontDrive.set(0);
+					LeftBackDrive.set(0);
+					RightFrontDrive.set(0);
+					RightBackDrive.set(0);
+					OnLeft = 2;
+				}
+		}
+	}
+	public void teleopInit() {
+
+	}
+
+	public void teleopPeriodic() {
+		
+		if (DriveJoy.getRawButton(8)) {
+			LeftFrontEn.reset();
+			RightFrontEn.reset();
+			RightBackEn.reset();
+			LeftBackEn.reset();
+		}
+		
+		Forward = -Deadband(DriveJoy.getRightY(), .2);
+		Strafe = Deadband(DriveJoy.getRightX(), .2);
+		Rotate = -Deadband(DriveJoy.getLeftX(), .2);
+
+		//System.out.println(LeftFrontEn == null);
+		ActDistanceLF = Val(LeftFrontEn.getDistance());
+		
+		ActDistanceRF = Val(RightFrontEn.getDistance());
+		ActDistanceRB = Val(RightBackEn.getDistance());
+		ActDistanceLB = Val(LeftBackEn.getDistance());
+
+		Drive = DriveJoy.getTriggerRight() - DriveJoy.getTriggerLeft();
+
+		A = Strafe - Rotate * LR;
+		B = Strafe + Rotate * LR;
+		C = Forward - Rotate * WR;
+		D = Forward + Rotate * WR;
+
+		A = Deadband(A, .0000001);
+		B = Deadband(B, .0000001);
+		C = Deadband(C, .0000001);
+		D = Deadband(D, .0000001);
+
+		WheelLFA = Math.atan2(B, D) * Count;
+		WheelRFA = Math.atan2(B, C) * Count;
+		WheelRBA = Math.atan2(A, C) * Count;
+		WheelLBA = Math.atan2(A, D) * Count;
+
+		LeftFrontTurn.set(Turn(WheelLFA, ActDistanceLF));
+		RightFrontTurn.set(Turn(WheelRFA, ActDistanceRF));
+		RightBackTurn.set(Turn(WheelRBA, ActDistanceRB));
+		LeftBackTurn.set(Turn(WheelLBA, ActDistanceLB));
+
+		if (DriveJoy.getRawButton(10)) {
+			LeftFrontDrive.set(Speed(Drive));
+			RightFrontDrive.set(Speed(Drive));
+			RightBackDrive.set(Speed(Drive));
+			LeftBackDrive.set(Speed(Drive));
+		} else {
+			LeftFrontDrive.set(Speed(Drive)/2);
+			RightFrontDrive.set(Speed(Drive)/2);
+			RightBackDrive.set(Speed(Drive)/2);
+			System.out.println(Speed(Drive)/2);
+			System.out.println(RightBackDrive.getSetpoint());
+			LeftBackDrive.set(Speed(Drive)/2);
+		}
+
+	}
+	public void testPeriodic() {
+
+	}
+	public void disableInit() {
+
 	}
 
 }

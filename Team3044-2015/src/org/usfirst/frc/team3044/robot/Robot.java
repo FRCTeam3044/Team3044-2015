@@ -9,9 +9,9 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 
 
 public class Robot extends IterativeRobot {
-	Arm arm = new Arm();
+	//Arm arm = new Arm();
 	Drive drive = new Drive();
-	Forklift forklift = new Forklift();
+	//Forklift forklift = new Forklift();
 	Components components = Components.getInstance();
 	Utilities utils = new Utilities();
 	
@@ -19,39 +19,40 @@ public class Robot extends IterativeRobot {
 	
 	
     public void robotInit() {
-    	arm.robotInit();
-    	drive.disabledinit();
     	components.init();
-    	forklift.robotInit();
+    	//arm.robotInit();
+    	drive.DriveInit();
+    	
+    	//forklift.robotInit();
     	
     }
 
     public void autonomousInit(){
-    	arm.autoInit();
-    	drive.teleopinit();;
+    	//arm.autoInit();
+    	drive.teleopInit();
     	//components.init(); - test
-    	forklift.autoInit();
+    	//forklift.autoInit();
     }
     
     public void autonomousPeriodic() {
-    	arm.armPeriodic();
-    	drive.drivePeriodic();
+    	//arm.armPeriodic();
+    	drive.autonomousPeriodic();
     	
-    	forklift.forkliftPeriodic();
+    	//forklift.forkliftPeriodic();
     }
 
 
     public void teleopInit(){
-    	arm.teleopInit();
-    	drive.teleopinit();
-    	forklift.teleopInit();
+    	//arm.teleopInit();
+    	drive.teleopInit();
+    	//forklift.teleopInit();
     }
     
     public void teleopPeriodic() {
-    	arm.armPeriodic();
-    	drive.drivePeriodic();
+    	//arm.armPeriodic();
+    	drive.teleopPeriodic();
     	
-    	forklift.forkliftPeriodic();
+    	//forklift.forkliftPeriodic();
     }
     
 
@@ -60,9 +61,9 @@ public class Robot extends IterativeRobot {
     }
     
     public void disabledInit(){
-    	arm.disabled();
-    	drive.disabledinit();
-    	forklift.disabled();
+    	//arm.disabled();
+    	drive.disableInit();
+    	//forklift.disabled();
     }
     
 }
