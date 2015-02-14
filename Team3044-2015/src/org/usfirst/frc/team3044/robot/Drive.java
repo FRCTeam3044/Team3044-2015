@@ -2,70 +2,70 @@ package org.usfirst.frc.team3044.robot;
 
 import org.usfirst.frc.team3044.DriverStation.DriverController;
 import org.usfirst.frc.team3044.utils.Components;
+import org.usfirst.frc.team3044.utils.TalonEncoder;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class Drive{
+public class Drive {
 	Components components;
 	DriverController DriveJoy = DriverController.getInstance();
-	
+
 	/*
+	 * TalonEncoder LeftFrontEn; TalonEncoder RightFrontEn; TalonEncoder
+	 * RightBackEn; TalonEncoder LeftBackEn;
+	 */
+
+	final int FULL_ROT = 418;
+	final int HALF_ROT = 209;
+	
 	TalonEncoder LeftFrontEn;
 	TalonEncoder RightFrontEn;
 	TalonEncoder RightBackEn;
 	TalonEncoder LeftBackEn;
-	*/
-	
-	Encoder LeftFrontEn;
-	Encoder RightFrontEn;
-	Encoder RightBackEn;
-	Encoder LeftBackEn;
-	
-	CANTalon LeftFrontTurn; 
+
+	CANTalon LeftFrontTurn;
 	CANTalon RightFrontTurn;
-	CANTalon RightBackTurn; 
+	CANTalon RightBackTurn;
 	CANTalon LeftBackTurn;
-	
+
 	CANTalon LeftFrontDrive;
 	CANTalon RightFrontDrive;
 	CANTalon RightBackDrive;
 	CANTalon LeftBackDrive;
-	
+
 	AnalogInput TopLightL;
-	AnalogInput MidLightL; 
-	AnalogInput BotLightL; 
-	AnalogInput TopLightR; 
+	AnalogInput MidLightL;
+	AnalogInput BotLightL;
+	AnalogInput TopLightR;
 	AnalogInput MidLightR;
 	AnalogInput BotLightR;
-	
-public void DriveInit(){
-	components = Components.getInstance();
-	LeftFrontEn = components.rotEncoderFL;
-	RightFrontEn = components.rotEncoderFL;
-	RightBackEn = components.rotEncoderFL;
-	LeftBackEn = components.rotEncoderFL;
 
-	LeftFrontTurn = components.frontLeftDriveRot;
-	RightFrontTurn = components.frontRightDriveRot;
-	RightBackTurn = components.backRightDriveRot;
-	LeftBackTurn = components.backLeftDriveRot;
+	public void DriveInit() {
+		components = Components.getInstance();
+		LeftFrontEn = components.rotEncoderFL;
+		RightFrontEn = components.rotEncoderFL;
+		RightBackEn = components.rotEncoderFL;
+		LeftBackEn = components.rotEncoderFL;
 
-	LeftFrontDrive = components.frontLeftDrive;
-	RightFrontDrive = components.frontRightDrive;
-	RightBackDrive = components.backLeftDrive;
-	LeftBackDrive = components.backLeftDrive;
-	
-	TopLightL = components.LightSensorFrontLeft;
-	MidLightL = components.LightSensorFrontMid;
-	BotLightL = components.LightSensorFrontRight;
-	TopLightR = components.LightSensorBackLeft;
-	MidLightR = components.LightSensorBackMid;
-	BotLightR = components.LightSensorBackRight;
-}	
+		LeftFrontTurn = components.frontLeftDriveRot;
+		RightFrontTurn = components.frontRightDriveRot;
+		RightBackTurn = components.backRightDriveRot;
+		LeftBackTurn = components.backLeftDriveRot;
+
+		LeftFrontDrive = components.frontLeftDrive;
+		RightFrontDrive = components.frontRightDrive;
+		RightBackDrive = components.backLeftDrive;
+		LeftBackDrive = components.backLeftDrive;
+
+		TopLightL = components.LightSensorFrontLeft;
+		MidLightL = components.LightSensorFrontMid;
+		BotLightL = components.LightSensorFrontRight;
+		TopLightR = components.LightSensorBackLeft;
+		MidLightR = components.LightSensorBackMid;
+		BotLightR = components.LightSensorBackRight;
+	}
 
 	double Distance;
 	// Real Robot
@@ -73,13 +73,13 @@ public void DriveInit(){
 	final double W = 21.5;
 
 	// Test Robot
-	//final double L = 33.75;
-	//final double W = 21.375;
+	// final double L = 33.75;
+	// final double W = 21.375;
 	final double R = Math.sqrt(Math.pow(L, 2) + Math.pow(L, 2));
 	final double LR = (L / R);
 	final double WR = (W / R);
 	final double Count = 1 / Math.PI;
-	
+
 	double Strafe;
 	double Forward;
 	double Rotate;
@@ -106,37 +106,40 @@ public void DriveInit(){
 	int On = 1;
 	int OnLeft = 0;
 	final double White = 2700;
-	final double  Val = .1;
+	final double Val = .1;
 	final double Speed = .05;
 	int Something = 0;
-	
+
 	double LFSpeed = 0;
 	double LBSpeed = 0;
 	double RFSpeed = 0;
 	double RBSpeed = 0;
-	
+
 	int CS;
 	int MS;
 	int RS;
 	int Left;
 	int Right;
-	
+
 	public double Deadband(double value, double band) {
 		if (Math.abs(value) < band) {
 			value = 0;
 		}
 		return value;
 	}
+
 	public double Turn(double target, double val) {
 		double MotorTurn = 0;
-		double MS1 = .8;
-		double MS2 = .2;
-		double MS3 = .1;
-		double Tol1 = .1;
-		double Tol2 = .05;
-		double Tol3 = .02;
+		double MS1 = .2;
+		double MS2 = .05;
+		double MS3 = .025;
+		double Tol1 = .5;//.1;
+		double Tol2 = .3;//.05;
+		double Tol3 = .1;//.02;
 		double Diff = Math.abs(target - val);
-
+		SmartDashboard.putString("DB/String 1", String.valueOf(val));
+		SmartDashboard.putString("DB/String 2", String.valueOf(target));
+		SmartDashboard.putString("DB/String 3", String.valueOf(Diff));
 		if (Diff <= 1) {
 			if (val > target + Tol1) {
 				MotorTurn = MS1;
@@ -153,7 +156,9 @@ public void DriveInit(){
 			} else {
 				MotorTurn = 0;
 			}
+			SmartDashboard.putString("DB/String 5", "Diff < 1");
 		} else {
+			SmartDashboard.putString("DB/String 5", "Diff > 1");
 			if (val > target && Diff > Tol1) {
 				MotorTurn = -MS1;
 			} else if (val < target && Diff > Tol1) {
@@ -181,24 +186,24 @@ public void DriveInit(){
 	}
 
 	public double Val(double Encoder) {
-		Encoder += 209;
-		Encoder = (Encoder % 418 + 418) % 418;
-		Encoder -= 209;
-		Encoder = Encoder / 209;
+		Encoder += HALF_ROT;
+		Encoder = (Encoder % FULL_ROT + FULL_ROT) % FULL_ROT;
+		Encoder -= HALF_ROT;
+		Encoder = Encoder / HALF_ROT;
 		return -Encoder;
-	}//1662 - Expected: 1672
-	
-	
+	}// 1662 - Expected: 1672
+
 	public void robotInit() {
 		LeftFrontEn.reset();
 		RightFrontEn.reset();
 		RightBackEn.reset();
 		LeftBackEn.reset();
 	}
-	public void autonomousInit(){
+
+	public void autonomousInit() {
 		OnLeft = 0;
 	}
-	
+
 	public void autonomousPeriodic() {
 		UptoLineL();
 		SmartDashboard.putString("DB/String 0", String.valueOf(CS));
@@ -207,93 +212,93 @@ public void DriveInit(){
 		SmartDashboard.putString("DB/String 3", String.valueOf(L));
 		SmartDashboard.putString("DB/String 4", String.valueOf(Something));
 	}
+
 	public void UptoLineL() {
-		
-		//ActDistanceLF = Val(LeftFrontEn.getDistance());
-		//ActDistanceRF = Val(RightFrontEn.getDistance());
-		//ActDistanceRB = Val(RightBackEn.getDistance());
-		//ActDistanceLB = Val(LeftBackEn.getDistance());
-		
-		//Left = OnLine(MS, CS, RS);
-		//Right = SmartDashboard.getInt("DB/Slider 0");
-		//On = SmartDashboard.getInt("DB/Slider 1");
-		
+
+		// ActDistanceLF = Val(LeftFrontEn.getDistance());
+		// ActDistanceRF = Val(RightFrontEn.getDistance());
+		// ActDistanceRB = Val(RightBackEn.getDistance());
+		// ActDistanceLB = Val(LeftBackEn.getDistance());
+
+		// Left = OnLine(MS, CS, RS);
+		// Right = SmartDashboard.getInt("DB/Slider 0");
+		// On = SmartDashboard.getInt("DB/Slider 1");
+
 		CS = TopLightL.getValue();
 		MS = MidLightL.getValue();
 		RS = BotLightL.getValue();
 
-		
-		
-		switch (OnLeft){
-			case 0:
+		switch (OnLeft) {
+		case 0:
+			LeftFrontDrive.set(.1);
+			LeftBackDrive.set(.1);
+			RightFrontDrive.set(.1);
+			RightBackDrive.set(.1);
+			OnLeft = 1;
+			break;
+		case 1:
+			if (MS < White) {
+				LeftFrontDrive.set(0);
+				LeftBackDrive.set(0);
+				RightFrontDrive.set(0);
+				RightBackDrive.set(0);
+				OnLeft = 2;
+			}
+			break;
+		case 2:
+			if (RS < White && MS > White) {
+				LeftFrontDrive.set(-.1);
+				LeftBackDrive.set(-.1);
+				RightFrontDrive.set(-.1);
+				RightBackDrive.set(-.1);
+				OnLeft = 3;
+			} else if (CS < White && MS > White) {
 				LeftFrontDrive.set(.1);
 				LeftBackDrive.set(.1);
 				RightFrontDrive.set(.1);
 				RightBackDrive.set(.1);
-				OnLeft = 1;
+				OnLeft = 4;
+			}
+		case 3:
+			if (MS < White) {
+				LeftFrontDrive.set(0);
+				LeftBackDrive.set(0);
+				RightFrontDrive.set(0);
+				RightBackDrive.set(0);
+				OnLeft = 2;
+			}
 			break;
-			case 1:
-				if(MS < White){
-					LeftFrontDrive.set(0);
-					LeftBackDrive.set(0);
-					RightFrontDrive.set(0);
-					RightBackDrive.set(0);
-					OnLeft = 2;
-				}
-			break;
-			case 2:
-				if(RS < White && MS > White){
-					LeftFrontDrive.set(-.1);
-					LeftBackDrive.set(-.1);
-					RightFrontDrive.set(-.1);
-					RightBackDrive.set(-.1);
-					OnLeft=3;
-				} else if(CS < White && MS > White){
-					LeftFrontDrive.set(.1);
-					LeftBackDrive.set(.1);
-					RightFrontDrive.set(.1);
-					RightBackDrive.set(.1);
-					OnLeft=4;
-				}
-			case 3:
-				if(MS < White){
-					LeftFrontDrive.set(0);
-					LeftBackDrive.set(0);
-					RightFrontDrive.set(0);
-					RightBackDrive.set(0);
-					OnLeft = 2;
-				}
-			break;
-			case 4:
-				if(MidLightL.getValue() < White){
-					LeftFrontDrive.set(0);
-					LeftBackDrive.set(0);
-					RightFrontDrive.set(0);
-					RightBackDrive.set(0);
-					OnLeft = 2;
-				}
+		case 4:
+			if (MidLightL.getValue() < White) {
+				LeftFrontDrive.set(0);
+				LeftBackDrive.set(0);
+				RightFrontDrive.set(0);
+				RightBackDrive.set(0);
+				OnLeft = 2;
+			}
 		}
 	}
+
 	public void teleopInit() {
 
 	}
 
 	public void teleopPeriodic() {
-		
+
 		if (DriveJoy.getRawButton(8)) {
 			LeftFrontEn.reset();
 			RightFrontEn.reset();
 			RightBackEn.reset();
 			LeftBackEn.reset();
 		}
-		
+
 		Forward = -Deadband(DriveJoy.getRightY(), .2);
 		Strafe = Deadband(DriveJoy.getRightX(), .2);
 		Rotate = -Deadband(DriveJoy.getLeftX(), .2);
 
-		//System.out.println(LeftFrontEn == null);
+		// System.out.println(LeftFrontEn == null);
 		ActDistanceLF = Val(LeftFrontEn.getDistance());
-		
+
 		ActDistanceRF = Val(RightFrontEn.getDistance());
 		ActDistanceRB = Val(RightBackEn.getDistance());
 		ActDistanceLB = Val(LeftBackEn.getDistance());
@@ -319,25 +324,30 @@ public void DriveInit(){
 		RightFrontTurn.set(Turn(WheelRFA, ActDistanceRF));
 		RightBackTurn.set(Turn(WheelRBA, ActDistanceRB));
 		LeftBackTurn.set(Turn(WheelLBA, ActDistanceLB));
-
+		SmartDashboard.putString("DB/String 0", String.valueOf(RightFrontEn.getDistance()));
 		if (DriveJoy.getRawButton(10)) {
 			LeftFrontDrive.set(Speed(Drive));
 			RightFrontDrive.set(Speed(Drive));
 			RightBackDrive.set(Speed(Drive));
 			LeftBackDrive.set(Speed(Drive));
 		} else {
-			LeftFrontDrive.set(Speed(Drive)/2);
-			RightFrontDrive.set(Speed(Drive)/2);
-			RightBackDrive.set(Speed(Drive)/2);
-			System.out.println(Speed(Drive)/2);
+			LeftFrontDrive.set(Speed(Drive) / 2);
+			RightFrontDrive.set(Speed(Drive) / 2);
+			RightBackDrive.set(Speed(Drive) / 2);
+			System.out.println(Speed(Drive) / 2);
 			System.out.println(RightBackDrive.getSetpoint());
-			LeftBackDrive.set(Speed(Drive)/2);
+			LeftBackDrive.set(Speed(Drive) / 2);
 		}
 
+		SmartDashboard.putString("DB/String 0", String.valueOf(RightFrontEn.getDistance()));
+		
 	}
+
 	public void testPeriodic() {
+		RightFrontTurn.set(.2);
 
 	}
+
 	public void disableInit() {
 
 	}

@@ -107,10 +107,10 @@ public class Components {
 	public TalonEncoder rotEncoderBL;
 	*/
 	
-	public Encoder rotEncoderFR;
-	public Encoder rotEncoderBR;
-	public Encoder rotEncoderFL;
-	public Encoder rotEncoderBL;
+	public TalonEncoder rotEncoderFR;
+	public TalonEncoder rotEncoderBR;
+	public TalonEncoder rotEncoderFL;
+	public TalonEncoder rotEncoderBL;
 	
 	/*
 	 * 	Encoder LeftFrontEn = new Encoder(6,7);
@@ -141,10 +141,10 @@ public class Components {
 		backLeftDrive = new CANTalon(18);
 		
 		
-		rotEncoderFL  = new Encoder(5,4);
-		rotEncoderBR = new Encoder(2,3);
-		rotEncoderFL = new Encoder(6,7);
-		rotEncoderBL = new Encoder(0,1);
+		rotEncoderFR  = new TalonEncoder(frontRightDriveRot);
+		rotEncoderBR = new TalonEncoder(backRightDriveRot);
+		rotEncoderFL = new TalonEncoder(frontLeftDriveRot);
+		rotEncoderBL = new TalonEncoder(backLeftDriveRot);
 		System.out.println("initialized");
 		
 		/*
