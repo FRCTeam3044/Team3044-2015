@@ -1,7 +1,7 @@
 
 package org.usfirst.frc.team3044.robot;
 
-import org.usfirst.frc.team3044.DriverStation.DriverController;
+import org.usfirst.frc.team3044.DriverStation.SecondaryController;
 import org.usfirst.frc.team3044.utils.Components;
 import org.usfirst.frc.team3044.utils.Utilities;
 
@@ -11,19 +11,21 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 public class Robot extends IterativeRobot {
 	//Arm arm = new Arm();
 	Drive drive = new Drive();
-	//Forklift forklift = new Forklift();
+	Forklift forklift = new Forklift();
 	Components components = Components.getInstance();
 	Utilities utils = new Utilities();
 	
-	DriverController c = DriverController.getInstance();
+	SecondaryController secondaryController = SecondaryController.getInstance();
 	
 	
     public void robotInit() {
     	components.init();
     	//arm.robotInit();
     	drive.DriveInit();
+    	drive.robotInit();
+    	components.compressor.setClosedLoopControl(true);
     	
-    	//forklift.robotInit();
+    	forklift.robotInit();
     	
     }
 
@@ -31,28 +33,34 @@ public class Robot extends IterativeRobot {
     	//arm.autoInit();
     	drive.teleopInit();
     	//components.init(); - test
-    	//forklift.autoInit();
+    	forklift.autoInit();
     }
     
     public void autonomousPeriodic() {
     	//arm.armPeriodic();
     	drive.autonomousPeriodic();
     	
-    	//forklift.forkliftPeriodic();
+    	forklift.forkliftPeriodic();
     }
 
 
     public void teleopInit(){
     	//arm.teleopInit();
     	drive.teleopInit();
-    	//forklift.teleopInit();
+    	forklift.teleopInit();
+    	components.compressor.start();
     }
     
     public void teleopPeriodic() {
     	//arm.armPeriodic();
     	drive.teleopPeriodic();
-    	
-    	//forklift.forkliftPeriodic();
+    	if(secondaryController.getRawButton(7)){
+    		components.compressor.stop();
+    	}else if(secondaryController.getRawButton(8)){
+    		components.compressor.setClosedLoopControl(true);
+    		components.compressor.start();
+    	}
+    	forklift.forkliftPeriodic();
     }
     
 
@@ -63,7 +71,7 @@ public class Robot extends IterativeRobot {
     public void disabledInit(){
     	//arm.disabled();
     	drive.disableInit();
-    	//forklift.disabled();
+    	forklift.disabled();
     }
     
 }

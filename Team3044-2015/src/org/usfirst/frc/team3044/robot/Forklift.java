@@ -8,8 +8,10 @@ import org.usfirst.frc.team3044.utils.Components;
 //WHEN ALL ELSE IS DONE, CHECK ELECTRONIC POSITIONS
 
 public class Forklift {
+
 	SecondaryController Joy = SecondaryController.getInstance();
 	Components components = Components.getInstance();
+
 	final int TOP = 1;
 	final int MOVINGUP = 2;
 	final int BOTTOM = 3;
@@ -17,95 +19,144 @@ public class Forklift {
 	final int STOPPEDMID = 5;
 	final int OUT = 6;
 	final int IN = 7;
+
 	int ForkliftState = 3;
+	
+	int forkPosState = OUT;
+
+	double movementSpeed = -.15;
 
 	public void robotInit() {
-
+		this.ForkliftState = STOPPEDMID;
+		components.forkliftLeft1.set(0);
+		components.forkliftRight1.set(0);
+		components.forkliftLeft2.set(0);
+		components.forkliftRight2.set(0);
+		components.forkliftClamp.set(false);
+		components.forkliftClamp2.set(true);
 	}
 
 	public void teleopInit() {
-
+		this.ForkliftState = STOPPEDMID;
+		components.forkliftLeft1.set(0);
+		components.forkliftRight1.set(0);
+		components.forkliftLeft2.set(0);
+		components.forkliftRight2.set(0);
+		components.forkliftClamp.set(false);
+		components.forkliftClamp2.set(true);
 	}
 
 	public void autoInit() {
-
+		this.ForkliftState = STOPPEDMID;
+		components.forkliftLeft1.set(0);
+		components.forkliftRight1.set(0);
+		components.forkliftLeft2.set(0);
+		components.forkliftRight2.set(0);
+		components.forkliftClamp.set(false);
+		components.forkliftClamp2.set(true);
 	}
 
 	public void disabled() {
-
+		this.ForkliftState = STOPPEDMID;
+		components.forkliftLeft1.set(0);
+		components.forkliftRight1.set(0);
+		components.forkliftLeft2.set(0);
+		components.forkliftRight2.set(0);
+		components.forkliftClamp.set(false);
+		components.forkliftClamp2.set(true);
 	}
 
 	public void forkliftPeriodic() {
+		System.out.println(ForkliftState);
+		switch(forkPosState){
+		case OUT:
+			if (Joy.getRawButton(Joy.BUTTON_X)) {// CHANGE
+				components.forkliftClamp.set(true);
+				components.forkliftClamp2.set(false);
+				this.forkPosState = IN;
+			}
+			break;
+		case IN:
+			if (Joy.getRawButton(Joy.BUTTON_B)) {// CHANGE
+				this.forkPosState = OUT;
+				components.forkliftClamp.set(false);
+				components.forkliftClamp2.set(true); //CHANGE!!!!!!!!!!
+			}
+			break;
+		}
+		
 		switch (ForkliftState) {
 		// SPACE
 		case TOP:
-			if (Joy.getLeftY() < 0) {
-				if (!components.forkliftDown.get()) {
+			if (Joy.getRawButton(Joy.BUTTON_A)) {
+				if (components.forkliftDown.get()) {
 					ForkliftState = MOVINGDOWN;
-					components.forkliftLeft1.set(-1);
-					components.forkliftLeft2.set(-1);
-					components.forkliftRight1.set(-1);
-					components.forkliftRight2.set(-1);
+					components.forkliftLeft1.set(movementSpeed);
+					components.forkliftLeft2.set(movementSpeed);
+					components.forkliftRight1.set(-movementSpeed);
+					components.forkliftRight2.set(-movementSpeed);
 				}
+			}
+			if(components.forkliftUp.get()){
+				ForkliftState =STOPPEDMID;
 			}
 			break;
 		// SPACE
 		case MOVINGDOWN:
-			if (components.forkliftDown.get()) {
+			if (!components.forkliftDown.get()) {
 				ForkliftState = BOTTOM;
 				components.forkliftLeft1.set(0);
 				components.forkliftLeft2.set(0);
 				components.forkliftRight1.set(0);
 				components.forkliftRight2.set(0);
 			}
-			if (Joy.getLeftY() == 0) {
+			if (!Joy.getRawButton(Joy.BUTTON_A)) {
 				ForkliftState = STOPPEDMID;
 				components.forkliftLeft1.set(0);
 				components.forkliftLeft2.set(0);
 				components.forkliftRight1.set(0);
 				components.forkliftRight2.set(0);
-			}
-			if (Joy.getLeftY() > 0) {
-				if (!components.forkliftUp.get()) {
+			} else if (Joy.getRawButton(Joy.BUTTON_Y)) {
+				if (components.forkliftUp.get()) {
 					ForkliftState = MOVINGUP;
-					components.forkliftLeft1.set(1);
-					components.forkliftLeft2.set(1);
-					components.forkliftRight1.set(1);
-					components.forkliftRight2.set(1);
+					components.forkliftLeft1.set(-movementSpeed);
+					components.forkliftLeft2.set(-movementSpeed);
+					components.forkliftRight1.set(movementSpeed);
+					components.forkliftRight2.set(movementSpeed);
 				}
 			}
 			break;
 		// SPACE
 		case BOTTOM:
-			if (Joy.getLeftY() > 0) {
-				if (!components.forkliftUp.get()) {
+			if (Joy.getRawButton(Joy.BUTTON_Y)) {
+				if (components.forkliftUp.get()) {
 					ForkliftState = MOVINGUP;
-					components.forkliftLeft1.set(1);
-					components.forkliftLeft2.set(1);
-					components.forkliftRight1.set(1);
-					components.forkliftRight2.set(1);
+					components.forkliftLeft1.set(-movementSpeed);
+					components.forkliftLeft2.set(-movementSpeed);
+					components.forkliftRight1.set(movementSpeed);
+					components.forkliftRight2.set(movementSpeed);
 				}
 			}
 			break;
 		// SPACE
 		case MOVINGUP:
-			if (components.forkliftUp.get()) {
+			if (!components.forkliftUp.get()) {
 				ForkliftState = TOP;
 				components.forkliftLeft1.set(0);
 				components.forkliftLeft2.set(0);
 				components.forkliftRight1.set(0);
 				components.forkliftRight2.set(0);
 			}
-			if (Joy.getLeftY() < 0) {
-				if (!components.forkliftDown.get()) {
+			if (Joy.getRawButton(Joy.BUTTON_A)) {
+				if (components.forkliftDown.get()) {
 					ForkliftState = MOVINGDOWN;
-					components.forkliftLeft1.set(-1);
-					components.forkliftLeft2.set(-1);
-					components.forkliftRight1.set(-1);
-					components.forkliftRight2.set(-1);
+					components.forkliftLeft1.set(movementSpeed);
+					components.forkliftLeft2.set(movementSpeed);
+					components.forkliftRight1.set(-movementSpeed);
+					components.forkliftRight2.set(-movementSpeed);
 				}
 			}
-			if (Joy.getLeftY() == 0) {
+			if (!Joy.getRawButton(Joy.BUTTON_Y)) {
 				ForkliftState = STOPPEDMID;
 				components.forkliftLeft1.set(0);
 				components.forkliftLeft2.set(0);
@@ -115,37 +166,26 @@ public class Forklift {
 			break;
 		// SPACE
 		case STOPPEDMID:
-			if (Joy.getLeftY() > 0) {
-				if (!components.forkliftUp.get()) {
+			if (Joy.getRawButton(Joy.BUTTON_Y)) {
+				if (components.forkliftUp.get()) {
 					ForkliftState = MOVINGUP;
-					components.forkliftLeft1.set(1);
-					components.forkliftLeft2.set(1);
-					components.forkliftRight1.set(1);
-					components.forkliftRight2.set(1);
+					components.forkliftLeft1.set(-movementSpeed);
+					components.forkliftLeft2.set(-movementSpeed);
+					components.forkliftRight1.set(movementSpeed);
+					components.forkliftRight2.set(movementSpeed);
 				}
 			}
-			if (Joy.getLeftY() < 0) {
-				if (!components.forkliftDown.get()) {
+			if (Joy.getRawButton(Joy.BUTTON_A)) {
+				if (components.forkliftDown.get()) {
 					ForkliftState = MOVINGDOWN;
-					components.forkliftLeft1.set(-1);
-					components.forkliftLeft2.set(-1);
-					components.forkliftRight1.set(-1);
-					components.forkliftRight2.set(-1);
+					components.forkliftLeft1.set(movementSpeed);
+					components.forkliftLeft2.set(movementSpeed);
+					components.forkliftRight1.set(-movementSpeed);
+					components.forkliftRight2.set(-movementSpeed);
 				}
 			}
 			break;
-		case OUT:
-			if (Joy.getRawButton(components.FORK_OUT_BUTTON)) {// CHANGE
-				components.forkliftClamp.set(true);
-				// components.forkliftClamp2.set(true); //CHANGE!!!!!!!!!!
-			}
-			break;
-		case IN:
-			if (Joy.getRawButton(components.FORK_IN_BUTTON)) {// CHANGE
-				components.forkliftClamp.set(false);
-				// components.forkliftClamp2.set(false); //CHANGE!!!!!!!!!!
-				break;
-			}
+
 		}
 	}
 

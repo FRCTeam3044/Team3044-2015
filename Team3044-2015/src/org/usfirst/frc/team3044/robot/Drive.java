@@ -45,9 +45,9 @@ public class Drive {
 	public void DriveInit() {
 		components = Components.getInstance();
 		LeftFrontEn = components.rotEncoderFL;
-		RightFrontEn = components.rotEncoderFL;
-		RightBackEn = components.rotEncoderFL;
-		LeftBackEn = components.rotEncoderFL;
+		RightFrontEn = components.rotEncoderFR;
+		RightBackEn = components.rotEncoderBR;
+		LeftBackEn = components.rotEncoderBL;
 
 		LeftFrontTurn = components.frontLeftDriveRot;
 		RightFrontTurn = components.frontRightDriveRot;
@@ -56,7 +56,7 @@ public class Drive {
 
 		LeftFrontDrive = components.frontLeftDrive;
 		RightFrontDrive = components.frontRightDrive;
-		RightBackDrive = components.backLeftDrive;
+		RightBackDrive = components.backRightDrive;
 		LeftBackDrive = components.backLeftDrive;
 
 		TopLightL = components.LightSensorFrontLeft;
@@ -130,16 +130,14 @@ public class Drive {
 
 	public double Turn(double target, double val) {
 		double MotorTurn = 0;
-		double MS1 = .2;
-		double MS2 = .05;
-		double MS3 = .025;
-		double Tol1 = .5;//.1;
-		double Tol2 = .3;//.05;
-		double Tol3 = .1;//.02;
+		double MS1 = .8;
+		double MS2 = .2;
+		double MS3 = .1;
+		double Tol1 = .1;//.1;
+		double Tol2 = .05;//.05;
+		double Tol3 = .02;//.02;
 		double Diff = Math.abs(target - val);
-		SmartDashboard.putString("DB/String 1", String.valueOf(val));
-		SmartDashboard.putString("DB/String 2", String.valueOf(target));
-		SmartDashboard.putString("DB/String 3", String.valueOf(Diff));
+
 		if (Diff <= 1) {
 			if (val > target + Tol1) {
 				MotorTurn = MS1;
@@ -156,9 +154,7 @@ public class Drive {
 			} else {
 				MotorTurn = 0;
 			}
-			SmartDashboard.putString("DB/String 5", "Diff < 1");
 		} else {
-			SmartDashboard.putString("DB/String 5", "Diff > 1");
 			if (val > target && Diff > Tol1) {
 				MotorTurn = -MS1;
 			} else if (val < target && Diff > Tol1) {
@@ -334,8 +330,8 @@ public class Drive {
 			LeftFrontDrive.set(Speed(Drive) / 2);
 			RightFrontDrive.set(Speed(Drive) / 2);
 			RightBackDrive.set(Speed(Drive) / 2);
-			System.out.println(Speed(Drive) / 2);
-			System.out.println(RightBackDrive.getSetpoint());
+			//System.out.println(Speed(Drive) / 2);
+			//System.out.println(RightBackDrive.getSetpoint());
 			LeftBackDrive.set(Speed(Drive) / 2);
 		}
 

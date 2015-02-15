@@ -19,11 +19,11 @@ public class TalonEncoder {
 	}
 	
 	public double getDistance(){
-		return (talonInstance.getPosition()/4.0);
+		return -(talonInstance.getPosition()/4.0);
 	}
 	
 	public double getSpeed(){
-		return talonInstance.getSpeed();
+		return -talonInstance.getSpeed();
 	}
 
 }

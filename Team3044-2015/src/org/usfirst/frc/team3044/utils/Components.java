@@ -3,8 +3,7 @@ package org.usfirst.frc.team3044.utils;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.CANJaguar;
 import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.CANTalon.ControlMode;
-import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
@@ -27,12 +26,14 @@ public class Components {
 		return instance;
 	}
 	
-	public final int PCM_ID = 22;
+	public final int PCM_ID = 6;
 	
 	
 	 /* This class is intended to store all of the objects for components of the robot
 	 ex. Sensors, motor controllers, etc,
 	 */  
+	
+	public Compressor compressor = new Compressor(PCM_ID);
 	
 	public CANTalon frontRightDriveRot;
 	public CANTalon frontLeftDriveRot;
@@ -52,12 +53,12 @@ public class Components {
 	public CANJaguar winchMotor;
 	public CANJaguar screwMotor;
 	
-	public DigitalInput forkliftUp;// = new DigitalInput(0);
-	public DigitalInput forkliftDown;// = new DigitalInput(1);
+	public DigitalInput forkliftUp = new DigitalInput(0);
+	public DigitalInput forkliftDown = new DigitalInput(1);
 	
 	public Solenoid forkliftClamp2 = new Solenoid(PCM_ID, 0);
-	public Solenoid armSolenoid = new Solenoid(PCM_ID,1);
-	public Solenoid forkliftClamp = new Solenoid(PCM_ID,3);
+	public Solenoid forkliftClamp = new Solenoid(PCM_ID,1);
+	public Solenoid armSolenoid = new Solenoid(PCM_ID,3);
 	
 	public DigitalInput ArmExtended;// = new DigitalInput(2);
 	public DigitalInput ArmRetracted;// = new DigitalInput(3);
@@ -138,7 +139,7 @@ public class Components {
 		frontRightDrive = new CANTalon(15);
 		frontLeftDrive = new CANTalon(14);
 		backRightDrive = new CANTalon(17);
-		backLeftDrive = new CANTalon(18);
+		backLeftDrive = new CANTalon(16);
 		
 		
 		rotEncoderFR  = new TalonEncoder(frontRightDriveRot);
@@ -152,10 +153,10 @@ public class Components {
 		frontRightDrive.changeControlMode(ControlMode.Speed);
 		*/
 		
-		//forkliftLeft1 = new CANJaguar(15);
-		//forkliftLeft2 = new CANJaguar(16);
-		//forkliftRight1 = new CANJaguar(17);
-		//forkliftRight2 = new CANJaguar(18);
+		forkliftLeft1 = new CANJaguar(7);
+		forkliftLeft2 = new CANJaguar(8);
+		forkliftRight1 = new CANJaguar(9);
+		forkliftRight2 = new CANJaguar(10);
 		
 		//screwMotor = new CANJaguar(20);
 		//winchMotor = new CANJaguar(21);
