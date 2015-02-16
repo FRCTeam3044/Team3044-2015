@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Solenoid;
 
@@ -50,8 +51,8 @@ public class Components {
 	public CANJaguar forkliftRight1;
 	public CANJaguar forkliftRight2;
 	
-	public CANJaguar winchMotor;
-	public CANJaguar screwMotor;
+	public Jaguar winchMotor;
+	public Jaguar screwMotor;
 	
 	public DigitalInput forkliftUp = new DigitalInput(0);
 	public DigitalInput forkliftDown = new DigitalInput(1);
@@ -63,13 +64,13 @@ public class Components {
 	public DigitalInput ArmExtended;// = new DigitalInput(2);
 	public DigitalInput ArmRetracted;// = new DigitalInput(3);
 	
-	public DigitalInput armScrewOut;// = new DigitalInput(5);
+	public DigitalInput armScrewOut = new DigitalInput(5);
 	public DigitalInput armScrewIn;// = new DigitalInput(4);
 	
 	public DigitalInput forkliftTote = new DigitalInput(24);
 
 	public Encoder encoderScrew = new Encoder(22,23);
-	public AnalogInput encoderWinch = new AnalogInput(7);
+	public AnalogInput encoderWinch = new AnalogInput(0);
 
 	
 	public final int SCREW_OUT_BUTTON = 1;
@@ -87,12 +88,12 @@ public class Components {
 
 	public PowerDistributionPanel powerDistribution = new PowerDistributionPanel();
 	
-	public AnalogInput LightSensorFrontLeft = new AnalogInput(0);
-	public AnalogInput LightSensorFrontMid = new AnalogInput(1);
-	public AnalogInput LightSensorFrontRight = new AnalogInput(2);
-	public AnalogInput LightSensorBackLeft = new AnalogInput(3);
-	public AnalogInput LightSensorBackMid = new AnalogInput(4);
-	public AnalogInput LightSensorBackRight = new AnalogInput(5);
+	public AnalogInput LightSensorFrontLeft;// = new AnalogInput(0);
+	public AnalogInput LightSensorFrontMid;// = new AnalogInput(1);
+	public AnalogInput LightSensorFrontRight;// = new AnalogInput(2);
+	public AnalogInput LightSensorBackLeft;// = new AnalogInput(3);
+	public AnalogInput LightSensorBackMid;// = new AnalogInput(4);
+	public AnalogInput LightSensorBackRight;// = new AnalogInput(5);
 	
 	
 	
@@ -125,7 +126,7 @@ public class Components {
 	public DigitalInput proximityAbsFL;// = new DigitalInput(0);
 	public DigitalInput proximityAbsBL;// = new DigitalInput(0);	
 	
-	AnalogInput winchPot;/// = new AnalogInput(-1);
+	//AnalogInput winchPot;/// = new AnalogInput(-1);
 	
 	
 	public void init(){
@@ -158,8 +159,8 @@ public class Components {
 		forkliftRight1 = new CANJaguar(9);
 		forkliftRight2 = new CANJaguar(10);
 		
-		//screwMotor = new CANJaguar(20);
-		//winchMotor = new CANJaguar(21);
+		screwMotor = new Jaguar(1);
+		winchMotor = new Jaguar(0);
 		
 		/*
 		backLeftDriveRot.setFeedbackDevice(FeedbackDevice.QuadEncoder);

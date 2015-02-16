@@ -133,9 +133,9 @@ public class Drive {
 		double MS1 = .8;
 		double MS2 = .2;
 		double MS3 = .1;
-		double Tol1 = .1;//.1;
-		double Tol2 = .05;//.05;
-		double Tol3 = .02;//.02;
+		double Tol1 = .15;//.1;
+		double Tol2 = .1;//.05;
+		double Tol3 = .04;//.02;
 		double Diff = Math.abs(target - val);
 
 		if (Diff <= 1) {
@@ -290,7 +290,7 @@ public class Drive {
 
 		Forward = -Deadband(DriveJoy.getRightY(), .2);
 		Strafe = Deadband(DriveJoy.getRightX(), .2);
-		Rotate = -Deadband(DriveJoy.getLeftX(), .2);
+		Rotate = Deadband(DriveJoy.getLeftX(), .2);
 
 		// System.out.println(LeftFrontEn == null);
 		ActDistanceLF = Val(LeftFrontEn.getDistance());

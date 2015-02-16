@@ -1,26 +1,31 @@
 
 package org.usfirst.frc.team3044.robot;
 
-import org.usfirst.frc.team3044.DriverStation.SecondaryController;
+import org.usfirst.frc.team3044.DriverStation.DriverController;
 import org.usfirst.frc.team3044.utils.Components;
 import org.usfirst.frc.team3044.utils.Utilities;
 
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 
 
 public class Robot extends IterativeRobot {
-	//Arm arm = new Arm();
+	Arm arm = new Arm();
 	Drive drive = new Drive();
 	Forklift forklift = new Forklift();
 	Components components = Components.getInstance();
 	Utilities utils = new Utilities();
 	
-	SecondaryController secondaryController = SecondaryController.getInstance();
-	
+	DriverController secondaryController = DriverController.getInstance();
+	CameraServer server = CameraServer.getInstance();
 	
     public void robotInit() {
+        
+        server.setQuality(50);
+        //the camera name (ex "cam0") can be found through the roborio web interface
+        server.startAutomaticCapture("cam1");
     	components.init();
-    	//arm.robotInit();
+    	arm.robotInit();
     	drive.DriveInit();
     	drive.robotInit();
     	components.compressor.setClosedLoopControl(true);
@@ -30,14 +35,14 @@ public class Robot extends IterativeRobot {
     }
 
     public void autonomousInit(){
-    	//arm.autoInit();
+    	arm.autoInit();
     	drive.teleopInit();
     	//components.init(); - test
     	forklift.autoInit();
     }
     
     public void autonomousPeriodic() {
-    	//arm.armPeriodic();
+    	arm.teleopPeriodic();
     	drive.autonomousPeriodic();
     	
     	forklift.forkliftPeriodic();
@@ -45,15 +50,16 @@ public class Robot extends IterativeRobot {
 
 
     public void teleopInit(){
-    	//arm.teleopInit();
+    	arm.teleopInit();
     	drive.teleopInit();
     	forklift.teleopInit();
-    	components.compressor.start();
+    	components.compressor.stop();
     }
     
     public void teleopPeriodic() {
-    	//arm.armPeriodic();
+    	arm.teleopPeriodic();
     	drive.teleopPeriodic();
+    	
     	if(secondaryController.getRawButton(7)){
     		components.compressor.stop();
     	}else if(secondaryController.getRawButton(8)){

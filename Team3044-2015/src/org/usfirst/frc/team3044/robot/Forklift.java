@@ -23,8 +23,12 @@ public class Forklift {
 	int ForkliftState = 3;
 	
 	int forkPosState = OUT;
+	
+	final int COMPRESSOR_ON = 0;
+	final int COMPRESSOR_OFF = 1;
+	int compressorState = 0;
 
-	double movementSpeed = -.15;
+	double movementSpeed = -.3;
 
 	public void robotInit() {
 		this.ForkliftState = STOPPEDMID;
@@ -34,6 +38,7 @@ public class Forklift {
 		components.forkliftRight2.set(0);
 		components.forkliftClamp.set(false);
 		components.forkliftClamp2.set(true);
+		components.compressor.setClosedLoopControl(true);
 	}
 
 	public void teleopInit() {
@@ -44,6 +49,8 @@ public class Forklift {
 		components.forkliftRight2.set(0);
 		components.forkliftClamp.set(false);
 		components.forkliftClamp2.set(true);
+		components.compressor.setClosedLoopControl(true);
+		components.compressor.start();
 	}
 
 	public void autoInit() {
@@ -54,6 +61,9 @@ public class Forklift {
 		components.forkliftRight2.set(0);
 		components.forkliftClamp.set(false);
 		components.forkliftClamp2.set(true);
+		components.compressor.setClosedLoopControl(true);
+		components.compressor.start();
+	
 	}
 
 	public void disabled() {
@@ -68,6 +78,19 @@ public class Forklift {
 
 	public void forkliftPeriodic() {
 		System.out.println(ForkliftState);
+		
+		switch(compressorState){
+		case COMPRESSOR_ON:
+			if(Joy.getRawButton(7)){
+				components.compressor.stop();
+				
+			}
+			break;
+		case COMPRESSOR_OFF:
+			if(Joy.getRawButton(8))
+			break;
+		}
+		
 		switch(forkPosState){
 		case OUT:
 			if (Joy.getRawButton(Joy.BUTTON_X)) {// CHANGE
