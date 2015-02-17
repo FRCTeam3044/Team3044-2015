@@ -3,6 +3,7 @@ package org.usfirst.frc.team3044.utils;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.CANJaguar;
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.CANTalon.StatusFrameRate;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
@@ -64,13 +65,13 @@ public class Components {
 	public DigitalInput ArmExtended;// = new DigitalInput(2);
 	public DigitalInput ArmRetracted;// = new DigitalInput(3);
 	
-	public DigitalInput armScrewOut = new DigitalInput(5);
+	public DigitalInput armScrewOut = new DigitalInput(7);
 	public DigitalInput armScrewIn;// = new DigitalInput(4);
 	
 	public DigitalInput forkliftTote = new DigitalInput(24);
 
 	public Encoder encoderScrew = new Encoder(22,23);
-	public AnalogInput encoderWinch = new AnalogInput(0);
+	public AnalogInput winchPot = new AnalogInput(0);
 
 	
 	public final int SCREW_OUT_BUTTON = 1;
@@ -88,19 +89,19 @@ public class Components {
 
 	public PowerDistributionPanel powerDistribution = new PowerDistributionPanel();
 	
-	public AnalogInput LightSensorFrontLeft;// = new AnalogInput(0);
-	public AnalogInput LightSensorFrontMid;// = new AnalogInput(1);
-	public AnalogInput LightSensorFrontRight;// = new AnalogInput(2);
-	public AnalogInput LightSensorBackLeft;// = new AnalogInput(3);
-	public AnalogInput LightSensorBackMid;// = new AnalogInput(4);
-	public AnalogInput LightSensorBackRight;// = new AnalogInput(5);
+	public AnalogInput LightSensorFrontLeft = new AnalogInput(1);
+	public AnalogInput LightSensorFrontMid = new AnalogInput(2);
+	public AnalogInput LightSensorFrontRight = new AnalogInput(3);
+	public AnalogInput LightSensorBackLeft = new AnalogInput(4);
+	public AnalogInput LightSensorBackMid = new AnalogInput(5);
+	public AnalogInput LightSensorBackRight = new AnalogInput(6);
 	
 	
 	
-	public DigitalInput driveRotationFRMag;// = new DigitalInput(7);
-	public DigitalInput driveRotationBRMag;// = new DigitalInput(9);
-	public DigitalInput driveRotationFLMag;// = new DigitalInput(6);
-	public DigitalInput driveRotationBLMag;// = new DigitalInput(8);
+	public DigitalInput driveRotationFRMag = new DigitalInput(11);// = new DigitalInput(7);
+	public DigitalInput driveRotationBRMag = new DigitalInput(10);// = new DigitalInput(9);
+	public DigitalInput driveRotationFLMag = new DigitalInput(13);// = new DigitalInput(6);
+	public DigitalInput driveRotationBLMag = new DigitalInput(12);// = new DigitalInput(8);
 	
 	/*
 	public TalonEncoder rotEncoderFR;
@@ -136,6 +137,20 @@ public class Components {
 		backRightDriveRot = new CANTalon(21);
 		backLeftDriveRot = new CANTalon(20);
 		
+		frontRightDriveRot.setStatusFrameRateMs(StatusFrameRate.QuadEncoder, 10);
+		backRightDriveRot.setStatusFrameRateMs(StatusFrameRate.QuadEncoder, 10);
+		frontLeftDriveRot.setStatusFrameRateMs(StatusFrameRate.QuadEncoder, 10);
+		backLeftDriveRot.setStatusFrameRateMs(StatusFrameRate.QuadEncoder, 10);
+		
+		frontRightDriveRot.setStatusFrameRateMs(StatusFrameRate.General, 10);
+		backRightDriveRot.setStatusFrameRateMs(StatusFrameRate.General, 10);
+		frontLeftDriveRot.setStatusFrameRateMs(StatusFrameRate.General, 10);
+		backLeftDriveRot.setStatusFrameRateMs(StatusFrameRate.General, 10);
+		
+		frontRightDriveRot.setStatusFrameRateMs(StatusFrameRate.Feedback, 10);
+		backRightDriveRot.setStatusFrameRateMs(StatusFrameRate.Feedback, 10);
+		frontLeftDriveRot.setStatusFrameRateMs(StatusFrameRate.Feedback, 10);
+		backLeftDriveRot.setStatusFrameRateMs(StatusFrameRate.Feedback, 10);
 		
 		frontRightDrive = new CANTalon(15);
 		frontLeftDrive = new CANTalon(14);

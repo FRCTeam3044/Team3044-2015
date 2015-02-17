@@ -47,8 +47,8 @@ public class Arm {
 	int WinchState = WinchTransport;
 	int ScrewState = ScrewTransport;
 
-	final double WINCH_SPEED = .25;
-	final double SCREW_SPEED = .5;
+	final double WINCH_SPEED = .35;
+	final double SCREW_SPEED = .75;
 
 	int BothState = TransportMode;
 	
@@ -56,7 +56,7 @@ public class Arm {
 
 	Components components = Components.getInstance();
 	Encoder screwEncoder = components.encoderScrew;
-	AnalogInput WinchPot = components.encoderWinch;
+	AnalogInput WinchPot = components.winchPot;
 	DigitalInput screwLimitSwitch = components.armScrewOut;
 
 	public void robotInit() {
@@ -86,95 +86,6 @@ public class Arm {
 		ButtonBothInUp = ArmJoy.getRawButton(components.SCREW_IN_BUTTON);
 		ButtonA = ArmJoy.getRawButton(components.WINCH_UP_BUTTON);
 		ButtonB = ArmJoy.getRawButton(components.WINCH_DOWN_BUTTON);
-//
-//		switch (WinchState) {
-//		case WinchTransport:
-//			if (!components.ArmExtended.get()) {
-//				if (ButtonB == true) {
-//					components.winchMotor.set(-WINCH_SPEED);
-//					WinchState = WinchMovingDown;
-//				}
-//			}
-//			break;
-//		case WinchMovingDown:
-//			if (components.ArmExtended.get() || ButtonB == false) {
-//				components.winchMotor.set(0);
-//				WinchState = WinchStopped;
-//			}
-//			break;
-//		case WinchStopped:
-//			if (!components.ArmRetracted.get()) {
-//				if (ButtonA == true) {
-//					components.winchMotor.set(WINCH_SPEED);
-//					WinchState = WinchMovingUp;
-//				}
-//				if (ButtonB == true && !components.ArmExtended.get()) {
-//					if (ButtonB == true) {
-//						components.winchMotor.set(-WINCH_SPEED);
-//						WinchState = WinchMovingDown;
-//
-//					}
-//				}
-//
-//			}break;
-//		case WinchMovingUp:
-//			if (components.ArmRetracted.get()) {
-//				components.winchMotor.set(0);
-//				WinchState = WinchTransport;
-//			}
-//			if (ButtonB == false) {
-//				components.winchMotor.set(0);
-//				WinchState = WinchStopped;
-//			}break;
-//		}
-//		// //////////////SCREW TELEOP/////////////////////////
-//		switch (ScrewState) {
-//		case ScrewTransport:
-//			if (!components.armScrewOut.get()) {
-//				if (ButtonBothOutDown == true) {
-//					
-//					components.screwMotor.set(SCREW_SPEED);
-//					ScrewState = ScrewMovingOut;
-//				}
-//
-//			}
-//		case ScrewMovingOut:
-//			if (components.armScrewOut.get() || ButtonBothOutDown == false) {
-//				
-//				components.screwMotor.set(0);
-//				ScrewState = ScrewStopped;
-//			}
-//			break;
-//			
-//		case ScrewStopped:
-//			if (!components.armScrewIn.get()) {
-//				if (ButtonBothInUp == true) {
-//					
-//					components.screwMotor.set(-SCREW_SPEED);
-//					ScrewState = ScrewMovingIn;
-//				}
-//				if (ButtonBothOutDown == true && !components.armScrewOut.get()) {
-//					if (ButtonBothOutDown == true) {
-//						
-//						components.screwMotor.set(SCREW_SPEED);
-//						ScrewState = ScrewMovingOut;
-//
-//					}
-//				}
-//
-//			}
-//			break;
-//		case ScrewMovingIn:
-//			if (components.armScrewIn.get()) {
-//				components.screwMotor.set(0);
-//				ScrewState = ScrewTransport;
-//			}
-//			if (ButtonBothOutDown == false) {
-//				components.winchMotor.set(0);
-//				WinchState = WinchStopped;
-//			}
-//			break;
-//		}
 
 		switch (WinchState) {
 		case WinchTransport:
@@ -226,7 +137,7 @@ public class Arm {
 			}
 			break;
 		case ScrewMovingOut:
-			if (screwLimitSwitch.get() || joy.getRawButton(7) == false) {
+			if (!screwLimitSwitch.get() || joy.getRawButton(7) == false) {
 
 				components.screwMotor.set(0);
 				ScrewState = ScrewStopped;
@@ -284,8 +195,8 @@ public class Arm {
 		// ArmJoy.getRawButton(components.SCREW_IN_BUTTON);//check which one not
 		// used
 		// WinchButtonOut1 = ArmJoy.getRawButton(components.SCREW_OUT_BUTTON);
-		ButtonBothInUp = ArmJoy.getRawButton(components.BOTH_IN_UP_BUTTON);// ButtonY
-		ButtonBothOutDown = ArmJoy.getRawButton(components.BOTH_OUT_DOWN_BUTTON);// ButtonX
+		//ButtonBothInUp = ArmJoy.getRawButton(components.BOTH_IN_UP_BUTTON);// ButtonY
+		//ButtonBothOutDown = ArmJoy.getRawButton(components.BOTH_OUT_DOWN_BUTTON);// ButtonX
 
 		double voltX = 0;
 		double voltY = 1; // need real voltage value

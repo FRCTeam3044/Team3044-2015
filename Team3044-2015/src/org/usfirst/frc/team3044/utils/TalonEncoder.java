@@ -2,6 +2,7 @@ package org.usfirst.frc.team3044.utils;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
+import edu.wpi.first.wpilibj.CANTalon.StatusFrameRate;
 
 public class TalonEncoder {
 	
@@ -12,10 +13,15 @@ public class TalonEncoder {
 	public TalonEncoder(CANTalon talonInstance){
 		this.talonInstance = talonInstance;
 		this.talonInstance.setFeedbackDevice(FeedbackDevice.QuadEncoder);
+		
 	}
 	
 	public void reset(){
 		talonInstance.setPosition(0);
+	}
+	
+	public void reset(int pos){
+		talonInstance.setPosition(pos);
 	}
 	
 	public double getDistance(){

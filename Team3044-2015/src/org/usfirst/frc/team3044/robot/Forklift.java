@@ -77,7 +77,7 @@ public class Forklift {
 	}
 
 	public void forkliftPeriodic() {
-		System.out.println(ForkliftState);
+		
 		
 		switch(compressorState){
 		case COMPRESSOR_ON:

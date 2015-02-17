@@ -1,5 +1,6 @@
 package org.usfirst.frc.team3044.DriverStation;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 
 public class SecondaryController {
@@ -15,8 +16,18 @@ public class SecondaryController {
 	public int BUTTON_RT = 6;
 	public int BUTTON_LT = 5;
 	
+	public boolean buttonOne = false;
+	public boolean buttonTwo = false;
+	public boolean buttonThree = false;
+	public boolean buttonFour = false;
+	public boolean buttonFive = false;
+	public boolean buttonSix = false;
+	public boolean buttonSeven = false;
+	public boolean buttonEight = false;
+	public boolean buttonNine = false;
+	public boolean buttonTen = false;
+	public boolean buttonEleven = false;
 	
-	//Do we want to do this for filtering inputs?
 	private SecondaryController(){
 		secondaryJoy = new Joystick(1);
 	}
@@ -56,6 +67,40 @@ public class SecondaryController {
 
 
 	public boolean getRawButton(int num){
-		return secondaryJoy.getRawButton(num);
+		if(num < 1){
+			System.out.println("Secondary Controller! Buttons start at 1");
+			num = 20;
+		}
+		if(!DriverStation.getInstance().isAutonomous()){
+			return secondaryJoy.getRawButton(num);
+		}else{
+			switch(num){
+			default:
+				return false;
+			case 1:
+				return buttonOne;
+			case 2:
+				return buttonTwo;
+			case 3:
+				return buttonThree;
+			case 4: 
+				return buttonFour;
+			case 5:
+				return buttonFive;
+			case 6:
+				return buttonSix;
+			case 7:
+				return buttonSeven;
+			case 8:
+				return buttonEight;
+			case 9:
+				return buttonNine;
+			case 10:
+				return buttonTen;
+			case 11:
+				return buttonEleven;
+			}
+			
+		}
 	}
 }
