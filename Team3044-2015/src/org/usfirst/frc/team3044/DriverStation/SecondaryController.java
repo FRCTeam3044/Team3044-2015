@@ -72,7 +72,9 @@ public class SecondaryController {
 			num = 20;
 		}
 		if(!DriverStation.getInstance().isAutonomous()){
+			
 			return secondaryJoy.getRawButton(num);
+			
 		}else{
 			switch(num){
 			default:

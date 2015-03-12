@@ -36,9 +36,9 @@ public class Forklift {
 		components.forkliftRight1.set(0);
 		components.forkliftLeft2.set(0);
 		components.forkliftRight2.set(0);
-		components.forkliftClamp.set(false);
-		components.forkliftClamp2.set(true);
-		components.compressor.setClosedLoopControl(true);
+//		components.forkliftClamp.set(false);
+//		components.forkliftClamp2.set(true);
+//		components.compressor.setClosedLoopControl(true);
 	}
 
 	public void teleopInit() {
@@ -47,10 +47,10 @@ public class Forklift {
 		components.forkliftRight1.set(0);
 		components.forkliftLeft2.set(0);
 		components.forkliftRight2.set(0);
-		components.forkliftClamp.set(false);
-		components.forkliftClamp2.set(true);
-		components.compressor.setClosedLoopControl(true);
-		components.compressor.start();
+//		components.forkliftClamp.set(false);
+//		components.forkliftClamp2.set(true);
+//		components.compressor.setClosedLoopControl(true);
+//		components.compressor.start();
 	}
 
 	public void autoInit() {
@@ -59,10 +59,10 @@ public class Forklift {
 		components.forkliftRight1.set(0);
 		components.forkliftLeft2.set(0);
 		components.forkliftRight2.set(0);
-		components.forkliftClamp.set(false);
-		components.forkliftClamp2.set(true);
-		components.compressor.setClosedLoopControl(true);
-		components.compressor.start();
+//		components.forkliftClamp.set(false);
+//		components.forkliftClamp2.set(true);
+//		components.compressor.setClosedLoopControl(true);
+//		components.compressor.start();
 	
 	}
 
@@ -72,13 +72,13 @@ public class Forklift {
 		components.forkliftRight1.set(0);
 		components.forkliftLeft2.set(0);
 		components.forkliftRight2.set(0);
-		components.forkliftClamp.set(false);
-		components.forkliftClamp2.set(true);
+//		components.forkliftClamp.set(false);
+//		components.forkliftClamp2.set(true);
 	}
 
 	public void forkliftPeriodic() {
 		
-		
+		/*
 		switch(compressorState){
 		case COMPRESSOR_ON:
 			if(Joy.getRawButton(7)){
@@ -89,8 +89,9 @@ public class Forklift {
 		case COMPRESSOR_OFF:
 			if(Joy.getRawButton(8))
 			break;
-		}
+		}*/
 		
+		/*
 		switch(forkPosState){
 		case OUT:
 			if (Joy.getRawButton(Joy.BUTTON_X)) {// CHANGE
@@ -107,6 +108,7 @@ public class Forklift {
 			}
 			break;
 		}
+		*/
 		
 		switch (ForkliftState) {
 		// SPACE

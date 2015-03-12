@@ -2,34 +2,62 @@ package org.usfirst.frc.team3044.utils;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
-import edu.wpi.first.wpilibj.CANTalon.StatusFrameRate;
+import edu.wpi.first.wpilibj.Encoder;
 
 public class TalonEncoder {
-	
+
 	private CANTalon talonInstance;
-	
-	//Is this even worth implementing
-	
-	public TalonEncoder(CANTalon talonInstance){
+	private Encoder encoderInstance;
+	boolean isTalon = false;
+	double offsetValue = 0;
+
+	// Is this even worth implementing
+
+	public TalonEncoder(CANTalon talonInstance) {
+		isTalon = true;
 		this.talonInstance = talonInstance;
 		this.talonInstance.setFeedbackDevice(FeedbackDevice.QuadEncoder);
-		
+
 	}
-	
-	public void reset(){
-		talonInstance.setPosition(0);
+
+	public TalonEncoder(Encoder enc) {
+		this.encoderInstance = enc;
+		isTalon = false;
 	}
-	
-	public void reset(int pos){
-		talonInstance.setPosition(pos);
+
+	public void reset() {
+		if (isTalon) {
+			talonInstance.setPosition(0);
+		} else {
+			encoderInstance.reset();
+		}
 	}
-	
-	public double getDistance(){
-		return -(talonInstance.getPosition()/4.0);
+
+	public void reset(int pos) {
+		if (isTalon){
+			talonInstance.setPosition(0);
+			this.offsetValue = pos;
+		}else{
+			encoderInstance.reset();
+			this.offsetValue = pos;
+		}
 	}
-	
-	public double getSpeed(){
-		return -talonInstance.getSpeed();
+
+	public double getDistance() {
+		if (isTalon) {
+			return -(talonInstance.getPosition() / 4.0) - offsetValue;
+		} else {
+			return encoderInstance.getDistance() - offsetValue;
+		}
+	}
+
+	public double getSpeed() {
+		if(isTalon){
+			return -talonInstance.getSpeed();
+		}else{
+			return encoderInstance.getRate();
+			
+		}
 	}
 
 }

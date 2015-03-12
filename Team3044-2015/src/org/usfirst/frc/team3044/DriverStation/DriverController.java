@@ -69,33 +69,35 @@ public class DriverController {
 	public boolean getRawButton(int num) {
 		if (!DriverStation.getInstance().isAutonomous()) {
 			return driverJoy.getRawButton(num);
-			
-		}
-		switch (num) {
-		default:
-			return false;
-		case 1:
-			return buttonOne;
-		case 2:
-			return buttonTwo;
-		case 3:
-			return buttonThree;
-		case 4:
-			return buttonFour;
-		case 5:
-			return buttonFive;
-		case 6:
-			return buttonSix;
-		case 7:
-			return buttonSeven;
-		case 8:
-			return buttonEight;
-		case 9:
-			return buttonNine;
-		case 10:
-			return buttonTen;
-		case 11:
-			return buttonEleven;
+
+		} else {
+			System.out.println("driverController auto");
+			switch (num) {
+			default:
+				return false;
+			case 1:
+				return buttonOne;
+			case 2:
+				return buttonTwo;
+			case 3:
+				return buttonThree;
+			case 4:
+				return buttonFour;
+			case 5:
+				return buttonFive;
+			case 6:
+				return buttonSix;
+			case 7:
+				return buttonSeven;
+			case 8:
+				return buttonEight;
+			case 9:
+				return buttonNine;
+			case 10:
+				return buttonTen;
+			case 11:
+				return buttonEleven;
+			}
 		}
 	}
 }

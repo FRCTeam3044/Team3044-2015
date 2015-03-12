@@ -11,6 +11,21 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Arm {
 	SecondaryController ArmJoy = SecondaryController.getInstance();
 
+	final int SCREW_ENC_MAX_DIST = 500;
+	final int SCREW_ENC_READY_TO_LIFT = 500;
+	final int SCREW_ENC_LIFTED = 500;
+	final int SCREW_ENC_RELEASE = 500;
+
+	final double WINCH_POT_HOME = 3.5;
+	final double WINCH_POT_MAX = 1.92;
+	final double WINCH_POT_LIFTED = 2.5;
+	final double WINCH_POT_RELEASE = 3.0;
+
+	final double POT_INCREMENTER = .2;
+
+	double currentWinchPos = 0;
+	double targetWinchPos = 0;
+
 	// BUTTONS
 
 	boolean ButtonBothInUp = true;
@@ -45,13 +60,17 @@ public class Arm {
 	final int WinchMovingUp = 4;
 
 	int WinchState = WinchTransport;
-	int ScrewState = ScrewTransport;
+	int ScrewState = ScrewStopped;
 
-	final double WINCH_SPEED = .35;
-	final double SCREW_SPEED = .75;
+	final double WINCH_SPEED = -.45;
+	final double SCREW_SPEED = .8;
 
 	int BothState = TransportMode;
-	
+
+	int armSystemState = 0;
+	final int SYSTEM_INIT = 0;
+	final int SYSTEM_OPERATION = 1;
+
 	SecondaryController joy = SecondaryController.getInstance();
 
 	Components components = Components.getInstance();
@@ -87,38 +106,53 @@ public class Arm {
 		ButtonA = ArmJoy.getRawButton(components.WINCH_UP_BUTTON);
 		ButtonB = ArmJoy.getRawButton(components.WINCH_DOWN_BUTTON);
 
+		System.out.println("POT: "  + WinchPot.getVoltage());
+		System.out.println("ENC: " + this.screwEncoder.getRaw());
+		System.out.println("Switch: " + this.screwLimitSwitch.get());
+		
+		if(!this.screwLimitSwitch.get()){
+			screwEncoder.reset();
+		}
+		
 		switch (WinchState) {
 		case WinchTransport:
-			if (joy.getRawButton(joy.BUTTON_LT) == true) {
-				//if (WinchPot.getVoltage() > this.winchLowerPotVal) {
-					components.winchMotor.set(-WINCH_SPEED);
-					WinchState = WinchMovingDown;
-				//}
+			if (joy.getRawButton(joy.BUTTON_LT)) {
+				components.winchMotor.set(WINCH_SPEED);
+				WinchState = WinchMovingDown;
+
 			}
 			break;
 		case WinchMovingDown:
-			if (joy.getRawButton(joy.BUTTON_LT) == false) {
+			if (!joy.getRawButton(joy.BUTTON_LT) || WinchPot.getVoltage() < this.WINCH_POT_MAX) {
 				components.winchMotor.set(0);
 				WinchState = WinchStopped;
+				targetWinchPos = WinchPot.getVoltage();
 			}
 
 			break;
 		case WinchStopped:
-
-			if (joy.getRawButton(joy.BUTTON_RT) == true) {
-				components.winchMotor.set(WINCH_SPEED);
+			if (joy.getRawButton(joy.BUTTON_RT)) {
+				components.winchMotor.set(-WINCH_SPEED);
 				WinchState = WinchMovingUp;
 
 			}
-			if (joy.getRawButton(joy.BUTTON_LT) == true) {
-				components.winchMotor.set(-WINCH_SPEED);
+			if (joy.getRawButton(joy.BUTTON_LT)) {
+				components.winchMotor.set(WINCH_SPEED);
 				WinchState = WinchMovingDown;
 
 			}
-
+			
+			if(this.WinchPot.getVoltage() < this.targetWinchPos){
+				components.winchMotor.set(-WINCH_SPEED);
+				WinchState = WinchMovingUp;
+			}
 			break;
 		case WinchMovingUp:
-			if (joy.getRawButton(joy.BUTTON_RT) == false) {
+			if (!joy.getRawButton(joy.BUTTON_RT)) {
+				components.winchMotor.set(0);
+				WinchState = WinchStopped;
+				targetWinchPos = WinchPot.getVoltage();
+			} else if (targetWinchPos > WinchPot.getVoltage() || WinchPot.getVoltage() > this.WINCH_POT_HOME) {
 				components.winchMotor.set(0);
 				WinchState = WinchStopped;
 			}
@@ -129,15 +163,15 @@ public class Arm {
 		case ScrewTransport:
 			if (screwLimitSwitch.get()) {
 				if (joy.getRawButton(7) == true) {
-
 					components.screwMotor.set(SCREW_SPEED);
 					ScrewState = ScrewMovingOut;
 				}
 
 			}
 			break;
+
 		case ScrewMovingOut:
-			if (!screwLimitSwitch.get() || joy.getRawButton(7) == false) {
+			if (/*!screwLimitSwitch.get() || */joy.getRawButton(7) == false) {
 
 				components.screwMotor.set(0);
 				ScrewState = ScrewStopped;
@@ -151,7 +185,7 @@ public class Arm {
 				components.screwMotor.set(-SCREW_SPEED);
 				ScrewState = ScrewMovingIn;
 			}
-			if (joy.getRawButton(7) == true && screwLimitSwitch.get()) {
+			if (joy.getRawButton(7) == true) {
 
 				components.screwMotor.set(SCREW_SPEED);
 				ScrewState = ScrewMovingOut;
@@ -170,8 +204,6 @@ public class Arm {
 
 	}
 
-	
-
 	public void disabled() {
 		BothState = TransportMode;
 		components.screwMotor.set(0);
@@ -189,22 +221,11 @@ public class Arm {
 				String.valueOf(components.armScrewIn.get()));
 		ButtonZ = ArmJoy.getRawButton(components.SCREW_IN_BUTTON);// rename
 																	// for
-																	// both
-		// Buttonz
-		// WinchButtonIn1 =
-		// ArmJoy.getRawButton(components.SCREW_IN_BUTTON);//check which one not
-		// used
-		// WinchButtonOut1 = ArmJoy.getRawButton(components.SCREW_OUT_BUTTON);
-		//ButtonBothInUp = ArmJoy.getRawButton(components.BOTH_IN_UP_BUTTON);// ButtonY
-		//ButtonBothOutDown = ArmJoy.getRawButton(components.BOTH_OUT_DOWN_BUTTON);// ButtonX
-
 		double voltX = 0;
 		double voltY = 1; // need real voltage value
 		double posX = 1;
 		double posY = 2;
 		double posZ = 3;
-
-		// SliderButtonIn1 = ArmJoy.getRawButton(components.ARM_IN_BUTTON);
 
 		switch (BothState) {
 		case TransportMode: // ArmExtended is Winch LimitSwitch
