@@ -33,13 +33,13 @@ public class TalonEncoder {
 		}
 	}
 
-	public void reset(int pos) {
+	public void reset(double flOffset) {
 		if (isTalon){
 			talonInstance.setPosition(0);
-			this.offsetValue = pos;
+			this.offsetValue = flOffset;
 		}else{
 			encoderInstance.reset();
-			this.offsetValue = pos;
+			this.offsetValue = flOffset;
 		}
 	}
 

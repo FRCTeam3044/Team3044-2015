@@ -62,8 +62,11 @@ public class Arm {
 	int WinchState = WinchTransport;
 	int ScrewState = ScrewStopped;
 
-	final double WINCH_SPEED = -.45;
+	final double WINCH_SPEED = -1;
 	final double SCREW_SPEED = .8;
+	
+	int specialOutState = 0;
+	
 
 	int BothState = TransportMode;
 
@@ -113,6 +116,7 @@ public class Arm {
 		if(!this.screwLimitSwitch.get()){
 			screwEncoder.reset();
 		}
+
 		
 		switch (WinchState) {
 		case WinchTransport:
@@ -123,7 +127,7 @@ public class Arm {
 			}
 			break;
 		case WinchMovingDown:
-			if (!joy.getRawButton(joy.BUTTON_LT) || WinchPot.getVoltage() < this.WINCH_POT_MAX) {
+			if (!joy.getRawButton(joy.BUTTON_LT)/* || WinchPot.getVoltage() < this.WINCH_POT_MAX*/) {
 				components.winchMotor.set(0);
 				WinchState = WinchStopped;
 				targetWinchPos = WinchPot.getVoltage();
@@ -140,22 +144,21 @@ public class Arm {
 				components.winchMotor.set(WINCH_SPEED);
 				WinchState = WinchMovingDown;
 
-			}
-			
+			}/*
 			if(this.WinchPot.getVoltage() < this.targetWinchPos){
 				components.winchMotor.set(-WINCH_SPEED);
 				WinchState = WinchMovingUp;
-			}
+			}*/
 			break;
 		case WinchMovingUp:
 			if (!joy.getRawButton(joy.BUTTON_RT)) {
 				components.winchMotor.set(0);
 				WinchState = WinchStopped;
 				targetWinchPos = WinchPot.getVoltage();
-			} else if (targetWinchPos > WinchPot.getVoltage() || WinchPot.getVoltage() > this.WINCH_POT_HOME) {
+			} /*else if (targetWinchPos > WinchPot.getVoltage() || WinchPot.getVoltage() > this.WINCH_POT_HOME) {
 				components.winchMotor.set(0);
 				WinchState = WinchStopped;
-			}
+			}*/
 			break;
 		}
 

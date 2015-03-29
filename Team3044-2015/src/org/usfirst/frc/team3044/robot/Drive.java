@@ -1,13 +1,14 @@
 package org.usfirst.frc.team3044.robot;
 
 import org.usfirst.frc.team3044.DriverStation.DriverController;
+import org.usfirst.frc.team3044.DriverStation.SecondaryController;
 import org.usfirst.frc.team3044.utils.Components;
 import org.usfirst.frc.team3044.utils.TalonEncoder;
 
 import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.CANJaguar;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Drive {
@@ -21,6 +22,7 @@ public class Drive {
 
 	final int FULL_ROT = 418;
 	final int HALF_ROT = 209;
+	public boolean wheelsCalibrated = false;
 
 	TalonEncoder LeftFrontEn;
 	TalonEncoder RightFrontEn;
@@ -36,15 +38,15 @@ public class Drive {
 
 	int testCode = 1;
 
-	CANJaguar LeftFrontTurn;
-	CANJaguar RightFrontTurn;
-	CANJaguar RightBackTurn;
-	CANJaguar LeftBackTurn;
+	CANTalon LeftFrontTurn;
+	CANTalon RightFrontTurn;
+	CANTalon RightBackTurn;
+	CANTalon LeftBackTurn;
 
-	CANJaguar LeftFrontDrive;
-	CANJaguar RightFrontDrive;
-	CANJaguar RightBackDrive;
-	CANJaguar LeftBackDrive;
+	CANTalon LeftFrontDrive;
+	CANTalon RightFrontDrive;
+	CANTalon RightBackDrive;
+	CANTalon LeftBackDrive;
 
 	AnalogInput TopLightL;
 	AnalogInput MidLightL;
@@ -155,13 +157,25 @@ public class Drive {
 	final int RUNNING = 1;
 	final int CALIB_INIT = 2;
 
-	final int FR_TICKS_TO_STRAIGHT = 153 * 4;
-	final int BR_TICKS_TO_STRAIGHT = 151 * 4;
-	final int FL_TICKS_TO_STRAIGHT = 44 * 4;
-	final int BL_TICKS_TO_STRAIGHT = 45 * 4;
-
 	final double CALIB_SPEED = .3;
 	public double lineFollowSpeed = .3;
+
+	public void Init() {
+		driveState = 1;
+		flState = 0;
+		blState = 0;
+		frState = 0;
+		frState = 0;
+		LeftFrontTurn.set(0);
+		RightFrontTurn.set(0);
+		RightBackTurn.set(0);
+		LeftBackTurn.set(0);
+
+		LeftFrontDrive.set(0);
+		RightFrontDrive.set(0);
+		RightBackDrive.set(0);
+		LeftBackDrive.set(0);
+	}
 
 	public double Deadband(double value, double band) {
 		if (Math.abs(value) < band) {
@@ -172,18 +186,13 @@ public class Drive {
 
 	public double Turn(double target, double val) {
 		double MotorTurn = 0;
-		double MS1 = .75;// .7;
+		double MS1 = .8;// .7;
 		double MS2 = .2;// .2;
-		double MS3 = .1;// .15;
+		double MS3 = .15;// .15;
 		double Tol1 = .2;// .1;
 		double Tol2 = .1;// .05;
-		double Tol3 = .04;// .02;
+		double Tol3 = .02;// .02;
 		double Diff = Math.abs(target - val);
-		SmartDashboard.putString("DB/String 5", String.valueOf(Diff));
-		SmartDashboard.putString("DB/String 6", String.valueOf(target));
-		SmartDashboard.putString("DB/String 7", String.valueOf(val));
-		SmartDashboard.putString("DB/String 8",
-				String.valueOf(this.RightBackEn.getDistance()));
 
 		if (Diff <= 1) {
 			if (val > target + Tol1) {
@@ -414,21 +423,28 @@ public class Drive {
 		RightFrontEn.reset();
 		RightBackEn.reset();
 		LeftBackEn.reset();
+		this.Init();
 	}
 
 	int flState = 0;
-	int flOffset = 0;
+	double flOffset = 328.5;
 
 	public boolean calibFL() {
 		switch (flState) {
 		case 0:
-			if (!frontLeftMag.get()) {
-				this.LeftFrontTurn.set(0);
-				this.LeftFrontEn.reset(flOffset);
-				flState += 1;
+			if (frontLeftMag.get()) {
+				flState = 1;
 			}
 			return false;
+
 		case 1:
+			if (!frontLeftMag.get()) {
+				this.LeftFrontEn.reset(flOffset);
+				this.LeftFrontTurn.set(0);
+				flState = 2;
+			}
+			return false;
+		case 2:
 			return true;
 		default:
 			return false;
@@ -437,18 +453,23 @@ public class Drive {
 	}
 
 	int frState = 0;
-	int frOfsett = 0;
+	double frOfsett = 282.25;
 
 	public boolean calibFR() {
 		switch (frState) {
 		case 0:
-			if (!frontLeftMag.get()) {
-				this.RightFrontTurn.set(0);
-				this.RightFrontEn.reset(frOfsett);
-				frState += 1;
+			if (frontRightMag.get()) {
+				frState = 1;
 			}
 			return false;
 		case 1:
+			if (!frontRightMag.get()) {
+				this.RightFrontEn.reset(frOfsett);
+				this.RightFrontTurn.set(0);
+				frState = 2;
+			}
+			return false;
+		case 2:
 			return true;
 		default:
 			return false;
@@ -457,18 +478,22 @@ public class Drive {
 	}
 
 	int blState = 0;
-	int blOffset = 0;
+	double blOffset = 335;
 
 	public boolean calibBL() {
 		switch (blState) {
 		case 0:
+			if (backLeftMag.get()) {
+				blState = 1;
+			}
+		case 1:
 			if (!backLeftMag.get()) {
 				this.LeftBackTurn.set(0);
 				this.LeftBackEn.reset(blOffset);
 				blState += 1;
 			}
 			return false;
-		case 1:
+		case 2:
 			return true;
 		default:
 			return false;
@@ -477,18 +502,22 @@ public class Drive {
 	}
 
 	int brState = 0;
-	int brOfsett = 0;
+	double brOfsett = 279;
 
 	public boolean calibBR() {
 		switch (brState) {
 		case 0:
+			if (backRightMag.get()) {
+				brState = 1;
+			}
+		case 1:
 			if (!backRightMag.get()) {
 				this.RightBackTurn.set(0);
 				this.RightBackEn.reset(brOfsett);
 				brState += 1;
 			}
 			return false;
-		case 1:
+		case 2:
 			return true;
 		default:
 			return false;
@@ -516,23 +545,50 @@ public class Drive {
 	double oldStrafe = 0;
 	double oldRotate = 0;
 
+	public double getStrafe() {
+		return Strafe;
+	}
+
+	public void setStrafe(double strafe) {
+		Strafe = strafe;
+	}
+
+	public double getForward() {
+		return Forward;
+	}
+
+	public void setForward(double forward) {
+		Forward = -forward;
+	}
+
+	public double getRotate() {
+		return Rotate;
+	}
+
+	public void setRotate(double rotate) {
+		Rotate = rotate;
+	}
+
+	boolean isFLC = false;
+	boolean isFRC = false;
+	boolean isBLC = false;
+	boolean isBRC = false;
+
 	public void teleopPeriodic() {
+		SmartDashboard.putString("DB/String 5",
+				String.valueOf(this.LeftFrontEn.getDistance()));
+		SmartDashboard.putString("DB/String 6",
+				String.valueOf(this.RightFrontEn.getDistance()));
+		SmartDashboard.putString("DB/String 8",
+				String.valueOf(this.RightBackEn.getDistance()));
+		SmartDashboard.putString("DB/String 7",
+				String.valueOf(this.LeftBackEn.getDistance()));
 
-		Forward = -Deadband(DriveJoy.getRightY(), .01);
-		Strafe = Deadband(DriveJoy.getRightX(), .01);
-		Rotate = Deadband(DriveJoy.getLeftX(), .01);
-
-		if (Forward == 0) {
-			Forward = oldForward;
+		if (!DriverStation.getInstance().isAutonomous()) {
+			Forward = -Deadband(DriveJoy.getRightY(), .2);
+			Strafe = Deadband(DriveJoy.getRightX(), .2);
+			Rotate = Deadband(DriveJoy.getLeftX(), .2);
 		}
-		if (Strafe == 0) {
-			Strafe = oldStrafe;
-		}
-		if (Rotate == 0) {
-			Rotate = oldRotate;
-		}
-
-		// System.out.println(LeftFrontEn == null);
 
 		calculateTurnEcnValues();
 		// Drive = DriveJoy.getTriggerRight() - DriveJoy.getTriggerLeft();
@@ -555,55 +611,53 @@ public class Drive {
 		switch (driveState) {
 		case RUNNING:
 
-			if (DriveJoy.getTriggerLeft() > .5) {
-				/*
-				 * WheelLFS = Deadband(DriveJoy.getLeftY(),.1); WheelRFS =
-				 * Deadband(DriveJoy.getLeftY(),.1); WheelRBS =
-				 * Deadband(DriveJoy.getRightY(),.1); WheelLBS =
-				 * Deadband(DriveJoy.getRightY(),.1); LeftFrontTurn.set(Turn(.5,
-				 * ActDistanceLF)); RightFrontTurn.set(Turn(.5, ActDistanceRF));
-				 * RightBackTurn.set(Turn(.5, ActDistanceRB));
-				 * LeftBackTurn.set(Turn(.5, ActDistanceLB));
-				 */
+			if (/* DriveJoy.getTriggerLeft() > .5 */false) {
 
-				LeftFrontTurn.set(Turn(WheelLFA, ActDistanceLF));
-				RightFrontTurn.set(Turn(WheelRFA, ActDistanceRF));
-				RightBackTurn.set(Turn(WheelRBA, ActDistanceRB));
-				LeftBackTurn.set(Turn(WheelLBA, ActDistanceLB));
+				if (Strafe > .5 || Rotate > 0.5) {
+					LeftFrontTurn.set(Turn(WheelLFA, ActDistanceLF));
+					RightFrontTurn.set(Turn(WheelRFA, ActDistanceRF));
+					RightBackTurn.set(Turn(WheelRBA, ActDistanceRB));
+					LeftBackTurn.set(Turn(WheelLBA, ActDistanceLB));
+				}
 
 			} else {
 				WheelLFA = Math.atan2(B, D) * Count;
 				WheelRFA = Math.atan2(B, C) * Count;
 				WheelRBA = Math.atan2(A, C) * Count;
 				WheelLBA = Math.atan2(A, D) * Count;
-				LeftFrontTurn.set(Turn(WheelLFA, ActDistanceLF));
-				RightFrontTurn.set(Turn(WheelRFA, ActDistanceRF));
-				RightBackTurn.set(Turn(WheelRBA, ActDistanceRB));
-				LeftBackTurn.set(Turn(WheelLBA, ActDistanceLB));
+				if (Strafe != 0 || Rotate != 0 || Forward != 0) {
+					LeftFrontTurn.set(Turn(WheelLFA, ActDistanceLF));
+					RightFrontTurn.set(Turn(WheelRFA, ActDistanceRF));
+					RightBackTurn.set(Turn(WheelRBA, ActDistanceRB));
+					LeftBackTurn.set(Turn(WheelLBA, ActDistanceLB));
+				} else {
+					LeftFrontTurn.set(0);
+					RightFrontTurn.set(0);
+					RightBackTurn.set(0);
+					LeftBackTurn.set(0);
+				}
 
 			}
-			if (DriveJoy.getTriggerRight() < .3) {
-				if (DriveJoy.getRawButton(10)) {
-					LeftFrontDrive.set(Speed(WheelLFS));
-					RightFrontDrive.set(Speed(WheelRFS));
-					RightBackDrive.set(Speed(WheelRBS));
-					LeftBackDrive.set(Speed(WheelLBS));
-				} else if (DriveJoy.getRawButton(DriveJoy.BUTTON_RT)) {
-					LeftFrontDrive.set(Speed(-.2));
-					RightFrontDrive.set(Speed(-.2));
-					RightBackDrive.set(Speed(-.2));
-					LeftBackDrive.set(Speed(-.2));
-					System.out.println("Button");
-				} else if (DriveJoy.getRawButton(DriveJoy.BUTTON_LT)) {
-					LeftFrontDrive.set(Speed(.2));
-					RightFrontDrive.set(Speed(.2));
-					RightBackDrive.set(Speed(.2));
-					LeftBackDrive.set(Speed(.2));
+			if (true/* DriveJoy.getTriggerRight() < .3 */) {
+				if (DriveJoy.getTriggerLeft() > .1) {
+					LeftFrontDrive.set(DriveJoy.getTriggerLeft() / 2);
+					RightFrontDrive.set(DriveJoy.getTriggerLeft() / 2);
+					RightBackDrive.set(DriveJoy.getTriggerLeft() / 2);
+					LeftBackDrive.set(DriveJoy.getTriggerLeft() / 2);
 				} else {
-					LeftFrontDrive.set(Speed(WheelLFS) / 2);
-					RightFrontDrive.set(Speed(WheelRFS) / 2);
-					RightBackDrive.set(Speed(WheelRBS) / 2);
-					LeftBackDrive.set(Speed(WheelLBS) / 2);
+					if (DriveJoy.getRawButton(10)) {
+						LeftFrontDrive.set(Speed(WheelLFS));
+						RightFrontDrive.set(Speed(WheelRFS));
+						RightBackDrive.set(Speed(WheelRBS));
+						LeftBackDrive.set(Speed(WheelLBS));
+					}
+
+					else {
+						LeftFrontDrive.set(Speed(WheelLFS) / 2.3);
+						RightFrontDrive.set(Speed(WheelRFS) / 2.3);
+						RightBackDrive.set(Speed(WheelRBS) / 2.3);
+						LeftBackDrive.set(Speed(WheelLBS) / 2.3);
+					}
 				}
 			} else {
 				LeftFrontDrive.set(0);
@@ -614,19 +668,44 @@ public class Drive {
 			if (DriveJoy.getRawButton(DriveJoy.BUTTON_B)) {
 				driveState = CALIB_INIT;
 			}
+			if (DriveJoy.getRawButton(8)) {
+				LeftFrontTurn.set(Turn(0, ActDistanceLF));
+				RightFrontTurn.set(Turn(0, ActDistanceRF));
+				RightBackTurn.set(Turn(0, ActDistanceRB));
+				LeftBackTurn.set(Turn(0, ActDistanceLB));
+			}
+			SmartDashboard.putString("DB/String 2", "Runn");
 			break;
-		case CALIBRATING:
 			
-			if(this.calibFL()){
+		case CALIBRATING:
+			this.isBLC = this.calibBL();
+			this.isBRC = this.calibBR();
+			this.isFLC = this.calibFL();
+			this.isFRC = this.calibFR();
+			if (SecondaryController.getInstance().getRawButton(
+					DriveJoy.BUTTON_B)) {
+				this.driveState = this.RUNNING;
+			}
+			if (isBLC && isBRC && isFLC && isFRC) {
 				driveState = RUNNING;
+				SmartDashboard.putString("DB/String 2", "CAlib");
+				wheelsCalibrated = true;
 			}
 
 			break;
 		case CALIB_INIT:
+			wheelsCalibrated = false;
 			flState = 0;
+			frState = 0;
+			blState = 0;
+			brState = 0;
+			SmartDashboard.putString("DB/String 2", "CAlib INIT");
 			this.LeftFrontTurn.set(.4);
+			this.RightFrontTurn.set(.4);
+			this.LeftBackTurn.set(.4);
+			this.RightBackTurn.set(.4);
 			this.driveState = CALIBRATING;
-			
+
 			break;
 		}
 
@@ -656,19 +735,19 @@ public class Drive {
 		ActDistanceRB = Val(RightBackEn.getDistance());
 		Angle = SmartDashboard.getDouble("DB/Slider 2");
 		// FollowLine();
-
-		SmartDashboard.putString("DB/String 0", "CSL " + String.valueOf(CSL));
-		SmartDashboard.putString("DB/String 1", "MSL " + String.valueOf(MSL));
-		SmartDashboard.putString("DB/String 2", "RSL " + String.valueOf(RSL));
-		SmartDashboard.putString("DB/String 3", "CSR " + String.valueOf(CSR));
-		SmartDashboard.putString("DB/String 4", "MSR " + String.valueOf(MSR));
-		SmartDashboard.putString("DB/String 5", "RSR " + String.valueOf(RSR));
-		SmartDashboard.putString("DB/String 6", "L " + String.valueOf(L));
-		SmartDashboard.putString("DB/String 7", "R " + String.valueOf(R));
-		SmartDashboard.putString("DB/String 9", "LF " + String.valueOf(LF));
-		SmartDashboard.putString("DB/String 8", "RF " + String.valueOf(RF));
 		/*
-		 * SmartDashboard.putString("DB/String 3",
+		 * SmartDashboard.putString("DB/String 0", "CSL " +
+		 * String.valueOf(CSL)); SmartDashboard.putString("DB/String 1", "MSL "
+		 * + String.valueOf(MSL)); SmartDashboard.putString("DB/String 2",
+		 * "RSL " + String.valueOf(RSL));
+		 * SmartDashboard.putString("DB/String 3", "CSR " +
+		 * String.valueOf(CSR)); SmartDashboard.putString("DB/String 4", "MSR "
+		 * + String.valueOf(MSR)); SmartDashboard.putString("DB/String 5",
+		 * "RSR " + String.valueOf(RSR));
+		 * SmartDashboard.putString("DB/String 6", "L " + String.valueOf(L));
+		 * SmartDashboard.putString("DB/String 7", "R " + String.valueOf(R));
+		 * SmartDashboard.putString("DB/String 9", "LF " + String.valueOf(LF));
+		 * /* SmartDashboard.putString("DB/String 3",
 		 * String.valueOf(LeftFrontEn.getDistance()));
 		 * if(this.frontLeftMag.get()){ this.LeftFrontTurn.set(.7); }else{
 		 * this.LeftFrontEn.reset(); this.LeftFrontTurn.set(0); }

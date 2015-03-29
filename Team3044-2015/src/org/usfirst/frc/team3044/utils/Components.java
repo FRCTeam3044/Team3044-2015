@@ -3,6 +3,7 @@ package org.usfirst.frc.team3044.utils;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.CANJaguar;
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.CANTalon.StatusFrameRate;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -28,7 +29,10 @@ public class Components {
 		return instance;
 	}
 	
-	//public final int PCM_ID = 6;
+	public final int PCM_ID = 25;
+	
+	public final int FLMAGPOS = 10;
+	public final int BLMAGPOS = 13;
 	
 	
 	 /* This class is intended to store all of the objects for components of the robot
@@ -36,7 +40,7 @@ public class Components {
 	 */  
 	
 	//public Compressor compressor = new Compressor(PCM_ID);
-	/*
+	
 	public CANTalon frontRightDriveRot;
 	public CANTalon frontLeftDriveRot;
 	public CANTalon backRightDriveRot;
@@ -46,8 +50,9 @@ public class Components {
 	public CANTalon frontLeftDrive;
 	public CANTalon backRightDrive;
 	public CANTalon backLeftDrive;
-	*/
+	
 	//*********************************************************
+	/*
 	public CANJaguar frontRightDriveRot;
 	public CANJaguar frontLeftDriveRot;
 	public CANJaguar backRightDriveRot;
@@ -57,16 +62,17 @@ public class Components {
 	public CANJaguar frontLeftDrive;
 	public CANJaguar backRightDrive;
 	public CANJaguar backLeftDrive;
-	
+	*/
 	public CANJaguar forkliftLeft1;
 	public CANJaguar forkliftLeft2;
 	public CANJaguar forkliftRight1;
 	public CANJaguar forkliftRight2;
-	
+	/*
 	public Encoder leftFrontTurn = new Encoder(6,7);
 	public Encoder rightFrontTurn = new Encoder(8,9);
-	public Encoder leftBackTurn = new Encoder(18,19);
+	public Encoder leftBackTurn = new Encoder(2,3);//(18,19);
 	public Encoder rightBackTurn = new Encoder(20,21);
+	*/
 	//*********************************************************
 	public Jaguar winchMotor;
 	public Jaguar screwMotor;
@@ -78,15 +84,15 @@ public class Components {
 	//public Solenoid forkliftClamp = new Solenoid(PCM_ID,1);
 	//public Solenoid armSolenoid = new Solenoid(PCM_ID,3);
 	
-	public DigitalInput ArmExtended;// = new DigitalInput(2);
-	public DigitalInput ArmRetracted;// = new DigitalInput(3);
+	public DigitalInput ArmExtended = new DigitalInput(18);
+	public DigitalInput ArmRetracted = new DigitalInput(9);// = new DigitalInput(3);
 	
 	public DigitalInput armScrewOut = new DigitalInput(22);//= new DigitalInput(7);
 	public DigitalInput armScrewIn;// = new DigitalInput(4);
 	
-	public DigitalInput forkliftTote = new DigitalInput(24);
+	public DigitalInput forkliftTote = new DigitalInput(2);
 
-	public Encoder encoderScrew = new Encoder(3,4);
+	public Encoder encoderScrew = new Encoder(4,5);
 	public AnalogInput winchPot = new AnalogInput(0);
 
 	
@@ -105,19 +111,20 @@ public class Components {
 
 	public PowerDistributionPanel powerDistribution = new PowerDistributionPanel();
 	
-	public AnalogInput LightSensorFrontLeft = new AnalogInput(3);
-	public AnalogInput LightSensorFrontMid = new AnalogInput(2);
-	public AnalogInput LightSensorFrontRight = new AnalogInput(1);
-	public AnalogInput LightSensorBackLeft = new AnalogInput(6);
-	public AnalogInput LightSensorBackMid = new AnalogInput(5);
-	public AnalogInput LightSensorBackRight = new AnalogInput(4);
+	public AnalogInput LightSensorFrontLeft;/* = new AnalogInput(3);*/
+	public AnalogInput LightSensorFrontMid;/* = new AnalogInput(2);*/
+	public AnalogInput LightSensorFrontRight;/* = new AnalogInput(1);*/
+	public AnalogInput LightSensorBackLeft;/* = new AnalogInput(6);*/
+	public AnalogInput LightSensorBackMid;/* = new AnalogInput(5);*/
+	public AnalogInput LightSensorBackRight;/* = new AnalogInput(4);*/
 	
+	public AnalogInput leadscrewEncoder = new AnalogInput(3);
+		
 	
-	
-	public DigitalInput driveRotationFRMag = new DigitalInput(11);// = new DigitalInput(7);
-	public DigitalInput driveRotationBRMag = new DigitalInput(10);// = new DigitalInput(9);
-	public DigitalInput driveRotationFLMag = new DigitalInput(13);// = new DigitalInput(6);
-	public DigitalInput driveRotationBLMag = new DigitalInput(12);// = new DigitalInput(8);
+	public DigitalInput driveRotationFRMag = new DigitalInput(13);// = new DigitalInput(7);
+	public DigitalInput driveRotationBRMag = new DigitalInput(12);// = new DigitalInput(9);
+	public DigitalInput driveRotationFLMag = new DigitalInput(15);// = new DigitalInput(6);
+	public DigitalInput driveRotationBLMag = new DigitalInput(14);// = new DigitalInput(8);
 	
 	/*
 	public TalonEncoder rotEncoderFR;
@@ -149,11 +156,11 @@ public class Components {
 	public void init(){
 		//Set CANTalonIDs
 		
-		frontRightDriveRot = new CANJaguar(13);//new CANTalon(19);
-		frontLeftDriveRot = new CANJaguar(12);//new CANTalon(18);
-		backRightDriveRot = new CANJaguar(3);//new CANTalon(21);
-		backLeftDriveRot = new CANJaguar(4);//new CANTalon(20);
-		/*
+		frontRightDriveRot = /*new CANJaguar(13);//*/new CANTalon(19);
+		frontLeftDriveRot = /*new CANJaguar(12);//*/new CANTalon(18);
+		backRightDriveRot = /*new CANJaguar(3);//*/new CANTalon(21);
+		backLeftDriveRot = /*new CANJaguar(4);//*/new CANTalon(20);
+		
 		frontRightDriveRot.setStatusFrameRateMs(StatusFrameRate.QuadEncoder, 10);
 		backRightDriveRot.setStatusFrameRateMs(StatusFrameRate.QuadEncoder, 10);
 		frontLeftDriveRot.setStatusFrameRateMs(StatusFrameRate.QuadEncoder, 10);
@@ -168,18 +175,18 @@ public class Components {
 		backRightDriveRot.setStatusFrameRateMs(StatusFrameRate.Feedback, 10);
 		frontLeftDriveRot.setStatusFrameRateMs(StatusFrameRate.Feedback, 10);
 		backLeftDriveRot.setStatusFrameRateMs(StatusFrameRate.Feedback, 10);
-		*/
-		
-		frontRightDrive = new CANJaguar(15);//new CANTalon(15);
-		frontLeftDrive =  new CANJaguar(14);//new CANTalon(14);
-		backRightDrive = new CANJaguar(11);//new CANTalon(17);
-		backLeftDrive = new CANJaguar(16);//new CANTalon(16);
 		
 		
-		rotEncoderFR  = new TalonEncoder(this.rightFrontTurn);//new TalonEncoder(frontRightDriveRot);
-		rotEncoderBR = new TalonEncoder(this.rightBackTurn);//new TalonEncoder(backRightDriveRot);
-		rotEncoderFL = new TalonEncoder(this.leftFrontTurn);//new TalonEncoder(frontLeftDriveRot);
-		rotEncoderBL = new TalonEncoder(this.leftBackTurn);//new TalonEncoder(backLeftDriveRot);
+		frontRightDrive = /*new CANJaguar(15);//*/new CANTalon(15);
+		frontLeftDrive =  /*new CANJaguar(14);//*/new CANTalon(14);
+		backRightDrive = /*new CANJaguar(11);//*/new CANTalon(17);
+		backLeftDrive = /*new CANJaguar(16);//*/new CANTalon(16);
+		
+		
+		rotEncoderFR  = /*new TalonEncoder(this.rightFrontTurn);//*/new TalonEncoder(frontRightDriveRot);
+		rotEncoderBR = /*new TalonEncoder(this.rightBackTurn);//*/new TalonEncoder(backRightDriveRot);
+		rotEncoderFL = /*new TalonEncoder(this.leftFrontTurn);//*/new TalonEncoder(frontLeftDriveRot);
+		rotEncoderBL = /*new TalonEncoder(this.leftBackTurn);//*/new TalonEncoder(backLeftDriveRot);
 		System.out.println("initialized");
 		
 		/*
@@ -195,19 +202,14 @@ public class Components {
 		screwMotor = new Jaguar(1);
 		winchMotor = new Jaguar(0);
 		
-		/*
+	
 		backLeftDriveRot.setFeedbackDevice(FeedbackDevice.QuadEncoder);
 		frontLeftDriveRot.setFeedbackDevice(FeedbackDevice.QuadEncoder);
 		backRightDriveRot.setFeedbackDevice(FeedbackDevice.QuadEncoder);
 		frontRightDriveRot.setFeedbackDevice(FeedbackDevice.QuadEncoder);
-		*/
 		
-		/*
-		rotEncoderFR = new TalonEncoder(frontRightDriveRot);
-		rotEncoderFL = new TalonEncoder(frontLeftDriveRot);
-		rotEncoderBR = new TalonEncoder(backRightDriveRot);
-		rotEncoderBL = new TalonEncoder(backLeftDriveRot);		
-		*/
+
+		
 	}
 
 }
