@@ -40,7 +40,7 @@ public class Components {
 	 */  
 	
 	//public Compressor compressor = new Compressor(PCM_ID);
-	
+
 	public CANTalon frontRightDriveRot;
 	public CANTalon frontLeftDriveRot;
 	public CANTalon backRightDriveRot;
@@ -90,10 +90,11 @@ public class Components {
 	public DigitalInput armScrewOut = new DigitalInput(22);//= new DigitalInput(7);
 	public DigitalInput armScrewIn;// = new DigitalInput(4);
 	
+	
 	public DigitalInput forkliftTote = new DigitalInput(2);
 
 	public Encoder encoderScrew = new Encoder(4,5);
-	public AnalogInput winchPot = new AnalogInput(0);
+	public AnalogInput winchPot = new AnalogInput(1);
 
 	
 	public final int SCREW_OUT_BUTTON = 1;
@@ -118,13 +119,13 @@ public class Components {
 	public AnalogInput LightSensorBackMid;/* = new AnalogInput(5);*/
 	public AnalogInput LightSensorBackRight;/* = new AnalogInput(4);*/
 	
-	public AnalogInput leadscrewEncoder = new AnalogInput(3);
-		
+	public AnalogInput leadscrewEncoder = new AnalogInput(5);// = new AnalogInput(3);
+	public AnalogInput ultrasonicSensor = new AnalogInput(3);
 	
-	public DigitalInput driveRotationFRMag = new DigitalInput(13);// = new DigitalInput(7);
-	public DigitalInput driveRotationBRMag = new DigitalInput(12);// = new DigitalInput(9);
-	public DigitalInput driveRotationFLMag = new DigitalInput(15);// = new DigitalInput(6);
-	public DigitalInput driveRotationBLMag = new DigitalInput(14);// = new DigitalInput(8);
+	public DigitalInput frontRightMag = new DigitalInput(15);//13// = new DigitalInput(7);
+	public DigitalInput backRightMag = new DigitalInput(13);//12// = new DigitalInput(9);
+	public DigitalInput frontLeftMag = new DigitalInput(14);//15// = new DigitalInput(6);
+	public DigitalInput backLeftMag = new DigitalInput(12);//14// = new DigitalInput(8);
 	
 	/*
 	public TalonEncoder rotEncoderFR;

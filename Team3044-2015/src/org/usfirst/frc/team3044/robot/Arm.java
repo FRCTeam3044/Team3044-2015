@@ -109,9 +109,9 @@ public class Arm {
 		ButtonA = ArmJoy.getRawButton(components.WINCH_UP_BUTTON);
 		ButtonB = ArmJoy.getRawButton(components.WINCH_DOWN_BUTTON);
 
-		System.out.println("POT: "  + WinchPot.getVoltage());
-		System.out.println("ENC: " + this.screwEncoder.getRaw());
-		System.out.println("Switch: " + this.screwLimitSwitch.get());
+		//System.out.println("POT: "  + WinchPot.getVoltage());
+		//System.out.println("ENC: " + this.screwEncoder.getRaw());
+		//System.out.println("Switch: " + this.screwLimitSwitch.get());
 		
 		if(!this.screwLimitSwitch.get()){
 			screwEncoder.reset();
@@ -214,14 +214,7 @@ public class Arm {
 	}
 
 	public void autonomousPeriodic() {
-		SmartDashboard.putString("DB/String 0",
-				String.valueOf(components.ArmExtended.get()));
-		SmartDashboard.putString("DB/String 1",
-				String.valueOf(components.ArmRetracted.get()));
-		SmartDashboard.putString("DB/String 2",
-				String.valueOf(components.armScrewOut.get()));
-		SmartDashboard.putString("DB/String 3",
-				String.valueOf(components.armScrewIn.get()));
+		
 		ButtonZ = ArmJoy.getRawButton(components.SCREW_IN_BUTTON);// rename
 																	// for
 		double voltX = 0;

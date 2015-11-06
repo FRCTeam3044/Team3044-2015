@@ -1,6 +1,7 @@
 package org.usfirst.frc.team3044.robot;
 
 import org.usfirst.frc.team3044.DriverStation.DriverController;
+import org.usfirst.frc.team3044.DriverStation.PhantomController;
 import org.usfirst.frc.team3044.DriverStation.SecondaryController;
 import org.usfirst.frc.team3044.utils.AnalogEncoderWrapper;
 import org.usfirst.frc.team3044.utils.Components;
@@ -10,6 +11,7 @@ import com.ni.vision.NIVision;
 import com.ni.vision.NIVision.Image;
 
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
@@ -137,7 +139,7 @@ public class Robot extends IterativeRobot {
 
 		}
 		count += 1;
-
+		System.out.println("USONIC: " + components.ultrasonicSensor.getAverageValue());
 		arm.teleopPeriodic();
 		drive.teleopPeriodic();
 		forklift.forkliftPeriodic();
@@ -146,27 +148,108 @@ public class Robot extends IterativeRobot {
 	public void testInit() {
 
 	}
-
-	boolean shouldTurn = true;
-
+	final int FL = 0;
+	final int FR = 1;
+	final int BR = 2;
+	final int BL = 3;
+	double encoderDistance[] = {0.0,0.0,0.0,0.0};
+	int wheelState[] = {0,0,0,0};
+	double firstDIST[] = {0,0,0,0};
+	
 	public void testPeriodic() {
-
-		System.out.println(components.leadscrewEncoder.getVoltage());
-		armEncoder.step();
-		arm.teleopPeriodic();/*
-							 * if(!this.components.driveRotationBLMag.get()){
-							 * shouldTurn = false;
-							 * components.rotEncoderBL.reset(); } if
-							 * (shouldTurn) {
-							 * this.components.backLeftDriveRot.set(.4); }else{
-							 * this.components.backLeftDriveRot.set(0); }
-							 */
-		SmartDashboard.putString("DB/String 0",
-				String.valueOf(this.components.winchPot.getVoltage()));
-		SmartDashboard.putString("DB/String 1",
-				String.valueOf(components.ArmRetracted.get()));
-		//this.armAutonCenter();
-
+		/*switch(wheelState[FL]){
+		case 0:
+			components.rotEncoderFL.reset();
+			components.frontLeftDriveRot.set(.3);
+			wheelState[FL] += 1;
+			break;
+		case 1:
+			if(!components.frontLeftMag.get()){
+				firstDIST[FL] = components.rotEncoderFL.getDistance();
+				System.out.println("FL First Value: " + firstDIST[FL]);
+				wheelState[FL] += 1;
+			}
+			break;
+		case 2:
+			if(!components.frontLeftMag.get()){
+				encoderDistance[FL] = components.rotEncoderFL.getDistance();
+				System.out.println("FL Total Dist: " + encoderDistance[FL] + "Calculated rot Value: " + (encoderDistance[FL] - firstDIST[FL]*2));
+				components.frontLeftDriveRot.set(0);
+				wheelState[FL] += 1;
+			}
+			break;
+		}
+		
+		switch(wheelState[FR]){
+		case 0:
+			components.rotEncoderFR.reset();
+			components.frontRightDriveRot.set(.3);
+			wheelState[FR] += 1;
+			break;
+		case 1:
+			if(!components.frontRightMag.get()){
+				firstDIST[FR] = components.rotEncoderFR.getDistance();
+				System.out.println("FR First Value: " + firstDIST[FR]);
+				wheelState[FR] += 1;
+			}
+			break;
+		case 2:
+			if(!components.frontRightMag.get()){
+				encoderDistance[FR] = components.rotEncoderFR.getDistance();
+				System.out.println("FR Total Dist: " + encoderDistance[FR] + "Calculated rot Value: " + (encoderDistance[FR] - firstDIST[FR]*2));
+				components.frontRightDriveRot.set(0);
+				wheelState[FR] += 1;
+			}
+			break;
+		}
+		
+		
+		switch(wheelState[BL]){
+		case 0:
+			components.rotEncoderBL.reset();
+			components.backLeftDriveRot.set(.3);
+			wheelState[BL] += 1;
+			break;
+		case 1:
+			if(!components.backLeftMag.get()){
+				firstDIST[BL] = components.rotEncoderBL.getDistance();
+				System.out.println("BL First Value: " + firstDIST[BL]);
+				wheelState[BL] += 1;
+			}
+			break;
+		case 2:
+			if(!components.backLeftMag.get()){
+				encoderDistance[BL] = components.rotEncoderBL.getDistance();
+				System.out.println("BL Total Dist: " + encoderDistance[BL] + "Calculated rot Value: " + (encoderDistance[BL] - firstDIST[BL]*2));
+				components.backLeftDriveRot.set(0);
+				wheelState[BL] += 1;
+			}
+			break;
+		}
+		//
+		switch(wheelState[BR]){
+		case 0:
+			components.rotEncoderBR.reset();
+			components.backRightDriveRot.set(.3);
+			wheelState[BR] += 1;
+			break;
+		case 1:
+			if(!components.backRightMag.get()){
+				firstDIST[BR] = components.rotEncoderBR.getDistance();
+				System.out.println("BR First Value: " + firstDIST[BR]);
+				wheelState[BR] += 1;
+			}
+			break;
+		case 2:
+			if(!components.backRightMag.get()){
+				encoderDistance[BR] = components.rotEncoderBR.getDistance();
+				System.out.println("BR Total Dist: " + encoderDistance[BR] + "Calculated rot Value: " + (encoderDistance[BR] - firstDIST[BR]*2));
+				components.backRightDriveRot.set(0);
+				wheelState[BR] += 1;
+			}
+			break;
+		}*/
+		System.out.println(components.winchPot.getVoltage());
 	}
 
 	public void disabledInit() {
@@ -178,9 +261,9 @@ public class Robot extends IterativeRobot {
 
 	public void disabledPeriodic() {
 		NIVision.IMAQdxGrab(session, frame, 1);
-		System.out.println("image put");
-        System.out.println(NetworkTable.getTable("Camera").getNumber("X",0));
-        
+		//System.out.println("image put");
+        //System.out.println(NetworkTable.getTable("Camera").getNumber("X",0));
+
         CameraServer.getInstance().setImage(frame);
 		lastUpdateTime = currentTime;
 

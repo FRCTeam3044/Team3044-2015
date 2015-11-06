@@ -68,7 +68,7 @@ public class SecondaryController {
 
 	public boolean getRawButton(int num){
 		if(num < 1){
-			System.out.println("Secondary Controller! Buttons start at 1");
+			//System.out.println("Secondary Controller! Buttons start at 1");
 			num = 20;
 		}
 		if((!DriverStation.getInstance().isAutonomous() && !DriverStation.getInstance().isTest())){

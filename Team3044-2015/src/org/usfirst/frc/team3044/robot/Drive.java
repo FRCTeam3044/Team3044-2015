@@ -84,10 +84,10 @@ public class Drive {
 		MidLightR = components.LightSensorBackMid;
 		BotLightR = components.LightSensorBackRight;
 
-		frontLeftMag = components.driveRotationFLMag;
-		frontRightMag = components.driveRotationFRMag;
-		backLeftMag = components.driveRotationBLMag;
-		backRightMag = components.driveRotationBRMag;
+		frontLeftMag = components.frontLeftMag;
+		frontRightMag = components.frontRightMag;
+		backLeftMag = components.backLeftMag;
+		backRightMag = components.backRightMag;
 	}
 
 	double Distance;
@@ -427,8 +427,8 @@ public class Drive {
 	}
 
 	int flState = 0;
-	double flOffset = 328.5;
-
+	double flOffset = 331.75;
+	//76.25
 	public boolean calibFL() {
 		switch (flState) {
 		case 0:
@@ -453,8 +453,8 @@ public class Drive {
 	}
 
 	int frState = 0;
-	double frOfsett = 282.25;
-
+	double frOfsett = 283.5;
+	//124.5
 	public boolean calibFR() {
 		switch (frState) {
 		case 0:
@@ -478,8 +478,8 @@ public class Drive {
 	}
 
 	int blState = 0;
-	double blOffset = 335;
-
+	double blOffset = 333;
+	//75
 	public boolean calibBL() {
 		switch (blState) {
 		case 0:
@@ -502,8 +502,8 @@ public class Drive {
 	}
 
 	int brState = 0;
-	double brOfsett = 279;
-
+	double brOfsett = 282.5;
+	//125.5
 	public boolean calibBR() {
 		switch (brState) {
 		case 0:
@@ -674,7 +674,7 @@ public class Drive {
 				RightBackTurn.set(Turn(0, ActDistanceRB));
 				LeftBackTurn.set(Turn(0, ActDistanceLB));
 			}
-			SmartDashboard.putString("DB/String 2", "Runn");
+			
 			break;
 			
 		case CALIBRATING:
@@ -682,13 +682,17 @@ public class Drive {
 			this.isBRC = this.calibBR();
 			this.isFLC = this.calibFL();
 			this.isFRC = this.calibFR();
+			System.out.println("Fl: " + components.frontLeftMag.get());
+			System.out.println("Fr: " + components.frontRightMag.get());
+			System.out.println("Bl: " + components.backLeftMag.get());
+			System.out.println("Br: " + components.backRightMag.get());
 			if (SecondaryController.getInstance().getRawButton(
 					DriveJoy.BUTTON_B)) {
 				this.driveState = this.RUNNING;
 			}
 			if (isBLC && isBRC && isFLC && isFRC) {
 				driveState = RUNNING;
-				SmartDashboard.putString("DB/String 2", "CAlib");
+				
 				wheelsCalibrated = true;
 			}
 
@@ -699,7 +703,7 @@ public class Drive {
 			frState = 0;
 			blState = 0;
 			brState = 0;
-			SmartDashboard.putString("DB/String 2", "CAlib INIT");
+			
 			this.LeftFrontTurn.set(.4);
 			this.RightFrontTurn.set(.4);
 			this.LeftBackTurn.set(.4);
@@ -713,8 +717,7 @@ public class Drive {
 		oldStrafe = Strafe;
 		oldForward = Forward;
 
-		SmartDashboard.putString("DB/String 0",
-				String.valueOf(RightFrontEn.getDistance()));
+		
 
 	}
 
