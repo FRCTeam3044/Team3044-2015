@@ -29,7 +29,11 @@ public class AnalogEncoderWrapper {
 	}
 	
 	public double getDistance(){
-		return distance;
+		if(distance >= 0){
+			return distance + (1 - encoderInstance.getVoltage()/5.0);
+		}else{
+			return distance - (encoderInstance.getVoltage()/5.0);
+		}
 	}
 	
 	public void reset(){
